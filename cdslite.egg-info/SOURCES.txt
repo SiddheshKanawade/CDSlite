@@ -1,0 +1,7 @@
+README.md
+setup.py
+cdslite.egg-info/PKG-INFO
+cdslite.egg-info/SOURCES.txt
+cdslite.egg-info/dependency_links.txt
+cdslite.egg-info/requires.txt
+cdslite.egg-info/top_level.txt
