@@ -10,5 +10,6 @@ setup(
         "flask",
         "flask_mysqldb",
         "python-dotenv",
+        "passlib",
     ],
 )
