@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, redirect
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 from flask_mysqldb import MySQL
 from passlib.hash import sha256_crypt
 
@@ -6,11 +8,22 @@ from config import MYSQL_DATABASE, MYSQL_HOST, PASSWORD, MYSQL_USER
 
 app = Flask(__name__)
 
+#lm = LoginManager(app)
+
+
 # Configure db
 app.config['MYSQL_HOST'] = MYSQL_HOST
 app.config['MYSQL_USER'] = MYSQL_USER
 app.config['MYSQL_PASSWORD'] = PASSWORD
 app.config['MYSQL_DB'] = MYSQL_DATABASE
+
+#mysql:://username:password@server/db"
+
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:9413079486@localhost/CDSlite'
+# db = SQLAlchemy(app)
+
+
+#bc = Bcrypt (app)
 
 mysql = MySQL(app)
 
@@ -44,12 +57,13 @@ def register():
         pincode = user_details['pincode']
 
         query = f"INSERT INTO User VALUES ({user_id},'{first_name}','{last_name}', '{email}',{mob_number},'{password}','{dob}','{gender}', '{address_line}', '{city}', {pincode})"
+        print(query)
         cur = mysql.connection.cursor()
         try:
             cur.execute(query)
             mysql.connection.commit()
         except Exception as e:
-            raise Exception(f"UNable to run query. Error: {e}")
+            raise Exception(f"Unable to run query. Error: {e}")
         cur.close()
         return render_template("success.html", response=success)
 
@@ -103,9 +117,30 @@ def signup():
     pass
 
 
-@app.route('/{product_id}')
+@app.route('/{product_id}',methods=['GET', 'POST'])
 def product():
-    pass
+    if request.method == 'POST':
+        user_details = request.form
+        email_id = user_details['email']
+        password = user_details['password']
+        if password == None or password == "":
+            raise Exception("Password can't be empty")
+        query = f"SELECT * from User WHERE User.Email_ID='{email_id}' and User.Password_='{password}'"
+
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute(query)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+
+        response = cur.fetchone()
+        if response == None:
+            # MOdify this code, as this is not the right method
+            return render_template("register.html")
+        return render_template("success.html", response=response)
+    return render_template("addProduct.html")
+
 
 
 @app.route('/cart')
