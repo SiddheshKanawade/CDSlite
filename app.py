@@ -1,6 +1,4 @@
-from flask import Flask, render_template, request, redirect
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask import Flask, render_template, request, url_for, redirect
 from flask_mysqldb import MySQL
 from passlib.hash import sha256_crypt
 
@@ -30,7 +28,7 @@ mysql = MySQL(app)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    # print("Returning template")
+    print("Returning template")
     if request.method == 'POST':
         cur = mysql.connection.cursor()
         total_existing_users = cur.execute("SELECT * FROM User")
@@ -65,7 +63,7 @@ def register():
         except Exception as e:
             raise Exception(f"Unable to run query. Error: {e}")
         cur.close()
-        return render_template("success.html", response=success)
+        return render_template("success.html", response="success")
 
     return render_template("register.html")
 
@@ -89,8 +87,7 @@ def login():
 
         response = cur.fetchone()
         if response == None:
-            # MOdify this code, as this is not the right method
-            return render_template("register.html")
+            return redirect(url_for('register'))
         return render_template("success.html", response=response)
     return render_template("login.html")
 
@@ -117,15 +114,15 @@ def signup():
     pass
 
 
-@app.route('/{product_id}',methods=['GET', 'POST'])
+@app.route('/product',methods=['GET', 'POST'])
 def product():
+    user_id = 1
     if request.method == 'POST':
-        user_details = request.form
-        email_id = user_details['email']
-        password = user_details['password']
-        if password == None or password == "":
-            raise Exception("Password can't be empty")
-        query = f"SELECT * from User WHERE User.Email_ID='{email_id}' and User.Password_='{password}'"
+        form_details = request.form
+        bank = form_details['bank']
+        acc = form_details["Account"]
+        ifsc = form_details["IFSC"]
+        query = f"SELECT SellerID,SoldProducts from Seller WHERE Seller.UserID='{user_id}'"
 
         cur = mysql.connection.cursor()
         try:
@@ -137,7 +134,15 @@ def product():
         response = cur.fetchone()
         if response == None:
             # MOdify this code, as this is not the right method
-            return render_template("register.html")
+            total_existing_sellers = cur.execute("SELECT * FROM Seller")
+            seller_id = "SE" + str(total_existing_sellers+1)
+            query = f"INSERT INTO Seller VALUES ({seller_id},'{user_id}', ,'{bank}',{acc},'{ifsc})"
+            
+        else:
+            seller_id = response['SellerID']
+        total_pdts = cur.execute("SELECT * FROM Products")
+        product_id = str(total_pdts+1) 
+
         return render_template("success.html", response=response)
     return render_template("addProduct.html")
 
