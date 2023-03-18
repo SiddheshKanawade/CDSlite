@@ -88,7 +88,7 @@ def login():
         response = cur.fetchone()
         if response == None:
             return redirect(url_for('register'))
-        return render_template("success.html", response=response)
+        return redirect(url_for('product'))
     return render_template("login.html")
 
 
@@ -113,16 +113,37 @@ def success():
 def signup():
     pass
 
-
-@app.route('/product',methods=['GET', 'POST'])
-def product():
-    user_id = 1
+@app.route('/account/<user_id>',methods=['GET', 'POST'])
+def account(user_id):
     if request.method == 'POST':
         form_details = request.form
         bank = form_details['bank']
         acc = form_details["Account"]
         ifsc = form_details["IFSC"]
-        query = f"SELECT SellerID,SoldProducts from Seller WHERE Seller.UserID='{user_id}'"
+        cur = mysql.connection.cursor()
+        total_existing_sellers = cur.execute("SELECT * FROM Seller")
+        seller_id = "SE" + str(total_existing_sellers+1)
+        q = f"INSERT INTO Seller VALUES ('{seller_id}','{user_id}',0 ,'{bank}',{acc},'{ifsc}')"
+        
+        try:
+            cur.execute(q)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        return redirect(url_for('product'))
+    return render_template("acc_details.html")
+
+@app.route('/product',methods=['GET', 'POST'])
+def product():
+    user_id = "2"
+    if request.method == 'POST':
+        form_details = request.form
+        pdt_name = form_details["product-name"]
+        desc = form_details["description"]
+        category = form_details["cat"]
+        subcat = form_details["scat"]
+        creation_date = form_details["CreationDate"]
+        query = f"SELECT SellerID from Seller WHERE Seller.UserID='{user_id}'"
 
         cur = mysql.connection.cursor()
         try:
@@ -131,20 +152,60 @@ def product():
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
 
-        response = cur.fetchone()
-        if response == None:
+        r1 = cur.fetchone()
+        seller_id = None
+        if r1 == None:
             # MOdify this code, as this is not the right method
-            total_existing_sellers = cur.execute("SELECT * FROM Seller")
-            seller_id = "SE" + str(total_existing_sellers+1)
-            query = f"INSERT INTO Seller VALUES ({seller_id},'{user_id}', ,'{bank}',{acc},'{ifsc})"
+            return redirect(url_for('account',user_id=user_id))
             
         else:
-            seller_id = response['SellerID']
+            seller_id = r1[0]
+            
         total_pdts = cur.execute("SELECT * FROM Products")
         product_id = str(total_pdts+1) 
+        q = f"INSERT INTO Products VALUES ('{product_id}','{seller_id}')"
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute(q)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        
+        q1 = f"SELECT CategoryID from Category WHERE Category.catName='{category}'"
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute(q1)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        r2 = cur.fetchone()
+        category_id = r2[0]
 
-        return render_template("success.html", response=response)
+        isMerchandise= form_details['Merch']
+        if isMerchandise == "Yes":
+            mrp = form_details["MRP"]
+            quantity = form_details["Quantity"]
+            
+            q2 = f"INSERT INTO FP_Products VALUES ('{product_id}','{pdt_name}','{desc}','Yes',{mrp},{quantity},'{creation_date}','{creation_date}','{category_id}')"
+            cur = mysql.connection.cursor()
+            try:
+                cur.execute(q2)
+                mysql.connection.commit()
+            except Exception as e:
+                raise Exception(f"UNable to run query. Error: {e}")
+        else:
+            base_price = form_details["BasePrice"]
+            is_barter = form_details["isBarter"]
+            q2 = f"INSERT INTO VP_Products VALUES ('{product_id}','{pdt_name}','{desc}','Yes',{base_price},'{is_barter}','{creation_date}','{creation_date}','{category_id}')"
+            cur = mysql.connection.cursor()
+            try:
+                cur.execute(q2)
+                mysql.connection.commit()
+            except Exception as e:
+                raise Exception(f"UNable to run query. Error: {e}")
+        return render_template("success.html", response="done")
     return render_template("addProduct.html")
+
 
 
 
