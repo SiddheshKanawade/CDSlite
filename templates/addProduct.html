@@ -1,8 +1,42 @@
 <!DOCTYPE html>
 <html>
+<header>
+  <nav class="navbar">
+    <ul>
+
+      <li id="a1"><b>CDSLite</b></li>
+      <li id="a2">
+        <form>
+            <input type="text" class="search-box" placeholder="Search products">
+            <button id="search-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+            </button>
+        </form>
+        </li>
+        <li><a href="index.html">Home</a></li>
+        <li id="a3"><a href="#">Bid</a></li>
+        <li id="a3"><a href="#">Barter</a></li>
+        <li id="a3"><a href="#">Merchandise</a></li>
+        <li id="a3"><a href="#"><img src="cart.png" alt=""></a></li>
+        <li id="a3">
+            <div class="profile_dropdown">
+                <button class="profile"><img src="user.png" alt=""></button>
+                <div class="profile-content">
+                    <a href="myproducts.html">My Product</a>
+                    <a href="#">My order</a>
+                    <a href="#">log Out</a>               
+                </div>
+            
+            </div>
+          
+        </li>
+    </ul>
+  </nav>
+</header>
 
 <head>
-    <title>Login Form Design</title>
+    <title>Add Product Form Design</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -14,45 +48,60 @@
 </head>
 
 <body>
-    <form method="POST" action="">
+  <form method="POST" action="">
         
-        ProductName <input type="text" name="product-name" />
+        Product Name 
+        <input type="text" name="product-name" />
         <br>
-        Description <input type="textarea" name="description" />
+        Description
+         <input type="textarea" name="description" />
         <br>
-        Availability <select id="availability" name="availability" >
+        Availability
+         <select id="availability" name="availability" >
             <option value="Yes">Yes</option>
             <option value="No">No</option>
             <option value="other">Other</option>
           </select>
           <br>
-        is Merchandise <select id="Merch" name="Merch" onclick="displaynext()">
+        is Merchandise
+         <select id="Merch" name="Merch" onclick="displaynext()">
             <option value="Yes">Yes</option>
             <option value="No">No</option>
           </select>
         <br>
           <div id="Yes" style="display:none;"><br/>
-            MRP<input type="number" name="MRP" />
+            MRP
+            <input type="number" name="MRP" />
             <br>
-            Quantity<input type="number" name="Quantity"/>
+            Quantity
+            <input type="number" name="Quantity"/>
             <br>
-            Creation Date<input type="date" name=-"CreationDate" />
+            Creation Date
+            <input type="date" name=-"CreationDate" />
             <br>
           </div>
         
           <div id="No" style="display:none;" ><br/>
-            Base Price<input type="number" name = "BasePrice"/>
+            Base Price
+            <input type="number" name = "BasePrice"/>
             <br>
-            is Barter<input type="radio" id = "YesBarter" name="isBarter" value ="Yes" >Yes
+            is Barter
+            <input type="radio" id = "YesBarter" name="isBarter" value ="Yes" >Yes
             <input type="radio" id="NoBarter" name="isBarter" value ="No" >No
             <br>
-            Creation Date<input type="date" name=-"CreationDate" />
+            Creation Date 
+            <input type="date" name=-"CreationDate" />
             <br>        
           </div>
-
+          <form method="POST" action="" enctype="multipart/form-data">
+            Upload Product Images 
+            <input type="file" name="images[]" multiple>
+            <input type="submit" value="Upload">
+          </form>
+          <div class="text-center">
         <input type="submit">
+          </div>
       </form>
 
 </body>
-
 </html>
