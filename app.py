@@ -392,31 +392,18 @@ def edit(param1='1', param2='vp'):
         return redirect(url_for("fp_products"))
 
 
-@app.route('/dele/<param1>/<param2>', methods=['GET', 'POST'])
-def dele(param1='1',param2='vp'):
+@app.route('/dele/<param1>', methods=['GET', 'POST'])
+def dele(param1='1'):
     cur = mysql.connection.cursor()
-    print("here in delete")
 
-    if(param2 == 'vp'):
-        cur = mysql.connection.cursor()
-        q2 = f"Delete from VP_Products where Productid = '{param1}'"
-        try:
-            cur.execute(q2)
-            mysql.connection.commit()
-        except Exception as e:
-            raise Exception(f"UNable to run query. Error: {e}")
-        return "deleted product id is"+ {param1}
-    else:
-        cur = mysql.connection.cursor()
-        print(param1)
-        q2 = f"Delete from FP_Products where ProductID = '{param1}'"
-        try:
-            cur.execute(q2)
-            mysql.connection.commit()
-            print("deleted")
-        except Exception as e:
-            raise Exception(f"UNable to run query. Error: {e}")
-        return redirect(url_for('myproducts'))
+    q2 = f"Delete from Products where ProductID = '{param1}'"
+    try:
+        cur.execute(q2)
+        mysql.connection.commit()
+        print("deleted")
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    return redirect(url_for('myproducts'))
 
 @app.route('/vp_products')
 def vp_products():

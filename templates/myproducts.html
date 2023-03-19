@@ -15,39 +15,12 @@
 
 <body>
   <script>
-    function edit_Function_vp() {
-      const param1 = JSON.parse(document.getElementById('data').textContent)
-      fetch(`/edit/${param1}/vp`)
-      .then(response => response.text())
-      .then(data => {
-        console.log("in func");
-      })
-      .catch(error => {
-        console.log("here")
-        console.error(error);
-      })
-      window.location.href = "edit_products_vp.html";
-    }
-
-    function edit_Function_fp() {
-      const param1 = JSON.parse(document.getElementById('data2').textContent)
-      fetch(`/edit/${param1}/fp`)
-      .then(response => response.text())
-      .then(data => {
-        console.log("in func");
-      })
-      .catch(error => {
-        console.log("here")
-        console.error(error);
-      });
-    }
-
     function del_Function_fp() {
       const param1 = JSON.parse(document.getElementById('data2').textContent)
       var ans = confirm("Are you Sure to delete the corresponding product? It will be deleted permanantly.");
       console.log(ans);
       if(ans){
-        fetch(`/dele/${param1}/fp`)
+        fetch(`/dele/${param1}`)
         .then(response => response.text())
         .then(data => {
           console.log("in func")
@@ -67,7 +40,7 @@
       var ans = confirm("Are you Sure to delete the corresponding product? It will be deleted permanantly.");
       console.log(ans);
       if(ans) {
-        fetch(`/dele/${param1}/vp`, {
+        fetch(`/dele/${param1}`, {
           method: 'POST'
         })
         .then(response => response.text())
@@ -85,16 +58,6 @@
       }
     }
 
-    function handleButtonClick() {
-      var buttonValue = 'Hello, Flask!';
-      fetch('/handle_button_click', {
-        method: 'POST',
-        body: new URLSearchParams({button_value: buttonValue})
-      })
-      .then(response => response.text())
-      .then(data => console.log(data))
-      .catch(error => console.error(error));
-    }
   </script>
 
   <h1>Fixed Price Products</h1>
