@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <!-- Remix Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
@@ -18,38 +18,38 @@
             <img src="/static/image/campus.jpeg" alt="img" class="img">
         </div>
         <div class="side_img">
-            <form method="POST" action="#" class="take_input active" id="login">
-                
+            <form method="POST" action="#" class="take_input active" id="login" onsubmit="return validateEmail()">
                 <h2>Login</h2>
                 <label for="email">Email Address</label>
                 <div class="email_add" onclick="activeInput(this)">
                     <input type="email" name="email" class="email" id="emailInput" placeholder="abc@iitgn.ac.in">
                 </div>
+                <div class="error" id="emailError" style="display:none;">
+                  <p id ="error1">Please enter a valid email address with the @iitgn.ac.in domain</p>
+                </div>
                 <label for="password">Password</label>
                 <div class="email_add" onclick="activeInput(this)">
                     <input type="password" class="password" name="password" id="password" placeholder="************">
-                   
                 </div>
-                
                 <button type="submit" class="btn btn-login"><a href="index.html"></a>Login</a></button>
                 <p>Don't have an account? <a href="/register" id="changeToRegister">Sign up</a></p>
                 <p class="or"></p>
-                {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                <div class="alert alert-danger" role="alert">
-                    {% for message in messages %}
-                        <span style="color: red;">{{ message }}</span><br>
-                    {% endfor %}
-                </div>
-                {% endif %}
-            {% endwith %}
-                
             </form>
-            
-        </div>
-    </div>
-    
 
-</body>
+<script>
+function validateEmail() {
+  const emailInput = document.getElementById("emailInput");
+  const email = emailInput.value;
+  const emailError = document.getElementById("emailError");
 
-</html>
+  if (!email.endsWith("@iitgn.ac.in")) {
+    emailError.style.display = "block";
+    emailInput.focus();
+    emailError.style.top = emailInput.offsetTop + emailInput.offsetHeight + 5 + "px";
+    emailError.style.left = emailInput.offsetLeft + "px";
+    return false;
+  }
+
+  return true;
+}
+</script>
