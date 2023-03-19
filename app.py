@@ -1,10 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect, session, flash
-from flask_mysqldb import MySQL
-from passlib.hash import sha256_crypt
-
-from config import MYSQL_DATABASE, MYSQL_HOST, PASSWORD, MYSQL_USER
 from src.helper import current_date
 from src.db import create_app
+
 
 app, mysql = create_app()
 
@@ -84,6 +81,7 @@ def login():
         session['logged_in'] = True
         session['uid'] = response['UserID']
         session['session_name'] = response['FirstName']
+        print(session)
 
         return redirect(url_for('product'))
     return render_template("login.html")
@@ -147,7 +145,7 @@ def product():
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     catlist = cur.fetchall()
-
+    
     if request.method == 'POST':
         form_details = request.form
         pdt_name = form_details["product-name"]
