@@ -95,6 +95,21 @@ def login():
     return render_template("login.html")
 
 
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    if 'uid' in session:
+        session.clear()
+        flash('You are now logged out', 'success')
+        return redirect(url_for('login'))
+    return redirect(url_for('login'))
+
+    # @app.route('/logout', methods=['GET', 'POST'])
+
+
+def delete_user():
+    pass
+
+
 @app.route('/success', methods=['GET', 'POST'])
 def success():
     if request.method == 'POST':
