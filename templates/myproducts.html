@@ -45,16 +45,16 @@
 
   <h1>Fixed Price Products</h1>
   {% for j in fplist %}
-    <a>{{j[2]}}</a>
-    <script id = "data2" type = "application/json">{{ j[0]|tojson}}</script>
+    <a>{{j['ProductName']}}</a>
+    <script id = "data2" type = "application/json">{{ j['ProductID']|tojson}}</script>
     <button onclick="edit_Function_fp()">Edit</button>
     <br>
   {% endfor %}
 
   <h1>Variable Price Products</h1>
   {% for j in vplist %}
-    <a>{{j[2]}}</a>
-    <script id = "data" type = "application/json">{{ j[0]|tojson}}</script>
+    <a>{{j['ProductName']}}</a>
+    <script id = "data" type = "application/json">{{ j['ProductID']|tojson}}</script>
     <button onclick="edit_Function_vp()">Edit</button>
     <br>
   {% endfor %}

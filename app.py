@@ -168,7 +168,8 @@ def product():
             return redirect(url_for('account', user_id=user_id))
 
         else:
-            seller_id = r1[0]
+            print(r1)
+            seller_id = r1['SellerID']
 
         total_pdts = cur.execute("SELECT * FROM Products")
         product_id = str(total_pdts+1)
@@ -245,8 +246,8 @@ def myproducts(user_id='1'):
     except Exception as e:
         raise Exception(f"NOT A SELLER!!. Error: {e}")
     f = cur.fetchone()
-    seller_id = f[0]
-    print(seller_id)
+    seller_id = f['SellerID']
+    #print(seller_id)
 
     q2 = f"select * from(select * from Products natural join FP_Products where Products.ProductID = FP_Products.ProductID) as P where P.sellerid = '{seller_id}'"
     try:

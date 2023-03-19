@@ -43,17 +43,18 @@
 
           <div id="categ">
             <br>
-	
+            
+            
             Category<select id="cat" name="cat" >
               {% for j in catlist %}
-                <OPTION value={{j[0]}}>{{j[1]}}</OPTION>
+                <OPTION value={{j["categoryID"]}}>{{j['catName']}}</OPTION>
               {% endfor %}
             </select>
             <br>
             <br>
             Sub Category<select id = "scat" name="scat" multiple>
               {% for j in subcatlist %}
-                <OPTION value={{j[0]}}>{{j[1]}}</OPTION>
+                <OPTION value={{j["SubcategoryID"]}}>{{j['subcatName']}}</OPTION>
               {% endfor %}
             </select>
             <br>
