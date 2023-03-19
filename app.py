@@ -474,6 +474,22 @@ def delete_shopping_cart(product_id):
     pass
 
 
+@app.route('/index/shopping_cart', methods=['GET', 'POST'])
+def read_shopping_cart():
+    user_id = session['uid']
+    query = f"SELECT * FROM ShoppingCart WHERE UserID = '{user_id}'"
+    cur = mysql.connection.cursor()
+
+    try:
+        cur.execute(query)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    response = cur.fetchall()
+    cur.close()
+    return render_template("success.html", response=response)
+
+
 @app.route('/barter')
 def barter():
     pass
