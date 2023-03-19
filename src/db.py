@@ -1,9 +1,10 @@
 import os
+import razorpay
 
 from flask import Flask
 from flask_mysqldb import MySQL
 
-from config import MYSQL_DATABASE, MYSQL_HOST, PASSWORD, MYSQL_USER
+from config import MYSQL_DATABASE, MYSQL_HOST, PASSWORD, MYSQL_USER, RAZORPAY_API_KEY, RAZORPAY_API_SECRET
 
 
 def create_app():
@@ -15,7 +16,9 @@ def create_app():
     app.config['MYSQL_DB'] = MYSQL_DATABASE
     app.secret_key = os.urandom(24)
     app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+    
+    razorpay_client = razorpay.Client(auth=(RAZORPAY_API_KEY, RAZORPAY_API_SECRET))
 
     mysql = MySQL(app)
 
-    return app, mysql
+    return app, mysql, razorpay_client

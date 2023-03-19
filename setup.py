@@ -11,5 +11,6 @@ setup(
         "flask_mysqldb",
         "python-dotenv",
         "passlib",
+        "razorpay",
     ],
 )
