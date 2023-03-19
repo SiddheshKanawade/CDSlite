@@ -1,0 +1,279 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+html{
+    height: 100%;
+    width: 100%;
+  }
+  @keyframes ex{
+      0%{ 
+          margin-top: 400px;
+      }
+      100%{
+          margin-top: 0;
+      }
+  }
+  .navbar {
+      padding: 8px;
+      background-color: whitesmoke;
+      height: 2.8rem;
+      max-width: 100%;
+      box-shadow: 0 0 8px 0 grey;
+      position: -webkit-sticky; /* Safari */
+      position: sticky;
+      top:0;
+      animation: ex;
+      animation-duration: 0.5s;
+  }
+  .navbar ul{
+      left:1%;
+      display: flex;
+      width:100%;
+      list-style: none;
+      flex-wrap: nowrap;
+      font-family: 'Dongle', sans-serif;
+      font-size: 1.8rem;
+      max-height: 100%;
+      justify-content: space-between;
+  }
+  .navbar li{
+      margin-top: 0.16em;
+  }
+  .navbar a{
+      text-decoration: none;
+      color: black;
+  }
+  #a1{
+      margin-left: 1%;
+      color: black;
+  }
+  #a2{
+    margin-left:30%;
+  }
+  .navbar a:hover{
+    color: #646262;
+  }
+  .navbar form{
+    top: 0;
+    display: flex;
+    flex-wrap: nowrap;
+  }
+  .search{
+    width: 500px;
+    display: flex;
+  }
+  
+  .search-box{
+    top:10%;
+    width: 100%;
+    height: 17px;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: none;
+    text-transform: capitalize;
+    background: white;
+    color: #a9a9a9;
+    outline: none;
+  }
+  
+  #search-btn{
+    top:10%;
+    width: 20%;
+    height: 17 px;
+    padding: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: #383838;
+    color: #fff;
+    text-transform: capitalize;
+    font-size: 15px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  #a3 button{
+    border:none;
+    background:none;
+    cursor: pointer;
+  }
+  .search-box::placeholder{
+    color: #a9a9a9;
+  }
+  #login{
+    display: none;
+    width: 60%;
+    border: 2px solid;
+  }
+
+
+/*Profile dropdown*/
+
+.profile
+{
+    color: #000;
+    padding: 10px;
+    font-size: 25px;
+    border: none;
+    font-family: 'Dongle', sans-serif;
+}
+
+.profile:hover
+{
+    color: #646262;
+}
+
+.profile_dropdown 
+{
+    position: relative;
+    display: flexbox;
+   
+}
+
+.profile-content 
+{
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    right: 30%;
+}
+  
+.profile-content a 
+{
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.profile-content a:hover {
+    background-color: #ddd;
+}
+
+.profile_dropdown:hover .profile-content 
+{
+    display: block;
+}
+
+.profile_.dropdown .profile {
+    background-color: #000;
+}
+
+
+
+
+
+
+.price
+{
+    font-size:30px;
+    width: 40%;
+    height: 40%;
+    
+}
+.product-image
+{
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 5vw;
+}
+.card
+{
+    width: 450px ;
+    height: 450px;
+    position: relative;
+  
+}
+.details
+{
+    font-size: 25px;
+}
+.edit-img
+{
+    position: static;
+    bottom: 20px;
+    left: 50%;
+    width: 80%;
+    border-radius: 25px;
+    box-shadow: 10px 10px 5px #ccc;
+    overflow: hidden;
+}
+
+.edit-img img
+{
+    width: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    position: relative;
+    border:2px solid #fff;
+    border-radius: 25px;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+.edit-img:hover img
+{
+    transform: scale(1.2);
+}
+h1
+{
+    text-transform: uppercase;
+    font-size: 45px;
+}
+.size{
+    text-transform: uppercase;
+    font-weight: 300;
+    margin: 30px 0 10px;
+    font-size: 25px;
+}
+.size_button
+{
+    display: inline-block;
+    width: 77px;
+    height: 77px;
+    text-align: center;
+    margin: 10px;
+    line-height: 80px;
+    border-radius: 30%;
+    border: 1p solid #383838;
+    font-size: 20px;
+    margin-left: 0;
+    text-transform: uppercase;
+    color: #383838;
+
+}
+.size_button.check
+{
+    background: #383838;
+    color:azure;
+}
+
+.btns
+{
+    padding: 12px;
+    color: white;
+    background-color: #000;
+    cursor: pointer;
+    width: 47%;
+    font-size: 15px;
+    float: left;
+    margin-left: 3%;
+    border-radius: 10px;
+    margin: 25px;
+    transform: translate(40%);
+}
+
+
+.details1
+{
+   
+    font-size: 20px;
+}
+
+
