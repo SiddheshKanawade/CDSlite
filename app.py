@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, session, flash
-from src.helper import current_date
+from src.helper import current_date, generate_uuid
 from src.db import create_app
 
 
@@ -19,10 +19,14 @@ def index():
 def register():
     if request.method == 'POST':
         cur = mysql.connection.cursor()
-        total_existing_users = cur.execute("SELECT * FROM User")
+        user_id = None
+        while True:
+            user_id = generate_uuid()
+            query = f"SELECT * from User WHERE User.UserID='{user_id}'"
+            response = cur.execute(query)
+            if response == 0:
+                break
         cur.close()
-
-        user_id = total_existing_users+1
         user_details = request.form
         first_name = user_details['first-name']
         last_name = user_details["last-name"]
@@ -73,8 +77,13 @@ def login():
         user_details = request.form
         email_id = user_details['email']
         password = user_details['password']
+        if email_id == None or email_id == "":
+            flash("Email can't be empty", 'danger')
+            return render_template("login.html")
+
         if password == None or password == "":
-            raise Exception("Password can't be empty")
+            flash("Password can't be empty", 'danger')
+            render_template("login.html")
 
         query = f"SELECT * from User WHERE User.Email_ID='{email_id}' and User.Password_='{password}'"
 
