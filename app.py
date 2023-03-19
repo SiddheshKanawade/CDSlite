@@ -3,28 +3,10 @@ from flask_mysqldb import MySQL
 from passlib.hash import sha256_crypt
 
 from config import MYSQL_DATABASE, MYSQL_HOST, PASSWORD, MYSQL_USER
-from helper import current_date
+from src.helper import current_date
+from src.db import create_app
 
-app = Flask(__name__)
-
-#lm = LoginManager(app)
-
-
-# Configure db
-app.config['MYSQL_HOST'] = MYSQL_HOST
-app.config['MYSQL_USER'] = MYSQL_USER
-app.config['MYSQL_PASSWORD'] = PASSWORD
-app.config['MYSQL_DB'] = MYSQL_DATABASE
-
-#mysql:://username:password@server/db"
-
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:9413079486@localhost/CDSlite'
-# db = SQLAlchemy(app)
-
-
-#bc = Bcrypt (app)
-
-mysql = MySQL(app)
+app, mysql = create_app()
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -71,6 +53,7 @@ def register():
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
+    print("Entered login")
     if request.method == 'POST':
         user_details = request.form
         email_id = user_details['email']
@@ -80,6 +63,7 @@ def login():
         query = f"SELECT * from User WHERE User.Email_ID='{email_id}' and User.Password_='{password}'"
 
         cur = mysql.connection.cursor()
+
         try:
             cur.execute(query)
             mysql.connection.commit()
@@ -114,7 +98,8 @@ def success():
 def signup():
     pass
 
-@app.route('/account/<user_id>',methods=['GET', 'POST'])
+
+@app.route('/account/<user_id>', methods=['GET', 'POST'])
 def account(user_id):
     user_id = 1
     if request.method == 'POST':
@@ -126,7 +111,7 @@ def account(user_id):
         total_existing_sellers = cur.execute("SELECT * FROM Seller")
         seller_id = "SE" + str(total_existing_sellers+1)
         q = f"INSERT INTO Seller VALUES ('{seller_id}','{user_id}',0 ,'{bank}',{acc},'{ifsc}')"
-        
+
         try:
             cur.execute(q)
             mysql.connection.commit()
@@ -135,7 +120,8 @@ def account(user_id):
         return redirect(url_for('product'))
     return render_template("acc_details.html")
 
-@app.route('/product',methods=['GET', 'POST'])
+
+@app.route('/product', methods=['GET', 'POST'])
 def product():
     user_id = "1"
     cur = mysql.connection.cursor()
@@ -169,13 +155,13 @@ def product():
         seller_id = None
         if r1 == None:
             # MOdify this code, as this is not the right method
-            return redirect(url_for('account',user_id=user_id))
-            
+            return redirect(url_for('account', user_id=user_id))
+
         else:
             seller_id = r1[0]
-            
+
         total_pdts = cur.execute("SELECT * FROM Products")
-        product_id = str(total_pdts+1) 
+        product_id = str(total_pdts+1)
         q = f"INSERT INTO Products VALUES ('{product_id}','{seller_id}')"
         cur = mysql.connection.cursor()
         try:
@@ -183,7 +169,7 @@ def product():
             mysql.connection.commit()
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
-        
+
         # q1 = f"SELECT CategoryID from Category WHERE Category.catName='{category}'"
         # cur = mysql.connection.cursor()
         # try:
@@ -194,11 +180,11 @@ def product():
         # r2 = cur.fetchone()
         # category_id = r2[0]
 
-        isMerchandise= form_details['Merch']
+        isMerchandise = form_details['Merch']
         if isMerchandise == "Yes":
             mrp = form_details["MRP"]
             quantity = form_details["Quantity"]
-            
+
             q2 = f"INSERT INTO FP_Products VALUES ('{product_id}','{pdt_name}','{desc}','Yes',{mrp},{quantity},'{creation_date}','{creation_date}','{category_id}')"
             cur = mysql.connection.cursor()
             try:
@@ -206,7 +192,7 @@ def product():
                 mysql.connection.commit()
             except Exception as e:
                 raise Exception(f"UNable to run query. Error: {e}")
-            
+
             for i in subcat_id:
                 q3 = f"INSERT INTO FPhasSubCat VALUES ('{product_id}','{i}')"
                 try:
@@ -214,7 +200,7 @@ def product():
                     mysql.connection.commit()
                 except Exception as e:
                     raise Exception(f"UNable to run query. Error: {e}")
-                
+
         else:
             base_price = form_details["BasePrice"]
             is_barter = form_details["isBarter"]
@@ -225,7 +211,7 @@ def product():
                 mysql.connection.commit()
             except Exception as e:
                 raise Exception(f"UNable to run query. Error: {e}")
-            
+
             for i in subcat_id:
                 q3 = f"INSERT INTO VPhasSubCat VALUES ('{product_id}','{i}')"
                 try:
@@ -233,14 +219,15 @@ def product():
                     mysql.connection.commit()
                 except Exception as e:
                     raise Exception(f"UNable to run query. Error: {e}")
-                
-        return redirect(url_for('myproducts',user_id = user_id))
-    return render_template("addProduct.html", subcatlist = subcatlist, catlist = catlist)
+
+        return redirect(url_for('myproducts', user_id=user_id))
+    return render_template("addProduct.html", subcatlist=subcatlist, catlist=catlist)
+
 
 @app.route('/myproducts/<user_id>')
 def myproducts(user_id):
     cur = mysql.connection.cursor()
-    
+
     q1 = f"SELECT SellerID from Seller where Seller.UserID = '{user_id}'"
     try:
         cur.execute(q1)
@@ -264,7 +251,7 @@ def myproducts(user_id):
         raise Exception(f"UNable to run query. Error: {e}")
     vplist = cur.fetchall()
 
-    return render_template("myproducts.html", fplist = fplist, vplist = vplist)
+    return render_template("myproducts.html", fplist=fplist, vplist=vplist)
 
 
 @app.route('/cart')
