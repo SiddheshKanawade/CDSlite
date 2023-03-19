@@ -68,6 +68,7 @@
       <button>Edit</button>
     </form>
     <button onclick="del_Function_fp()">Delete</button>
+    <button><a href="{{url_for("add_shopping_cart", product_id=j['ProductID'])}}" id="add_to_cart">Add to Cart</a></button>
     <br>
   {% endfor %}
 
@@ -79,6 +80,33 @@
       <button><a href="/vp_products" id="changeToRegister">Edit</a></button>
     </form>
     <button onclick="del_Function_vp()">Delete</button>
+    <button><a href="{{url_for("add_shopping_cart", product_id=j['ProductID'])}}" id="add_to_cart">Add to Cart</a></button>
+    <script>
+      var payLink = document.getElementById("add_to_cart");
+      payLink.addEventListener("click", function(event) {
+        event.preventDefault(); // prevent the default link behavior
+    
+        // create a new form element
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "{{url_for("add_shopping_cart", product_id=j['ProductID'])}}");
+    
+        // create a hidden input element with a name and value
+        var input = document.createElement("input");
+        input.setAttribute("type", "hidden");
+        input.setAttribute("name", "paramName");
+        input.setAttribute("value", "paramValue");
+    
+        // append the input element to the form element
+        form.appendChild(input);
+    
+        // append the form element to the document body
+        document.body.appendChild(form);
+    
+        // submit the form programmatically
+        form.submit();
+      });
+    </script> 
     <br>
   {% endfor %}
 

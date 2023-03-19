@@ -451,13 +451,27 @@ def fp_products():
     return render_template("edit_products_fp.html")
 
 
-@app.route('/cart')
-def shopping_cart():
-    # if 'uid' not in session:
-    #     flash("Please login to continue", 'danger')
-    #     return redirect(url_for('login'))
+@app.route('/add_cart/<product_id>')
+def add_shopping_cart(product_id):
+    user_id = session['uid']
+    creation_date = current_date()
+    quantity = 1
+    query = f"INSERT INTO ShoppingCart VALUES ('{user_id}','{product_id}','{quantity}','{creation_date}')"
+    cur = mysql.connection.cursor()
 
-    return render_template("cart.html")
+    try:
+        cur.execute(query)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    cur.close()
+    flash('Your Product has been added to Cart', 'success')
+    return redirect(url_for('index'))
+
+
+@app.route('/delete_cart/<product_id>')
+def delete_shopping_cart(product_id):
+    pass
 
 
 @app.route('/barter')
