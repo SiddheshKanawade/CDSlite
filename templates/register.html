@@ -1,48 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Login Form Design</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
-        integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
-        crossorigin="anonymous" />
-    <link rel="stylesheet" href="static/css/style.css">
+    <title>Login page</title>
+
+    <link rel="stylesheet" href="signup.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 
 <body>
-    <form method="POST" action="">
-        First Name <input type="text" name="first-name" />
-        <br>
-        Last Name <input type="text" name="last-name" />
-        <br>
-        Email <input type="email" name="email" />
-        <br>
-        Mobile Number <input type="Number" name="number" pattern="^[1-9][0-9]{9}$"/>
-        <br>
-        Password <input type="password" name="password" />
-        <br>
-        DoB <input type="date" name="dob" />
-        <br>
-        Gender
-        <select id="gender" name="gender">
-            <option value="female">Female</option>
-            <option value="male">Male</option>
-            <option value="other">Other</option>
-          </select>
-        <br>
-        AddressLine <input type="text" name="addressline" />
-        <br>
-        City <input type="text" name="city" />
-        <br>
-        PinCode <input type="text" name="pincode" pattern="^[1-9][0-9]{5}$">
-        <br>
+    <div class="card">
+        <div class="side_img">
+            <img src="iitgn_campus.jpeg" alt="img" class="img">
+        </div>
+        <div class="side_img">
+             
+            <form method="POST" action="#" class="form active" id="register">
+                <h2>Register</h2>
+                <label for="firtname">First Name</label>
+                <div class="email_add" onclick="activeInput(this)">
+                    <input type="text" name="first-name" class="email" id="emailInput" placeholder="Vasudev" required/>
+                </div>
+                <label for="lastname">Last Name</label>
+                <div class="email_add" onclick="activeInput(this)">
+                    <input type="text" name="last-name" class="email" id="emailInput" placeholder="Krishna" required/>
+                </div>
+                <label for="email">Email Address</label>
+                <div class="email_add" onclick="activeInput(this)">
+                    <input type="email" name="email" class="email" id="emailInput" placeholder="name@mail.com" required/>
+                </div>
 
-        <input type="submit">
-      </form>
+                <label for="re-password">Mobile Number</label>
+                <div class="email_add" onclick="activeInput(this)">
+                    <input type="Number" class="password" name="number" pattern="^[1-9][0-9]{9}$" id="confirm-password"  placeholder="10 digit mobile number" minlength="10" required/>
+                </div>
 
+                <label for="password">Password</label>
+                <div class="email_add" onclick="activeInput(this)">
+                    <input type="password" class="password" name="password" id="password" placeholder="**********" required/>
+                </div>
+
+                <label for="re-password">Confirm Password</label>
+                <div class="email_add" onclick="activeInput(this)">
+                    <input type="password" class="password" name="confirm-password" id="confirm-password" placeholder="**********" required/>
+                </div>
+
+                <label for="re-password">DoB</label>
+                <div class="email_add" onclick="activeInput(this)">
+                    <input type="date" class="password" name="dob" id="confirm-password" required/>
+                </div>
+                <br>
+                Gender
+                <select id="gender" name="gender" required>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <br>
+                AddressLine <input type="text" name="addressline" required/>
+                <br>
+                City <input type="text" name="city" required/>
+                <br>
+                PinCode <input type="text" name="pincode" pattern="^[1-9][0-9]{5}$"required/>
+                <br>
+                
+                <a href="profile.html"></a><button type="submit" class="btn btn-login">Register</button></a>
+                <p>Do you have an account? <a href="/login">Log in</a></p>
+                <p class="or"></p>
+               
+            </form>
+        </div>
+    </div>
+ 
+    
 </body>
 
 </html>
