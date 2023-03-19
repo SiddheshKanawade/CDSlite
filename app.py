@@ -34,7 +34,7 @@ def register():
         gender = user_details['gender']
         if gender == 'male':
             gender = 'M'
-        else:
+        else:                       
             gender = 'F'
         address_line = user_details['addressline']
         city = user_details['city']
@@ -111,10 +111,6 @@ def success():
     else:
         return render_template("error.html")
 
-
-@app.route('/signup')
-def signup():
-    pass
 
 
 @app.route('/account', methods=['GET', 'POST'])
@@ -310,6 +306,33 @@ def edit(param1='1',param2='vp'):
             raise Exception(f"UNable to run query. Error: {e}")
         fplist = cur.fetchall()
         return render_template("edit_products_fp.html",fplist=fplist,catlist=catlist,subcatlist=subcatlist)
+
+@app.route('/dele/<param1>/<param2>', methods=['GET', 'POST'])
+def dele(param1='1',param2='vp'):
+    user_id = '1'
+    cur = mysql.connection.cursor()
+    print("here in delete")
+
+    if(param2 == 'vp'):
+        cur = mysql.connection.cursor()
+        q2 = f"Delete from VP_Products where Productid = '{param1}'"
+        try:
+            cur.execute(q2)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        return render_template("myproducts.html",user_id = user_id)
+    else:
+        cur = mysql.connection.cursor()
+        print(param1)
+        q2 = f"Delete from FP_Products where ProductID = '{param1}'"
+        try:
+            cur.execute(q2)
+            mysql.connection.commit()
+            print("deleted")
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        return redirect(url_for('myproducts'))
 
 @app.route('/cart')
 def shopping_cart():
