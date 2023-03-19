@@ -118,7 +118,7 @@ create table Barter(
 BarterID varchar(15) NOT NULL,
 P1ID varchar(15) NOT NULL, 
 P2ID varchar(15) NOT NULL,
-BarterStatus enum("Accepted", "Declined") NOT NULL,
+BarterStatus enum("Accepted", "Declined", "Pending") NOT NULL,
 BarterDate Datetime default CURRENT_TIMESTAMP,
 foreign key(P1ID) references Products(ProductID) ON DELETE CASCADE,
 foreign key(P2ID) references Products(ProductID) ON DELETE CASCADE,
