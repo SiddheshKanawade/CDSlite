@@ -113,6 +113,7 @@
         </li>
     </ul>
   </nav>
+  
 </header>
 
 
@@ -388,6 +389,16 @@
         </div>
     </div>
 
+    {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="alert alert-danger" role="alert">
+                    {% for message in messages %}
+                        <span style="color: red;">{{ message }}</span><br>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endwith %}
+            
     <div class="card">
 
         <div class="product_container"></div> 

@@ -41,13 +41,70 @@
         console.error(error);
       });
     }
+
+    function del_Function_fp() {
+      const param1 = JSON.parse(document.getElementById('data2').textContent)
+      var ans = confirm("Are you Sure to delete the corresponding product? It will be deleted permanantly.");
+      console.log(ans);
+      if(ans){
+        fetch(`/dele/${param1}/fp`)
+        .then(response => response.text())
+        .then(data => {
+          console.log("in func")
+        })
+        .catch(error => {
+          console.log("here")
+          console.error(error);
+        });
+      }
+      else {
+        alert("Product Not deleted!")
+      }
+    }
+
+    function del_Function_vp() {
+      const param1 = JSON.parse(document.getElementById('data').textContent)
+      var ans = confirm("Are you Sure to delete the corresponding product? It will be deleted permanantly.");
+      console.log(ans);
+      if(ans) {
+        fetch(`/dele/${param1}/vp`, {
+          method: 'POST'
+        })
+        .then(response => response.text())
+        .then(data => {
+          console.log("in func");
+          alert("Product Deleted Successfully! Reload the page to see the updated products")
+        })
+        .catch(error => {
+          console.log("here")
+          console.error(error);
+        });
+      }
+      else{
+        alert("Product Not deleted!")
+      }
+    }
+
+    function handleButtonClick() {
+      var buttonValue = 'Hello, Flask!';
+      fetch('/handle_button_click', {
+        method: 'POST',
+        body: new URLSearchParams({button_value: buttonValue})
+      })
+      .then(response => response.text())
+      .then(data => console.log(data))
+      .catch(error => console.error(error));
+    }
   </script>
 
   <h1>Fixed Price Products</h1>
   {% for j in fplist %}
     <a>{{j['ProductName']}}</a>
     <script id = "data2" type = "application/json">{{ j['ProductID']|tojson}}</script>
-    <button onclick="edit_Function_fp()">Edit</button>
+    <form method="post" action="">
+      <button>Edit</button>
+    </form>
+    <button onclick="del_Function_fp()">Delete</button>
     <br>
   {% endfor %}
 
@@ -55,7 +112,10 @@
   {% for j in vplist %}
     <a>{{j['ProductName']}}</a>
     <script id = "data" type = "application/json">{{ j['ProductID']|tojson}}</script>
-    <button onclick="edit_Function_vp()">Edit</button>
+    <form method="post" action="">
+      <button>Edit</button>
+    </form>
+    <button onclick="del_Function_vp()">Delete</button>
     <br>
   {% endfor %}
 

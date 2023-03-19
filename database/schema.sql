@@ -1,5 +1,6 @@
 -- CREATE DATABASE CDSlite;
 -- SHOW DATABASES;
+
 USE CDSlite;
 
 create table User(
