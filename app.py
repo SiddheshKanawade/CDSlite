@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, session, flash
 from flask_mysqldb import MySQL
 from passlib.hash import sha256_crypt
 
@@ -11,7 +11,6 @@ app, mysql = create_app()
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    print("Returning template")
     if request.method == 'POST':
         cur = mysql.connection.cursor()
         total_existing_users = cur.execute("SELECT * FROM User")
@@ -38,7 +37,7 @@ def register():
         pincode = user_details['pincode']
 
         query = f"INSERT INTO User VALUES ({user_id},'{first_name}','{last_name}', '{email}',{mob_number},'{password}','{dob}','{gender}', '{address_line}', '{city}', {pincode})"
-        print(query)
+
         cur = mysql.connection.cursor()
         try:
             cur.execute(query)
@@ -46,20 +45,24 @@ def register():
         except Exception as e:
             raise Exception(f"Unable to run query. Error: {e}")
         cur.close()
-        return render_template("success.html", response="success")
+
+        flash('You are now registered and can login', 'success')
+        return redirect(url_for('login'))
 
     return render_template("register.html")
 
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
-    print("Entered login")
+    """We create session in login route
+    """
     if request.method == 'POST':
         user_details = request.form
         email_id = user_details['email']
         password = user_details['password']
         if password == None or password == "":
             raise Exception("Password can't be empty")
+
         query = f"SELECT * from User WHERE User.Email_ID='{email_id}' and User.Password_='{password}'"
 
         cur = mysql.connection.cursor()
@@ -71,8 +74,17 @@ def login():
             raise Exception(f"UNable to run query. Error: {e}")
 
         response = cur.fetchone()
-        if response == None:
-            return redirect(url_for('register'))
+        # User not found
+        if response == None or response == 0:
+            flash('Incorrect Login Credentials', 'danger')
+            cur.close()
+            return render_template("login.html")
+
+        # Update session
+        session['logged_in'] = True
+        session['uid'] = response['UserID']
+        session['session_name'] = response['FirstName']
+
         return redirect(url_for('product'))
     return render_template("login.html")
 

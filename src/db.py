@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_mysqldb import MySQL
 
@@ -11,6 +13,8 @@ def create_app():
     app.config['MYSQL_USER'] = MYSQL_USER
     app.config['MYSQL_PASSWORD'] = PASSWORD
     app.config['MYSQL_DB'] = MYSQL_DATABASE
+    app.secret_key = os.urandom(24)
+    app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
     mysql = MySQL(app)
 
