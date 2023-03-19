@@ -14,17 +14,52 @@
 </head>
 
 <body>
+  <script>
+    function edit_Function_vp() {
+      const param1 = JSON.parse(document.getElementById('data').textContent)
+      fetch(`/edit/${param1}/vp`)
+      .then(response => response.text())
+      .then(data => {
+        console.log("in func");
+      })
+      .catch(error => {
+        console.log("here")
+        console.error(error);
+      })
+      window.location.href = "edit_products_vp.html";
+    }
+
+    function edit_Function_fp() {
+      const param1 = JSON.parse(document.getElementById('data2').textContent)
+      fetch(`/edit/${param1}/fp`)
+      .then(response => response.text())
+      .then(data => {
+        console.log("in func");
+      })
+      .catch(error => {
+        console.log("here")
+        console.error(error);
+      });
+    }
+  </script>
+
   <h1>Fixed Price Products</h1>
   {% for j in fplist %}
-    <a href="#">{{j}}</a>
+    <a>{{j[2]}}</a>
+    <script id = "data2" type = "application/json">{{ j[0]|tojson}}</script>
+    <button onclick="edit_Function_fp()">Edit</button>
     <br>
   {% endfor %}
 
   <h1>Variable Price Products</h1>
   {% for j in vplist %}
-    <a href="#">{{j}}</a>
+    <a>{{j[2]}}</a>
+    <script id = "data" type = "application/json">{{ j[0]|tojson}}</script>
+    <button onclick="edit_Function_vp()">Edit</button>
     <br>
   {% endfor %}
+
+  
 </body>
 
 </html>

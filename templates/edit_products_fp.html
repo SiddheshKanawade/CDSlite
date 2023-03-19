@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login Form Design</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+        integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+        crossorigin="anonymous" />
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+
+<body>
+   
+    <form method="POST" action="">
+        
+        ProductName <input type="text" name="product-name" />
+        <br>
+        Description <input type="textarea" name="description" />
+        <br>
+        
+        
+        <div id="No" style="display:none;" ><br/>
+          Base Price<input type="number" name = "BasePrice"/>
+          <br>
+          is Barter<input type="radio" id = "YesBarter" name="isBarter" value ="Yes" >Yes
+          <input type="radio" id="NoBarter" name="isBarter" value ="No" >No
+          <br>        
+        </div>
+
+        <div id="categ">
+          <br>
+
+        Category<select id="cat" name="cat" >
+            {% for j in catlist %}
+              <OPTION value={{j[0]}}>{{j[1]}}</OPTION>
+            {% endfor %}
+          </select>
+          <br>
+          <br>
+          Sub Category<select id = "scat" name="scat" multiple>
+            {% for j in subcatlist %}
+              <OPTION value={{j[0]}}>{{j[1]}}</OPTION>
+            {% endfor %}
+          </select>
+          <br>
+        </div>
+
+        <input type="submit">
+      </form>
+
+</body>
+
+</html>

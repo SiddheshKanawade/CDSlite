@@ -238,7 +238,8 @@ def product():
     return render_template("addProduct.html", subcatlist = subcatlist, catlist = catlist)
 
 @app.route('/myproducts/<user_id>')
-def myproducts(user_id):
+def myproducts(user_id='1'):
+    print("userid ", user_id)
     cur = mysql.connection.cursor()
     
     q1 = f"SELECT SellerID from Seller where Seller.UserID = '{user_id}'"
@@ -264,8 +265,45 @@ def myproducts(user_id):
         raise Exception(f"UNable to run query. Error: {e}")
     vplist = cur.fetchall()
 
-    return render_template("myproducts.html", fplist = fplist, vplist = vplist)
+    return render_template("myproducts.html", user_id = user_id, fplist = fplist, vplist = vplist)
 
+@app.route('/edit/<param1>/<param2>', methods=['GET', 'POST'])
+def edit(param1='1',param2='vp'):
+    cur = mysql.connection.cursor()
+    print("here in edit")
+    try:
+        cur.execute("SELECT * from SubCategory")
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    subcatlist = cur.fetchall()
+    try:
+        cur.execute("SELECT * from Category")
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    catlist = cur.fetchall()
+
+    vplist = None
+    fplist = None
+   
+    if(param2 == 'vp'):
+        cur = mysql.connection.cursor()
+        q2 = f"select * from VP_Products where Productid = '{param1}'"
+        try:
+            cur.execute(q2)
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        vplist = cur.fetchall()
+        print("bhk ", vplist)
+        return render_template("edit_products_vp.html",vplist=vplist,catlist=catlist,subcatlist=subcatlist)
+    else:
+        q2 = f"select * from FP_Products where Productid = '{param1}'"
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute(q2)
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        fplist = cur.fetchall()
+        return render_template("edit_products_fp.html",fplist=fplist,catlist=catlist,subcatlist=subcatlist)
 
 @app.route('/cart')
 def shopping_cart():

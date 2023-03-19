@@ -9,5 +9,5 @@ load_dotenv()
 # MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
 MYSQL_HOST = "localhost"
 MYSQL_USER = "root"
-PASSWORD = "ronak@2002"
+PASSWORD = "MannJain1609@"
 MYSQL_DATABASE = "CDSLite"
