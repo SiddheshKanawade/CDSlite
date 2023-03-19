@@ -1,9 +1,11 @@
-from flask import Flask, render_template, request, url_for, redirect, session, flash
-from src.helper import current_date
+import razorpay
+
+from flask import Flask, render_template, request, url_for, redirect, session, flash, jsonify
+from src.helper import current_date, generate_uuid
 from src.db import create_app
 from src.helper import generate_uuid
 
-app, mysql = create_app()
+app, mysql, razorpay_client = create_app()
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
@@ -125,6 +127,52 @@ def delete_user():
     pass
 
 
+@app.route('/payment', methods=['GET', 'POST'])
+def pay():
+    # Get payment amount from the form
+    print("Entered")
+    amount = 100 * 100  # convert to paise
+    currency = "INR"
+
+    # Create a Razorpay order
+    order = razorpay_client.order.create({
+        'amount': amount * 100,  # Razorpay requires amount in paise
+        'currency': currency,
+        'payment_capture': 1  # Automatically capture the payment when it is made
+    })
+
+    # Extract the order ID from the response
+    order_id = order['id']
+    print(order)
+
+    # Return the order ID to the client
+    return render_template("confirm_payment.html", payment=order)
+
+
+@app.route('/payment-callback')
+def payment_success():
+    payment_id = request.args.get('razorpay_payment_id')
+    signature = request.args.get('razorpay_signature')
+
+    # Verify the payment signature
+    try:
+        razorpay_client.utility.verify_payment_signature({
+            'razorpay_payment_id': payment_id,
+            'razorpay_signature': signature
+        })
+    except razorpay.errors.SignatureVerificationError:
+        return jsonify({'status': 'error', 'message': 'Invalid payment signature'})
+
+    # Payment successful
+    return jsonify({'status': 'success', 'message': 'Payment successful'})
+
+
+@app.route('/payment-cancel')
+def payment_cancel():
+    print("cancelled")
+    return render_template("success.html", response="Cancelled")
+
+
 @app.route('/success', methods=['GET', 'POST'])
 def success():
     if request.method == 'POST':
@@ -140,7 +188,6 @@ def success():
         return render_template("success.html")
     else:
         return render_template("error.html")
-
 
 
 @app.route('/account', methods=['GET', 'POST'])
