@@ -5,13 +5,15 @@ from src.db import create_app
 
 app, mysql = create_app()
 
+
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     print(session)
     user_id = session['uid']
-    if(user_id == None):
+    if (user_id == None):
         user_id = '1'
-    return render_template("index.html",uid=user_id)
+    return render_template("index.html", uid=user_id)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -28,8 +30,15 @@ def register():
         mob_number = user_details['number']
         # Add hashing for password
         password = user_details['password']
+        confirm_password = user_details['confirm-password']
         if password == None or password == '':
-            raise Exception("Password can't be empty")
+            flash("Password can't be empty", 'danger')
+            return render_template("register.html")
+
+        if password != confirm_password:
+            flash('Password and confirm password should be same', 'danger')
+            return render_template("register.html")
+
         dob = user_details['dob']
         gender = user_details['gender']
         if gender == 'male':
@@ -52,8 +61,7 @@ def register():
 
         flash('You are now registered and can login', 'success')
         return redirect(url_for('login'))
-    flash('Unable to register', 'failure')
-    print("Unable to register")
+
     return render_template("register.html")
 
 
@@ -168,7 +176,7 @@ def product():
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     catlist = cur.fetchall()
-    
+
     if request.method == 'POST':
         form_details = request.form
         pdt_name = form_details["product-name"]
@@ -270,7 +278,7 @@ def myproducts():
         raise Exception(f"NOT A SELLER!!. Error: {e}")
     f = cur.fetchone()
     seller_id = f['SellerID']
-    #print(seller_id)
+    # print(seller_id)
 
     q2 = f"select * from(select * from Products natural join FP_Products where Products.ProductID = FP_Products.ProductID) as P where P.sellerid = '{seller_id}'"
     try:
@@ -288,8 +296,9 @@ def myproducts():
 
     return render_template("myproducts.html", fplist=fplist, vplist=vplist)
 
+
 @app.route('/edit/<param1>/<param2>', methods=['GET', 'POST'])
-def edit(param1='1',param2='vp'):
+def edit(param1='1', param2='vp'):
     cur = mysql.connection.cursor()
     print("here in edit")
     try:
@@ -305,8 +314,8 @@ def edit(param1='1',param2='vp'):
 
     vplist = None
     fplist = None
-   
-    if(param2 == 'vp'):
+
+    if (param2 == 'vp'):
         cur = mysql.connection.cursor()
         q2 = f"select * from VP_Products where Productid = '{param1}'"
         try:
@@ -315,7 +324,7 @@ def edit(param1='1',param2='vp'):
             raise Exception(f"UNable to run query. Error: {e}")
         vplist = cur.fetchall()
         print("bhk ", vplist)
-        return render_template("edit_products_vp.html",vplist=vplist,catlist=catlist,subcatlist=subcatlist)
+        return render_template("edit_products_vp.html", vplist=vplist, catlist=catlist, subcatlist=subcatlist)
     else:
         q2 = f"select * from FP_Products where Productid = '{param1}'"
         cur = mysql.connection.cursor()
@@ -324,7 +333,8 @@ def edit(param1='1',param2='vp'):
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
         fplist = cur.fetchall()
-        return render_template("edit_products_fp.html",fplist=fplist,catlist=catlist,subcatlist=subcatlist)
+        return render_template("edit_products_fp.html", fplist=fplist, catlist=catlist, subcatlist=subcatlist)
+
 
 @app.route('/cart')
 def shopping_cart():

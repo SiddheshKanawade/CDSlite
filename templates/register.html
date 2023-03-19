@@ -21,6 +21,15 @@
              
             <form method="post" action="#" class="form active" id="register">
                 <h2>Register</h2>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in messages %}
+                            <span style="color: red;">{{ message }}</span><br>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                {% endwith %}
                 <label for="firstname">First Name</label>
                 <div class="email_add" onclick="activeInput(this)">
                     <input type="text" name="first-name" class="email" id="emailInput" placeholder="Vasudev">

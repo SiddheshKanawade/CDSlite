@@ -34,15 +34,15 @@
                 <button type="submit" class="btn btn-login"><a href="index.html"></a>Login</a></button>
                 <p>Don't have an account? <a href="/register" id="changeToRegister">Sign up</a></p>
                 <p class="or"></p>
-                <!-- {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        <div class="alert alert-danger" role="alert">
-                            {% for message in messages %}
-                                {{ message }}<br>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                {% endwith %} -->
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="alert alert-danger" role="alert">
+                    {% for message in messages %}
+                        <span style="color: red;">{{ message }}</span><br>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endwith %}
                 
             </form>
             
