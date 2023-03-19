@@ -1,13 +1,17 @@
 from flask import Flask, render_template, request, url_for, redirect, session, flash
-from flask_mysqldb import MySQL
-from passlib.hash import sha256_crypt
-
-from config import MYSQL_DATABASE, MYSQL_HOST, PASSWORD, MYSQL_USER
 from src.helper import current_date
 from src.db import create_app
 
+
 app, mysql = create_app()
 
+@app.route('/index', methods=['GET', 'POST'])
+def index():
+    print(session)
+    user_id = session['uid']
+    if(user_id == None):
+        user_id = '1'
+    return render_template("index.html",uid=user_id)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -48,7 +52,8 @@ def register():
 
         flash('You are now registered and can login', 'success')
         return redirect(url_for('login'))
-
+    flash('Unable to register', 'failure')
+    print("Unable to register")
     return render_template("register.html")
 
 
@@ -84,8 +89,9 @@ def login():
         session['logged_in'] = True
         session['uid'] = response['UserID']
         session['session_name'] = response['FirstName']
+        print(session)
 
-        return redirect(url_for('product'))
+        return redirect(url_for('index'))
     return render_template("login.html")
 
 
@@ -121,9 +127,14 @@ def success():
         return render_template("error.html")
 
 
-@app.route('/account/<user_id>', methods=['GET', 'POST'])
-def account(user_id):
-    user_id = 1
+@app.route('/signup')
+def signup():
+    pass
+
+
+@app.route('/account', methods=['GET', 'POST'])
+def account():
+    user_id = session['uid']
     if request.method == 'POST':
         form_details = request.form
         bank = form_details['bank']
@@ -157,7 +168,7 @@ def product():
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     catlist = cur.fetchall()
-
+    
     if request.method == 'POST':
         form_details = request.form
         pdt_name = form_details["product-name"]
@@ -177,10 +188,11 @@ def product():
         seller_id = None
         if r1 == None:
             # MOdify this code, as this is not the right method
-            return redirect(url_for('account', user_id=user_id))
+            return redirect(url_for('account'))
 
         else:
-            seller_id = r1[0]
+            print(r1)
+            seller_id = r1['SellerID']
 
         total_pdts = cur.execute("SELECT * FROM Products")
         product_id = str(total_pdts+1)
@@ -242,12 +254,13 @@ def product():
                 except Exception as e:
                     raise Exception(f"UNable to run query. Error: {e}")
 
-        return redirect(url_for('myproducts', user_id=user_id))
+        return redirect(url_for('myproducts'))
     return render_template("addProduct.html", subcatlist=subcatlist, catlist=catlist)
 
 
-@app.route('/myproducts/<user_id>')
-def myproducts(user_id):
+@app.route('/myproducts')
+def myproducts():
+    user_id = session['uid']
     cur = mysql.connection.cursor()
 
     q1 = f"SELECT SellerID from Seller where Seller.UserID = '{user_id}'"
@@ -256,8 +269,8 @@ def myproducts(user_id):
     except Exception as e:
         raise Exception(f"NOT A SELLER!!. Error: {e}")
     f = cur.fetchone()
-    seller_id = f[0]
-    print(seller_id)
+    seller_id = f['SellerID']
+    #print(seller_id)
 
     q2 = f"select * from(select * from Products natural join FP_Products where Products.ProductID = FP_Products.ProductID) as P where P.sellerid = '{seller_id}'"
     try:
@@ -275,6 +288,43 @@ def myproducts(user_id):
 
     return render_template("myproducts.html", fplist=fplist, vplist=vplist)
 
+@app.route('/edit/<param1>/<param2>', methods=['GET', 'POST'])
+def edit(param1='1',param2='vp'):
+    cur = mysql.connection.cursor()
+    print("here in edit")
+    try:
+        cur.execute("SELECT * from SubCategory")
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    subcatlist = cur.fetchall()
+    try:
+        cur.execute("SELECT * from Category")
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    catlist = cur.fetchall()
+
+    vplist = None
+    fplist = None
+   
+    if(param2 == 'vp'):
+        cur = mysql.connection.cursor()
+        q2 = f"select * from VP_Products where Productid = '{param1}'"
+        try:
+            cur.execute(q2)
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        vplist = cur.fetchall()
+        print("bhk ", vplist)
+        return render_template("edit_products_vp.html",vplist=vplist,catlist=catlist,subcatlist=subcatlist)
+    else:
+        q2 = f"select * from FP_Products where Productid = '{param1}'"
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute(q2)
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        fplist = cur.fetchall()
+        return render_template("edit_products_fp.html",fplist=fplist,catlist=catlist,subcatlist=subcatlist)
 
 @app.route('/cart')
 def shopping_cart():

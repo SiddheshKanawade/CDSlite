@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Cart</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="./static/style.css">
+        <link rel="icon" href="./Images/favicon.ico" type="image/x-icon">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
+    
+<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/60fedd8558.js" crossorigin="anonymous"></script>
+
+<!-- Bootstrap CSS -->
+
+<script src="https://kit.fontawesome.com/60fedd8558.js" crossorigin="anonymous"></script>    
+<title>Shopping Cart</title>
+<link rel="stylesheet" href="cart.css">
+  </head>
+
+<body>
+
+  <!--  <section>
+        <nav class="navbar navbar-expand-lg navbar-light" style="background: #2980b9;">
+          <div class="container-fluid">
+              <a class="navbar-brand" href="./index.html">
+                  <img src="Images\Logo\ApniDukan.png" alt="logo" width="45" height="35" class="d-inline-block align-text-top mr-2 navbar-logo">
+              </a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-capitalize">
+                      <ul class="navbar-nav mr-auto mb-2 mb-lg-0 text-capitalize">
+                          <li class="nav-item">
+                              <a class="nav-link active" aria-current="page" href="./home.html">Home</a>
+                          </li>
+                          <li class="nav-item text-capitalize">
+                              <a class="nav-link" href="./offers.html">Offers</a>
+                          </li>
+                          <li class="nav-item text-capitalize">
+                              <a class="nav-link" href="./contactus.html">Contact us</a>
+                          </li>
+                          <li class="nav-item text-capitalize">
+                              <a class="nav-link" href="login.html">Login</a>
+                          </li>        
+                          <li class="nav-item text-capitalize">
+                              <a class="nav-link" href="./about.html">About us</a>
+                          </li>
+                          <li class="nav-item text-capitalize">
+                              <a class="nav-link" href="faq.html">FAQ</a>
+                          </li>
+                          <li class="nav-item dropdown">
+                              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Category
+                              </a>
+                              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                  <li><a class="dropdown-item" href="./mobile.html">Mobile</a></li>
+                                  <li><a class="dropdown-item" href="./books.html">Books</a></li>
+                                  <li><a class="dropdown-item" href="./">TV/Appliances</a></li>
+                                  <li><a class="dropdown-item" href="./furniture.html">Furniture</a></li>
+                                  <li><a class="dropdown-item" href="#">Baby/Kids</a></li>
+                                  <li><a class="dropdown-item" href="./stationery.html">Stationery</a></li>
+                                  <li>
+                                      <hr class="dropdown-divider">
+                                  </li>
+  
+                                  <li><a class="dropdown-item" href="./login.html">Login/Signup</a></li>
+                              </ul>
+                          </li>
+                          <li class="nav-item text-capitalize">
+                              <a class="nav-link" href="cart.html">My Cart</a>
+                          </li>
+                      </ul>
+                      <form class="d-flex">
+                          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                          <button class="btn btn-outline-dark" type="submit">Search</button>
+                      </form>
+              </div>
+          </div>
+      </nav>
+      </section> -->
+
+
+   
+      <section>
+      <div style="margin:20px 20px;" class="row">
+        <div style="padding:20px 30px;box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;margin-right: 20px;margin-left: 35px;width: 58% !important;" class="col-md-7 box-sz">
+          <h3 class="mid1-sz" style="font-weight: 450!important;padding: 0px!important">Shopping Cart</h3>
+          
+          <div class="box1-sz" style="margin-top: 15px;padding: 15px 0px;border-top:1.5px solid #E2E5DE">
+            <div class="row">
+              <div style="width: 33% !important;" class="col-md-4">
+                <img class="img-sz" style="height:200px" src="hoodie.jpg">
+              </div>
+              <div style="padding:10px 0px;width: 50% !important;" class="col-md-6">
+                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important">Amalthea T-shirt</h5>
+                <p class="mid3-sz" style="color:#058552;margin:0!important">In Stock</p>
+
+                <p class="mid3-sz" style="margin:0!important;"><span style="font-weight: 500">Color: </span><span style="color:black">Black</span></p>
+                <div style="display:flex;justify-content: flex-start;">
+                  <p class="mid3-sz" style="margin:0!important;margin-right:10px!important"><span style="font-weight: 500">Qty: </span></p>
+                  <select style="width:60px;height:40px" class="form-select select-ui" aria-label="Disabled select example">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">5</option>
+                    <option value="4">6</option>
+                    <option value="4">7</option>
+                    <option value="4">8</option>
+                    <option value="4">9</option>
+                    <option value="4">10</option>
+                  </select>
+                </div>
+                <br>
+                <div style="display:flex;justify-content: flex-start;">
+                 
+                    <button class="buy_now">Remove</button>    
+                </div>
+              </div>
+              <div style="padding:10px 0px;width: 17% !important;" class="col-md-2">
+                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important;float: right;"><i class="fa fa-inr" aria-hidden="true"></i> <span>650</span></h5>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="box1-sz" style="margin-top: 15px;padding: 15px 0px;border-top:1.5px solid #E2E5DE">
+            <div class="row">
+              <div style="width: 33% !important;" class="col-md-4">
+                <img class="img-sz" style="height:200px" src="hoodie.jpg">
+              </div>
+              <div style="padding:10px 0px;width: 50% !important;" class="col-md-6">
+                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important">Amalthea T-shirt</h5>
+                <p class="mid3-sz" style="color:#058552;margin:0!important">In Stock</p>
+
+                <p class="mid3-sz" style="margin:0!important;"><span style="font-weight: 500">Color: </span><span style="color:black">Black</span></p>
+                <div style="display:flex;justify-content: flex-start;">
+                  <p class="mid3-sz" style="margin:0!important;margin-right:10px!important"><span style="font-weight: 500">Qty: </span></p>
+                  <select style="width:60px;height:40px" class="form-select select-ui" aria-label="Disabled select example">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">5</option>
+                    <option value="4">6</option>
+                    <option value="4">7</option>
+                    <option value="4">8</option>
+                    <option value="4">9</option>
+                    <option value="4">10</option>
+                  </select>
+                </div>
+                <br>
+                <div style="display:flex;justify-content: flex-start;">
+                    <button class="buy_now">Remove</button>    
+                </div>
+              </div>
+              <div style="padding:10px 0px;width: 17% !important;" class="col-md-2">
+                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important;float: right;"><i class="fa fa-inr" aria-hidden="true"></i> <span>650</span></h5>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="box1-sz" style="margin-top: 15px;padding: 15px 0px;border-top:1.5px solid #E2E5DE">
+            <div class="row">
+              <div style="width: 33% !important;" class="col-md-4">
+                <img class="img-sz" style="height:200px" src="hoodie.jpg">
+              </div>
+              <div style="padding:10px 0px;width: 50% !important;" class="col-md-6">
+                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important">Amalthea T-shirt</h5>
+                <p class="mid3-sz" style="color:#058552;margin:0!important">In Stock</p>
+
+                <p class="mid3-sz" style="margin:0!important;"><span style="font-weight: 500">Color: </span><span style="color:black">Black</span></p>
+                <div style="display:flex;justify-content: flex-start;">
+                  <p class="mid3-sz" style="margin:0!important;margin-right:10px!important"><span style="font-weight: 500">Qty: </span></p>
+                  <select style="width:60px;height:40px" class="form-select select-ui" aria-label="Disabled select example">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">5</option>
+                    <option value="4">6</option>
+                    <option value="4">7</option>
+                    <option value="4">8</option>
+                    <option value="4">9</option>
+                    <option value="4">10</option>
+                  </select>
+                </div>
+                <br>
+                <div style="display:flex;justify-content: flex-start;">
+                    <button class="buy_now">Remove</button>    
+                </div>
+              </div>
+              <div style="padding:10px 0px;width: 17% !important;" class="col-md-2">
+                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important;float: right;"><i class="fa fa-inr" aria-hidden="true"></i> <span>650</span></h5>
+              </div>
+            </div>
+          </div>
+          
+          
+          <div class="box1-sz" style="margin-top: 15px;padding: 15px 0px;border-top:1.5px solid #E2E5DE">
+            <div class="row">
+              <div style="width: 33% !important;" class="col-md-4">
+                <img class="img-sz" style="height:200px" src="hoodie.jpg">
+              </div>
+              <div style="padding:10px 0px;width: 50% !important;" class="col-md-6">
+                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important">Amalthea T-shirt</h5>
+                <p class="mid3-sz" style="color:#058552;margin:0!important">In Stock</p>
+
+                <p class="mid3-sz" style="margin:0!important;"><span style="font-weight: 500">Color: </span><span style="color:black">Black</span></p>
+                <div style="display:flex;justify-content: flex-start;">
+                  <p class="mid3-sz" style="margin:0!important;margin-right:10px!important"><span style="font-weight: 500">Qty: </span></p>
+                  <select style="width:60px;height:40px" class="form-select select-ui" aria-label="Disabled select example">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
+                <br>
+                <div style="display:flex;justify-content: flex-start;">
+                    <button class="buy_now">Remove</button>    
+                </div>
+              </div>
+              <div style="padding:10px 0px;width: 17% !important;" class="col-md-2">
+                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important;float: right;"><i class="fa fa-inr" aria-hidden="true"></i> <span>650</span></h5>
+              </div>
+            </div>
+          </div> 
+        </div>
+        <div style="width: 36% !important;" class="col-md-4">
+          <div class="box-sz" style="padding:20px 30px;box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+            <h3 class="mid1-sz" style="font-weight: 450!important;padding: 0px!important">Total Amount</h3>
+            <div class="box1-sz" style="margin-top: 15px;padding: 15px 0px;border-top:1.5px solid #E2E5DE">
+             
+              <div>
+                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important;float: left;">Total amount of Item: </h5>
+                <h5 class="mid2-sz" style="font-weight: 400!important;margin:0!important;float: right;"><span id="total">4</span></h5>
+              </div>
+              <br>
+
+              
+              <div class="df-sz" style="margin-top: 15px">
+                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important;float: left;">Total Price of Item: </h5>
+                <h5 class="mid2-sz" style="font-weight: 400!important;margin:0!important;float: right;"><i class="fa fa-inr" aria-hidden="true"></i>  <span>2700</span></h5>
+              </div> 
+              <br>
+              <div class="box1-sz" style="margin-top: 15px;padding: 15px 0px;border-top:1.5px solid #E2E5DE">
+                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important;float: left;">To Pay: </h5>
+                <h5 class="mid2-sz" style="font-weight: 400!important;margin:0!important;float: right;"><i class="fa fa-inr" aria-hidden="true"></i>  <span id="totaltopay">2700</span></h5>
+              </div>
+              <br>
+              <div style="display: flex;justify-content: center;">
+                <button class="buy_now"><a href="index.html" class="ahref">Home</a></button>
+                <button class="buy_now"><a href="payment.html"></a>Pay now</a></button>
+              </div>
+            </div> 
+          </div>
+          
+        </div>
+      </div>
+      
+    </section>
+    
+    
+   
+  
+  <script>
+      const btnScrollToTop = document.querySelector("#btnScrollToTop");
+       btnScrollToTop.addEventListener("click", function () {
+          window.scrollTo(0,0); }
+      );
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+  <script>
+    $('.select-ui').change(function(){
+      var value=parseInt($(this).parent('div').parent('div').parent('div').children('.col-md-2').children('h5').children('span').text());
+      var total= parseInt($(this).val()) * value;
+      console.log($(this).parent('div').parent('div').parent('div').children('.col-md-2').children('h5').children('span').text());
+      $(this).parent('div').parent('div').parent('div').children('.col-md-2').children('h5').children('span').text(total.toString());
+      var totalvalue=0;
+      $('.select-ui').each(function(){
+        totalvalue+=parseInt($(this).parent('div').parent('div').parent('div').children('.col-md-2').children('h5').children('span').text());
+      });
+      $('#total').text(totalvalue.toString());
+      totalvalue+=100;
+      $('#totaltopay').text(totalvalue.toString());
+    });
+  </script>
+  </body>
+</html>
