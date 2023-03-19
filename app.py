@@ -5,6 +5,13 @@ from src.db import create_app
 
 app, mysql = create_app()
 
+@app.route('/index', methods=['GET', 'POST'])
+def index():
+    print(session)
+    user_id = session['uid']
+    if(user_id == None):
+        user_id = '1'
+    return render_template("index.html",uid=user_id)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -45,7 +52,8 @@ def register():
 
         flash('You are now registered and can login', 'success')
         return redirect(url_for('login'))
-
+    flash('Unable to register', 'failure')
+    print("Unable to register")
     return render_template("register.html")
 
 
@@ -83,7 +91,7 @@ def login():
         session['session_name'] = response['FirstName']
         print(session)
 
-        return redirect(url_for('product'))
+        return redirect(url_for('index'))
     return render_template("login.html")
 
 
@@ -109,9 +117,9 @@ def signup():
     pass
 
 
-@app.route('/account/<user_id>', methods=['GET', 'POST'])
-def account(user_id):
-    user_id = 1
+@app.route('/account', methods=['GET', 'POST'])
+def account():
+    user_id = session['uid']
     if request.method == 'POST':
         form_details = request.form
         bank = form_details['bank']
@@ -165,7 +173,7 @@ def product():
         seller_id = None
         if r1 == None:
             # MOdify this code, as this is not the right method
-            return redirect(url_for('account', user_id=user_id))
+            return redirect(url_for('account'))
 
         else:
             print(r1)
@@ -231,13 +239,13 @@ def product():
                 except Exception as e:
                     raise Exception(f"UNable to run query. Error: {e}")
 
-        return redirect(url_for('myproducts', user_id=user_id))
+        return redirect(url_for('myproducts'))
     return render_template("addProduct.html", subcatlist=subcatlist, catlist=catlist)
 
 
-@app.route('/myproducts/<user_id>')
-def myproducts(user_id='1'):
-    print("userid ", user_id)
+@app.route('/myproducts')
+def myproducts():
+    user_id = session['uid']
     cur = mysql.connection.cursor()
 
     q1 = f"SELECT SellerID from Seller where Seller.UserID = '{user_id}'"

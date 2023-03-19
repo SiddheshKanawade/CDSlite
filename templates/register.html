@@ -15,62 +15,62 @@
 <body>
     <div class="card">
         <div class="side_img">
-            <img src="/static/image/campus.jpeg" alt="img" class="img">
+            <img src="/static/image/iitgn_campus.jpeg" alt="img" class="img">
         </div>
         <div class="side_img">
              
-            <form method="POST" action="#" class="form active" id="register">
+            <form method="post" action="#" class="form active" id="register">
                 <h2>Register</h2>
-                <label for="firtname">First Name</label>
+                <label for="firstname">First Name</label>
                 <div class="email_add" onclick="activeInput(this)">
-                    <input type="text" name="first-name" class="email" id="emailInput" placeholder="Vasudev" required/>
+                    <input type="text" name="first-name" class="email" id="emailInput" placeholder="Vasudev">
                 </div>
                 <label for="lastname">Last Name</label>
                 <div class="email_add" onclick="activeInput(this)">
-                    <input type="text" name="last-name" class="email" id="emailInput" placeholder="Krishna" required/>
+                    <input type="text" name="last-name" class="email" id="emailInput" placeholder="Krishna">
                 </div>
                 <label for="email">Email Address</label>
                 <div class="email_add" onclick="activeInput(this)">
-                    <input type="email" name="email" class="email" id="emailInput" placeholder="name@mail.com" required/>
+                    <input type="email" name="email" class="email" id="emailInput" placeholder="name@mail.com">
                 </div>
-
-                <label for="re-password">Mobile Number</label>
-                <div class="email_add" onclick="activeInput(this)">
-                    <input type="Number" class="password" name="number" pattern="^[1-9][0-9]{9}$" id="confirm-password"  placeholder="10 digit mobile number" minlength="10" required/>
-                </div>
-
                 <label for="password">Password</label>
                 <div class="email_add" onclick="activeInput(this)">
-                    <input type="password" class="password" name="password" id="password" placeholder="**********" required/>
+                    <input type="password" class="password" name="password" id="password" placeholder="**********">
                 </div>
-
                 <label for="re-password">Confirm Password</label>
                 <div class="email_add" onclick="activeInput(this)">
-                    <input type="password" class="password" name="confirm-password" id="confirm-password" placeholder="**********" required/>
+                    <input type="password" class="password" name="confirm-password" id="confirm-password" placeholder="**********">
+                </div>
+                <label for="dob">Mobile Number</label>
+                <div class="email_add" >
+                    <input type="number" class="password" name="number" id="dob" placeholder="">
+                </div>
+                <label for="dob">Date of Birth</label>
+                <div class="email_add" >
+                    <input type="date" class="password" name="dob" id="dob" placeholder="">
+                </div>
+                <label for="re-password">Gender</label>
+                <div class="email_add" >
+                    <select name="gender" id="" class="password">
+                        <option value="M" class="">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+                </div>
+                <label for="dob">Address Line</label>
+                <div class="email_add" >
+                    <input type="text" class="password" name="addressline" id="dob" placeholder="">
+                </div>
+                <label for="dob">City</label>
+                <div class="email_add">
+                    <input type="text" class="password" name="city" id="dob" placeholder="">
+                </div>
+                <label for="dob">Pincode</label>
+                <div class="email_add" >
+                    <input type="number" class="password" name="pincode" id="dob" placeholder="">
                 </div>
 
-                <label for="re-password">DoB</label>
-                <div class="email_add" onclick="activeInput(this)">
-                    <input type="date" class="password" name="dob" id="confirm-password" required/>
-                </div>
-                <br>
-                Gender
-                <select id="gender" name="gender" required>
-                    <option value="female">Female</option>
-                    <option value="male">Male</option>
-                    <option value="other">Other</option>
-                </select>
-
-                <br>
-                AddressLine <input type="text" name="addressline" required/>
-                <br>
-                City <input type="text" name="city" required/>
-                <br>
-                PinCode <input type="text" name="pincode" pattern="^[1-9][0-9]{5}$"required/>
-                <br>
-                
-                <a href="profile.html"></a><button type="submit" class="btn btn-login">Register</button></a>
-                <p>Do you have an account? <a href="/login">Log in</a></p>
+                <a href="./index.html"></a><button class="btn btn-login">Register</button></a>
+                <p>Do you have an account? <a href="{{ url_for('login') }}">Log in</a></p>
                 <p class="or"></p>
                
             </form>
