@@ -16,9 +16,10 @@ def create_app():
     app.config['MYSQL_DB'] = MYSQL_DATABASE
     app.secret_key = os.urandom(24)
     app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+    app.config['PERMANENT_SESSION_LIFETIME'] = 86400 # 1 day in seconds
     
     razorpay_client = razorpay.Client(auth=(RAZORPAY_API_KEY, RAZORPAY_API_SECRET))
-
+    
     mysql = MySQL(app)
 
     return app, mysql, razorpay_client

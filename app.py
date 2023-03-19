@@ -3,19 +3,17 @@ import razorpay
 from flask import Flask, render_template, request, url_for, redirect, session, flash, jsonify
 from src.helper import current_date, generate_uuid
 from src.db import create_app
-
+from src.helper import generate_uuid
 
 app, mysql, razorpay_client = create_app()
-
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     print(session)
     user_id = session['uid']
-    if (user_id == None):
+    if(user_id == None):
         user_id = '1'
-    return render_template("index.html", uid=user_id)
-
+    return render_template("index.html",uid=user_id)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -49,7 +47,7 @@ def register():
         gender = user_details['gender']
         if gender == 'male':
             gender = 'M'
-        else:
+        else:                       
             gender = 'F'
         address_line = user_details['addressline']
         city = user_details['city']
@@ -216,8 +214,24 @@ def account():
 
 @app.route('/product', methods=['GET', 'POST'])
 def product():
-    user_id = "1"
+    user_id = session['uid']
+    query = f"SELECT SellerID from Seller WHERE Seller.UserID='{user_id}'"
     cur = mysql.connection.cursor()
+    try:
+        cur.execute(query)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    r1 = cur.fetchone()
+    seller_id = None
+    if r1 == None:
+        # MOdify this code, as this is not the right method
+        return redirect(url_for('account'))
+
+    else:
+        print(r1)
+        seller_id = r1['SellerID']
+    
     try:
         cur.execute("SELECT * from SubCategory")
     except Exception as e:
@@ -236,23 +250,6 @@ def product():
         category_id = form_details["cat"]
         subcat_id = form_details.getlist("scat")
         creation_date = current_date()
-        query = f"SELECT SellerID from Seller WHERE Seller.UserID='{user_id}'"
-        cur = mysql.connection.cursor()
-        try:
-            cur.execute(query)
-            mysql.connection.commit()
-        except Exception as e:
-            raise Exception(f"UNable to run query. Error: {e}")
-
-        r1 = cur.fetchone()
-        seller_id = None
-        if r1 == None:
-            # MOdify this code, as this is not the right method
-            return redirect(url_for('account'))
-
-        else:
-            print(r1)
-            seller_id = r1['SellerID']
 
         total_pdts = cur.execute("SELECT * FROM Products")
         product_id = str(total_pdts+1)
@@ -329,6 +326,10 @@ def myproducts():
     except Exception as e:
         raise Exception(f"NOT A SELLER!!. Error: {e}")
     f = cur.fetchone()
+    if(f == None):
+        flash("You have not uploaded any products yet.", 'danger')
+        return render_template("index.html")
+    
     seller_id = f['SellerID']
     # print(seller_id)
 
@@ -345,7 +346,10 @@ def myproducts():
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     vplist = cur.fetchall()
-
+    
+    if(len(fplist) == 0 and len(vplist) == 0):
+        flash("There are no products left in your catalog.", 'danger')
+        return render_template("index.html")
     return render_template("myproducts.html", fplist=fplist, vplist=vplist)
 
 
@@ -376,7 +380,7 @@ def edit(param1='1', param2='vp'):
             raise Exception(f"UNable to run query. Error: {e}")
         vplist = cur.fetchall()
         print("bhk ", vplist)
-        return render_template("edit_products_vp.html", vplist=vplist, catlist=catlist, subcatlist=subcatlist)
+        return redirect(url_for("vp_products"))
     else:
         q2 = f"select * from FP_Products where Productid = '{param1}'"
         cur = mysql.connection.cursor()
@@ -385,8 +389,42 @@ def edit(param1='1', param2='vp'):
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
         fplist = cur.fetchall()
-        return render_template("edit_products_fp.html", fplist=fplist, catlist=catlist, subcatlist=subcatlist)
+        return redirect(url_for("fp_products"))
 
+
+@app.route('/dele/<param1>/<param2>', methods=['GET', 'POST'])
+def dele(param1='1',param2='vp'):
+    cur = mysql.connection.cursor()
+    print("here in delete")
+
+    if(param2 == 'vp'):
+        cur = mysql.connection.cursor()
+        q2 = f"Delete from VP_Products where Productid = '{param1}'"
+        try:
+            cur.execute(q2)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        return "deleted product id is"+ {param1}
+    else:
+        cur = mysql.connection.cursor()
+        print(param1)
+        q2 = f"Delete from FP_Products where ProductID = '{param1}'"
+        try:
+            cur.execute(q2)
+            mysql.connection.commit()
+            print("deleted")
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        return redirect(url_for('myproducts'))
+
+@app.route('/vp_products')
+def vp_products():
+    return render_template("edit_products_vp.html")
+
+@app.route('/fp_products')
+def fp_products():
+    return render_template("edit_products_fp.html")
 
 @app.route('/cart')
 def shopping_cart():
