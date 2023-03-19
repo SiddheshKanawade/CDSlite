@@ -106,7 +106,34 @@
                     <a href="{{ url_for('myproducts') }}">My Product</a>
                     <a href="#">My order</a>
                     <a href="/logout">log Out</a>
-                    <a href="/payment">Pay</a>              
+                    <a href="/delete_user" id="delete_user">Delete Account</a>
+                    <a href="/payment">Pay</a>
+                    <script>
+                        var payLink = document.getElementById("delete_user");
+                        payLink.addEventListener("click", function(event) {
+                          event.preventDefault(); // prevent the default link behavior
+                      
+                          // create a new form element
+                          var form = document.createElement("form");
+                          form.setAttribute("method", "post");
+                          form.setAttribute("action", "/delete_user");
+                      
+                          // create a hidden input element with a name and value
+                          var input = document.createElement("input");
+                          input.setAttribute("type", "hidden");
+                          input.setAttribute("name", "paramName");
+                          input.setAttribute("value", "paramValue");
+                      
+                          // append the input element to the form element
+                          form.appendChild(input);
+                      
+                          // append the form element to the document body
+                          document.body.appendChild(form);
+                      
+                          // submit the form programmatically
+                          form.submit();
+                        });
+                      </script>           
                 </div>
             
             </div>

@@ -7,13 +7,18 @@ from src.helper import generate_uuid
 
 app, mysql, razorpay_client = create_app()
 
+
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     print(session)
+    if 'uid' not in session:
+        flash("Please login to continue", 'danger')
+        return redirect(url_for('login'))
     user_id = session['uid']
-    if(user_id == None):
+    if (user_id == None):
         user_id = '1'
-    return render_template("index.html",uid=user_id)
+    return render_template("index.html", uid=user_id)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -47,7 +52,7 @@ def register():
         gender = user_details['gender']
         if gender == 'male':
             gender = 'M'
-        else:                       
+        else:
             gender = 'F'
         address_line = user_details['addressline']
         city = user_details['city']
@@ -123,12 +128,31 @@ def logout():
     # @app.route('/logout', methods=['GET', 'POST'])
 
 
+@app.route('/delete_user', methods=['POST'])
 def delete_user():
-    pass
+    if 'uid' not in session:
+        flash("Please login to continue", 'danger')
+        return redirect(url_for('login'))
+
+    user_id = session['uid']
+    query = f"DELETE FROM User WHERE UserID={user_id}"
+    cur = mysql.connection.cursor()
+
+    try:
+        cur.execute(query)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    session.clear()
+    flash('Your account has been deleted', 'success')
+    return redirect(url_for('login'))
 
 
 @app.route('/payment', methods=['GET', 'POST'])
 def pay():
+    if 'uid' not in session:
+        flash("Please login to continue", 'danger')
+        return redirect(url_for('login'))
     # Get payment amount from the form
     print("Entered")
     amount = 100 * 100  # convert to paise
@@ -192,6 +216,9 @@ def success():
 
 @app.route('/account', methods=['GET', 'POST'])
 def account():
+    if 'uid' not in session:
+        flash("Please login to continue", 'danger')
+        return redirect(url_for('login'))
     user_id = session['uid']
     if request.method == 'POST':
         form_details = request.form
@@ -214,6 +241,9 @@ def account():
 
 @app.route('/product', methods=['GET', 'POST'])
 def product():
+    if 'uid' not in session:
+        flash("Please login to continue", 'danger')
+        return redirect(url_for('login'))
     user_id = session['uid']
     query = f"SELECT SellerID from Seller WHERE Seller.UserID='{user_id}'"
     cur = mysql.connection.cursor()
@@ -231,7 +261,7 @@ def product():
     else:
         print(r1)
         seller_id = r1['SellerID']
-    
+
     try:
         cur.execute("SELECT * from SubCategory")
     except Exception as e:
@@ -317,6 +347,9 @@ def product():
 
 @app.route('/myproducts')
 def myproducts():
+    if 'uid' not in session:
+        flash("Please login to continue", 'danger')
+        return redirect(url_for('login'))
     user_id = session['uid']
     cur = mysql.connection.cursor()
 
@@ -326,10 +359,10 @@ def myproducts():
     except Exception as e:
         raise Exception(f"NOT A SELLER!!. Error: {e}")
     f = cur.fetchone()
-    if(f == None):
+    if (f == None):
         flash("You have not uploaded any products yet.", 'danger')
         return render_template("index.html")
-    
+
     seller_id = f['SellerID']
     # print(seller_id)
 
@@ -346,8 +379,8 @@ def myproducts():
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     vplist = cur.fetchall()
-    
-    if(len(fplist) == 0 and len(vplist) == 0):
+
+    if (len(fplist) == 0 and len(vplist) == 0):
         flash("There are no products left in your catalog.", 'danger')
         return render_template("index.html")
     return render_template("myproducts.html", fplist=fplist, vplist=vplist)
@@ -355,6 +388,9 @@ def myproducts():
 
 @app.route('/edit/<param1>/<param2>', methods=['GET', 'POST'])
 def edit(param1='1', param2='vp'):
+    if 'uid' not in session:
+        flash("Please login to continue", 'danger')
+        return redirect(url_for('login'))
     cur = mysql.connection.cursor()
     print("here in edit")
     try:
@@ -395,7 +431,6 @@ def edit(param1='1', param2='vp'):
 @app.route('/dele/<param1>', methods=['GET', 'POST'])
 def dele(param1='1'):
     cur = mysql.connection.cursor()
-
     q2 = f"Delete from Products where ProductID = '{param1}'"
     try:
         cur.execute(q2)
@@ -405,17 +440,24 @@ def dele(param1='1'):
         raise Exception(f"UNable to run query. Error: {e}")
     return redirect(url_for('myproducts'))
 
+
 @app.route('/vp_products')
 def vp_products():
     return render_template("edit_products_vp.html")
+
 
 @app.route('/fp_products')
 def fp_products():
     return render_template("edit_products_fp.html")
 
+
 @app.route('/cart')
 def shopping_cart():
-    pass
+    # if 'uid' not in session:
+    #     flash("Please login to continue", 'danger')
+    #     return redirect(url_for('login'))
+
+    return render_template("cart.html")
 
 
 @app.route('/barter')

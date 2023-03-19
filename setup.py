@@ -12,5 +12,6 @@ setup(
         "python-dotenv",
         "passlib",
         "razorpay",
+        "uuid",
     ],
 )
