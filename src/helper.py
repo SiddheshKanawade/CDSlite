@@ -12,5 +12,8 @@ def current_date():
     return (str(x.year) + '-' + str(x.strftime("%m")) + '-' + str(x.strftime("%d")))
 
 
-# def generate_uuid():
-#     pass
+def generate_uuid():
+    uuid_obj = uuid.uuid1()
+    uuid_int = int(str(uuid_obj.int)[:10])
+    print(uuid_int)
+    return uuid_int

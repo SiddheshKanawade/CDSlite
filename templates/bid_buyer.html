@@ -1,6 +1,6 @@
 <head>
-    <link rel="stylesheet" href="bid_buyer.css">
-    <link rel="stylesheet" href="product.js">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bid_buyer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='js/product.js') }}">
 </head>
 
 <!--Navigation Bar-->
@@ -32,7 +32,7 @@
             <div class="profile_dropdown">
                 <button class="profile"><img src="user.png" alt=""></button>
                 <div class="profile-content">
-                    <a href="#">Edit Profile</a>
+                    <a href="profile.html">Edit Profile</a>
                     <a href="addproducts.html">Add Product</a>
                     <a href="myproducts.html">My Product</a>
                     <a href="#">My order</a>
