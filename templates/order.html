@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Order Summary</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f2f2f2;
+		}
+		h1 {
+			text-align: center;
+			margin-top: 50px;
+            text-transform: uppercase;
+		}
+		table {
+			margin: 0 auto;
+			border-collapse: collapse;
+			background-color: #fff;
+			box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
+            width: 40%;
+          
+		}
+		th, td {
+			padding: 10px;
+			border: 1px solid #ccc;
+            text-align: center;
+		}
+		th {
+			background-color: #f2f2f2;
+            text-align: center;
+		}
+		.total {
+			text-align: center;
+			padding-right: 20px;
+			font-weight: bold;
+		}
+		.address {
+			margin: 50px auto;
+			width: 50%;
+			background-color: #fff;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+			padding: 20px;
+			border-radius: 10px;
+			text-align: center;
+		}
+		.buttons {
+			margin: 20px auto;
+			width: 50%;
+			display: flex;
+			justify-content: space-between;
+		}
+		.btns {
+			padding: 10px 20px;
+			background-color: #000;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			font-size: 16px;
+			cursor: pointer;
+		}
+        .btns1 {
+			padding: 10px 20px;
+			background-color: #000;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			font-size: 16px;
+			cursor: pointer;
+		}
+        .btns:hover {
+			background-color: green;
+		}
+		.btns1:hover {
+			background-color: red;
+		}
+	</style>
+</head>
+<body>
+	<h1>Order Summary</h1>
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>Product Name</th>
+            <th>Quantity</th>
+			<th>Total Price</th>
+		</tr>
+		<tr>
+			<td>{{ data['User']['FirstName'] }}</td>
+			<td>{{ data['Product']['ProductName'] }}</td>
+            <td>{{ data['Product']['Quantity'] }}</td>
+			<td>{{ data['Product']['Price'] }}</td>
+		</tr>
+		
+		<tr>
+			<td></td>
+            <td></td>
+            <td class="total">Total:</td>
+			<td class="total" id="tp">{{ data['Total'] }}</td>
+
+		</tr>
+		
+       
+	</table>
+	<div class="address">
+		<p>{{ data['User']['AddressLine'] }}</p>
+		<p>{{ data['User']['City'] }}</p>
+		<p>{{ data['User']['PinCode'] }}</p>
+	</div>
+	<div class="buttons">
+		<form method="POST" action="https://api.razorpay.com/v1/checkout/embedded">
+			<input type="hidden" name="key_id" value="rzp_test_idu4av7m0TTFkt"/>
+			<input type="hidden" name="amount" value="{{data['Total']}}"/>
+			<input type="hidden" name="order_id" value="{{data['Order_Details']['id']}}"/>
+			<input type="hidden" name="name" value="CDSLite"/>
+			<input type="hidden" name="description" value="A Buy Sell Portal"/>
+			<input type="hidden" name="prefill[name]" value="CDS Lite"/>
+			<input type="hidden" name="prefill[contact]" value="7894561230"/>
+			<input type="hidden" name="prefill[email]" value="cdslite@gmail.com"/>
+			<input type="hidden" name="notes[shipping address]" value="IIT Gandhinagar"/>
+			<button class="btns">Pay Now</button>
+		</form>
+		<a href="{{url_for('cancel_order')}}"><button class="btns1">Cancel Order</button></a>
+	</div>
+</body>
+</html>
