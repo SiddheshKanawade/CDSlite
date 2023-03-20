@@ -13,5 +13,6 @@ setup(
         "passlib",
         "razorpay",
         "uuid",
+        "flask-sse",
     ],
 )

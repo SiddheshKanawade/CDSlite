@@ -7,6 +7,28 @@ from src.helper import generate_uuid
 
 app, mysql, razorpay_client = create_app()
 
+# HELPER FUNCTIONS
+
+
+def update_user(user_details, user_id):
+    first_name = user_details['first-name']
+    last_name = user_details["last-name"]
+    email = user_details['email']
+    mob_number = user_details['number']
+    addressline = user_details['addressline']
+    city = user_details['city']
+    pincode = user_details['pincode']
+
+    query = f"UPDATE User SET FirstName='{first_name}', LastName='{last_name}',Email_ID='{email}',MobileNo='{mob_number}',AddressLine='{addressline}',City='{city}',PinCode='{pincode}' WHERE UserID = '{user_id}'"
+    print(query)
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute(query)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    cur.close()
+
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
@@ -126,6 +148,31 @@ def logout():
     return redirect(url_for('login'))
 
     # @app.route('/logout', methods=['GET', 'POST'])
+
+
+@app.route('/read_user', methods=['GET', 'POST'])
+def read_user():
+    if 'uid' not in session:
+        flash("Please login to continue", 'danger')
+        return redirect(url_for('login'))
+
+    user_id = session['uid']
+    if request.method == 'POST':
+        user_details = request.form
+        update_user(user_details, user_id)
+        flash("Your profile has been updated", "success")
+
+    query = f"SELECT * from User WHERE User.UserID={user_id}"
+    cur = mysql.connection.cursor()
+
+    try:
+        cur.execute(query)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query: {query}. Error: {e}")
+
+    response = cur.fetchone()
+    return render_template("profile.html", data=response)
 
 
 @app.route('/delete_user', methods=['POST'])
@@ -456,8 +503,15 @@ def add_shopping_cart(product_id):
     user_id = session['uid']
     creation_date = current_date()
     quantity = 1
-    query = f"INSERT INTO ShoppingCart VALUES ('{user_id}','{product_id}','{quantity}','{creation_date}')"
     cur = mysql.connection.cursor()
+    # Check if product already exists in cart
+    query = f"SELECT * FROM ShoppingCart WHERE UserID = '{user_id}' and ProductID = '{product_id}'"
+    response = cur.execute(query)
+    if response != 0:
+        flash("Product already exists in cart", 'danger')
+        return redirect(url_for('index'))
+
+    query = f"INSERT INTO ShoppingCart VALUES ('{user_id}','{product_id}','{quantity}','{creation_date}')"
 
     try:
         cur.execute(query)
@@ -487,7 +541,7 @@ def read_shopping_cart():
         raise Exception(f"UNable to run query. Error: {e}")
     response = cur.fetchall()
     cur.close()
-    return render_template("success.html", response=response)
+    return render_template("cart.html", data=response)
 
 
 @app.route('/barter')
