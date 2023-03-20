@@ -68,14 +68,18 @@ function openForm() {
       productPrice.classList.add('price');
       productPrice.textContent = products[i].price;
       productDetails.appendChild(productPrice);
+      // const proform = document.createElement('form');
+      // proform.method = "POST";
       const productBid = document.createElement('a');
-      productBid.className="button_class"
-      productBid.href = "bid_buyer.html";
+      // productBid.className="button_class"
+      productBid.href = "/bid_buyer";
       const productButton = document.createElement('button');
       productButton.classList.add('buttons');
-      productButton.textContent = 'Bid';
-      productBid.appendChild(productButton);
-      productDetails.appendChild(productBid);
+      
+      productBid.textContent = 'Bid';
+      productButton.appendChild(productBid);
+      // proform.appendChild(productButton);
+      productDetails.appendChild(productButton);
       productCard.appendChild(productDetails);
   
       productContainer.appendChild(productCard);

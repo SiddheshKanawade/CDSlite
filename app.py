@@ -151,9 +151,16 @@ def account():
         bank = form_details['bank']
         acc = form_details["Account"]
         ifsc = form_details["IFSC"]
+        temp = None
         cur = mysql.connection.cursor()
-        total_existing_sellers = cur.execute("SELECT * FROM Seller")
-        seller_id = "SE" + str(total_existing_sellers+1)
+        while True:
+            temp = generate_uuid()
+            gen_id = "SE" + str(temp)
+            query = f"SELECT * from Seller WHERE Seller.SellerID='{gen_id}'"
+            response = cur.execute(query)
+            if response == 0:
+                break
+        seller_id = "SE" + str(temp)
         q = f"INSERT INTO Seller VALUES ('{seller_id}','{user_id}',0 ,'{bank}',{acc},'{ifsc}')"
 
         try:
@@ -204,8 +211,15 @@ def product():
         subcat_id = form_details.getlist("scat")
         creation_date = current_date()
 
-        total_pdts = cur.execute("SELECT * FROM Products")
-        product_id = str(total_pdts+1)
+        # Correct method for assigning IDs
+        product_id = None
+        while True:
+            product_id = generate_uuid()
+            query = f"SELECT * from Products WHERE Products.ProductID='{product_id}'"
+            response = cur.execute(query)
+            if response == 0:
+                break
+        
         q = f"INSERT INTO Products VALUES ('{product_id}','{seller_id}')"
         cur = mysql.connection.cursor()
         try:
@@ -305,9 +319,84 @@ def myproducts():
         return render_template("index.html")
     return render_template("myproducts.html", fplist=fplist, vplist=vplist)
 
+@app.route('/dele/<param1>', methods=['GET', 'POST'])
+def dele(param1='1'):
+    cur = mysql.connection.cursor()
+    print( "Deleting", param1)
+    q2 = f"Delete from Products where ProductID = '{param1}'"
+    try:
+        cur.execute(q2)
+        mysql.connection.commit()
+        print("deleted")
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    return redirect(url_for('myproducts'))
 
-@app.route('/edit/<param1>/<param2>', methods=['GET', 'POST'])
-def edit(param1='1', param2='vp'):
+@app.route('/vp_products/<id>', methods = ["GET", "POST"])
+def vp_products(id):
+    cur = mysql.connection.cursor()
+    print("here in edit")
+    try:
+        cur.execute("SELECT * from SubCategory")
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    subcatlist = cur.fetchall()
+    try:
+        cur.execute("SELECT * from Category")
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    catlist = cur.fetchall()
+    print(id)
+    vplist = None
+    q2 = f"select * from VP_Products where Productid = '{id}'"
+    print(q2)
+    try:
+        cur.execute(q2)
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    vplist = cur.fetchone()
+    print(vplist)
+    if request.method == 'POST':
+        form_details = request.form
+        pdt_name = form_details["product-name"]
+        desc = form_details["description"]
+        category_id = form_details["cat"]
+        updation_date = current_date()
+        base_price = form_details["BasePrice"]
+        is_barter = form_details["isBarter"]
+        subcat_id = form_details.getlist("scat")
+        
+        q2 = f"UPDATE vp_products SET ProductName = '{pdt_name}', Description_ = '{desc}', BasePrice = '{base_price}', CategoryID = '{category_id}',isBarter = '{is_barter}', UpdationDate = '{updation_date}' WHERE ProductID = '{id}'"
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute(q2)
+            mysql.connection.commit()
+            print("Updated!")
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        
+        q2 = f"DELETE FROM vphassubcat WHERE ProductID = '{id}'"
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute(q2)
+            mysql.connection.commit()
+            print("Updated!")
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        
+        for i in subcat_id:
+            q3 = f"INSERT INTO VPhasSubCat VALUES ('{id}','{i}')"
+            try:
+                cur.execute(q3)
+                mysql.connection.commit()
+            except Exception as e:
+                raise Exception(f"UNable to run query. Error: {e}")
+        
+        return redirect(url_for('myproducts'))
+    return render_template("edit_products_vp.html", subcatlist=subcatlist, catlist = catlist, vplist=vplist)
+
+@app.route('/fp_products/<id>', methods = ["GET", "POST"])
+def fp_products(id):
     cur = mysql.connection.cursor()
     print("here in edit")
     try:
@@ -321,63 +410,62 @@ def edit(param1='1', param2='vp'):
         raise Exception(f"UNable to run query. Error: {e}")
     catlist = cur.fetchall()
 
-    vplist = None
     fplist = None
+    q2 = f"select * from FP_Products where Productid = '{id}'"
+    try:
+        cur.execute(q2)
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    fplist = cur.fetchone()
 
-    if (param2 == 'vp'):
+    if request.method == 'POST':
+        form_details = request.form
+        pdt_name = form_details["product-name"]
+        desc = form_details["description"]
+        category_id = form_details["cat"]
+        updation_date = current_date()
+        MRP = form_details["MRP"]
+        Quantity = form_details["Quantity"]
+        subcat_id = form_details.getlist("scat")
+        print(id)
+        q2 = f"UPDATE fp_products SET ProductName = '{pdt_name}', Description_ = '{desc}', MRP = {MRP}, Quantity = {Quantity}, CategoryID = '{category_id}', UpdationDate = '{updation_date}' WHERE ProductID = '{id}'"
         cur = mysql.connection.cursor()
-        q2 = f"select * from VP_Products where Productid = '{param1}'"
-        try:
-            cur.execute(q2)
-        except Exception as e:
-            raise Exception(f"UNable to run query. Error: {e}")
-        vplist = cur.fetchall()
-        print("bhk ", vplist)
-        return redirect(url_for("vp_products"))
-    else:
-        q2 = f"select * from FP_Products where Productid = '{param1}'"
-        cur = mysql.connection.cursor()
-        try:
-            cur.execute(q2)
-        except Exception as e:
-            raise Exception(f"UNable to run query. Error: {e}")
-        fplist = cur.fetchall()
-        return redirect(url_for("fp_products"))
-
-
-@app.route('/dele/<param1>/<param2>', methods=['GET', 'POST'])
-def dele(param1='1',param2='vp'):
-    cur = mysql.connection.cursor()
-    print("here in delete")
-
-    if(param2 == 'vp'):
-        cur = mysql.connection.cursor()
-        q2 = f"Delete from VP_Products where Productid = '{param1}'"
         try:
             cur.execute(q2)
             mysql.connection.commit()
+            print("Updated!")
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
-        return "deleted product id is"+ {param1}
-    else:
+        
+        q2 = f"DELETE FROM vphassubcat WHERE ProductID = '{id}'"
         cur = mysql.connection.cursor()
-        print(param1)
-        q2 = f"Delete from FP_Products where ProductID = '{param1}'"
         try:
             cur.execute(q2)
             mysql.connection.commit()
-            print("deleted")
+            print("Updated!")
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
+        
+        for i in subcat_id:
+            q3 = f"INSERT INTO VPhasSubCat VALUES ('{id}','{i}')"
+            try:
+                cur.execute(q3)
+                mysql.connection.commit()
+            except Exception as e:
+                raise Exception(f"UNable to run query. Error: {e}")
+        
         return redirect(url_for('myproducts'))
+    return render_template("edit_products_fp.html", subcatlist=subcatlist, catlist = catlist, fplist=fplist)
 
-@app.route('/vp_products')
-def vp_products():
-    return render_template("edit_products_vp.html")
+@app.route('/bid_buyer', methods = ["GET", "POST"])
+def bid_buyer():
+    print("ekfgwho")
+    return render_template("bid_buyer.html")
 
-@app.route('/fp_products')
-def fp_products():
-    return render_template("edit_products_fp.html")
+@app.route('/bid_page', methods = ["GET", "POST"])
+def bid_page():
+    print("ekfgwho")
+    return render_template("bidpage.html")
 
 @app.route('/cart')
 def shopping_cart():

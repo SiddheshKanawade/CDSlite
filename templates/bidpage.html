@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dongle&family=Ubuntu&display=swap" rel="stylesheet">
-  <script src="index.js"></script>
+  <script src="/static/js/index.js"></script>
 </head>
 <header>
   <nav class="navbar">
@@ -25,19 +25,19 @@
         </form>
         </li>
         
-        <li id="a3"><a href="index.html">Bid</a></li>
+        <li id="a3"><a href="{{ url_for('index') }}">Bid</a></li>
         <li id="a3"><a href="barter.html">Barter</a></li>
         <li id="a3"><a href="merchandise.html">Merchandise</a></li>
-        <li id="a3"><a href="cart.html"><img src="cart.png" alt=""></a></li>
+        <li id="a3"><a href="cart.html"><img src="/static/image/cart.png" alt=""></a></li>
         <li id="a3">
             <div class="profile_dropdown">
-                <button class="profile"><img src="user.png" alt=""></button>
+                <button class="profile"><img src="/static/image/user.png" alt=""></button>
                 <div class="profile-content">
-                    <a href="#">Edit Profile</a>
-                    <a href="addproducts.html">Add Product</a>
-                    <a href="myproducts.html">My Product</a>
+                    <a href="profile.html">Edit Profile</a>
+                    <a href="{{ url_for('product') }}">Add Product</a>
+                    <a href="{{ url_for('myproducts') }}">My Product</a>
                     <a href="#">My order</a>
-                    <a href="login.html">log Out</a>               
+                    <a href="/logout">log Out</a>               
                 </div>
             
             </div>
@@ -46,17 +46,6 @@
     </ul>
   </nav>
 </header>
-
-<script>
-    function confirmBid() 
-    {
-        if (confirm("Are you sure?")) {
-            // Code to Bid successfully the product
-            alert("Congratuations, Bid successfully!");
-        }
-    }
-</script>
-
 
   <!--Product Details-->
 <div class="product-image">
@@ -67,22 +56,23 @@
             </div>
         </div>
     </section>
-    <section>
-        <h1>Blithchron Hoodie</h1><br>
+    <section class="Display_Bids">
         
-        
-       <br>
+        <h1>Blithchron Hoodie</h1>
         <p class="details">Dark Blue Colored Blithchron Hoodie with Blithchron Logo.</p>
         <br>
         <span class="price"><b>BASE PRICE:</b> Rs.800</span><br>
         <br>
         <p class="size"><b>Select Bid:</b></p>
+        <script src="product.js"></script>
+        <script>
+        let Bids = [10, 15, 20, 25, 30,67,89];
+        let Barter = [23,46];
+        displayBidsAsButtons(Bids);
+        displayBarterAsButtons(Barter);
+        </script>
 
-        <button class="btns" onclick="confirmBid()">Bid 1: Rs.700</button>
-        <button class="btns" onclick="confirmBid()">Bid 2: Rs.700</button>
-        <button class="btns" onclick="confirmBid()">Bid 3: Rs.700</button>
-        <button class="btns" onclick="confirmBid()">Bid 4: Rs.700</button>
-
+       <!-- <a href="barter_buyer.html"><button class="btns1">Barter</button></a>  -->
        
     </section>
 </div>

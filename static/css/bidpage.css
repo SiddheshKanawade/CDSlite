@@ -1,6 +1,7 @@
 *{
     padding: 0;
     margin: 0;
+    
 }
 
 html{
@@ -174,7 +175,8 @@ html{
     font-size:25px;
     width: 40%;
     height: 40%;
-    
+    display:initial;
+    margin-left: 2vw;
 }
 .product-image
 {
@@ -193,6 +195,8 @@ html{
 .details
 {
     font-size: 25px;
+    margin-top:1vw;
+    margin-left: 2vw;
 }
 .edit-img
 {
@@ -225,11 +229,12 @@ h1
 {
     text-transform: uppercase;
     font-size: 45px;
+    margin-left: 2vw;
 }
 .size{
     text-transform: uppercase;
     font-weight: 300;
-    
+    margin-left: 2vw;
     font-size: 25px;
 }
 .size_button
@@ -274,20 +279,24 @@ h1
 .btns1
 {
     padding: 12px;
-    color: white;
+    color: #fff;
     background-color: #000;
     cursor: pointer;
     width: 45%;
     font-size: 15px;
     float: left;
-    margin-right: 50%;
     margin-left: 3%;
     margin: 10px;
-    border-radius: 10px;
-    transform: translate(50%);
+    border-radius: 30px;
+    /* transform: translate(50%); */
 }
 
+.Display_Bids{
+    background-color: #e4e4e4;
+    border-radius: 2%;
+    
 
+}
 
 .user_box
 {

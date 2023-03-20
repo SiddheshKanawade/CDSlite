@@ -9,43 +9,84 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
         integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
         crossorigin="anonymous" />
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="/../static/css/style.css">
+    <link rel = "stylesheet" href="/static/css/addproduct.css" >
+    <script type = "text/javascript" src="../static/js/pdt_form.js"></script>
 </head>
 
 <body>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dongle&family=Ubuntu&display=swap" rel="stylesheet">
+  <script src="/static/js/merchandise.js"></script>
+
+  <header>
+    <nav class="navbar">
+      <ul>
+  
+        <li id="a1"><b>CDSLite</b></li>
+        <li id="a2"></li>
+        <li id="a2"></li>
+        <li id="a3"><a href="{{url_for('index')}}">Bid</a></li>
+        <li id="a3"><a href="barter.html">Barter</a></li>
+        <li id="a3"><a href="merchandise.html">Merchandise</a></li>
+        <li id="a3"><a href="cart.html"><img src="/static/image/cart.png" alt=""></a></li>
+        <li id="a3">
+              <div class="profile_dropdown">
+                  <button class="profile"><img src="/static/image/user.png" alt=""></button>
+                  <div class="profile-content">
+                      <a href="#">Edit Profile</a>
+                      <a href="{{ url_for('product') }}">Add Product</a>
+                      <a href="{{ url_for('myproducts') }}">My Product</a>
+                      <a href="#">My order</a>
+                      <a href="/logout">log Out</a>               
+                  </div>
+              
+              </div>
+            
+          </li>
+      </ul>
+    </nav>
+  </header>
    
     <form method="POST" action="">
         
-        ProductName <input type="text" name="product-name" />
+        ProductName <input type="text" name="product-name" value = {{fplist["ProductName"]}}>
         <br>
-        Description <input type="textarea" name="description" />
+        Description <textarea name="description" >{{fplist["Description_"]}}</textarea>
         <br>
         
         
-        <div id="No" style="display:none;" ><br/>
-          Base Price<input type="number" name = "BasePrice"/>
+        <div id="Yes" ><br/>
+          MRP<input type="number" name="MRP" value={{fplist['MRP']}}>
           <br>
-          is Barter<input type="radio" id = "YesBarter" name="isBarter" value ="Yes" >Yes
-          <input type="radio" id="NoBarter" name="isBarter" value ="No" >No
-          <br>        
+          Quantity<input type="number" name="Quantity" value={{fplist['Quantity']}}>
+          <br>
+          
         </div>
 
         <div id="categ">
           <br>
 
-        <!-- Category<select id="cat" name="cat" >
+          Category<select id="cat" name="cat">
             {% for j in catlist %}
-              <OPTION value={{j[0]}}>{{j[1]}}</OPTION>
+              {%if j["categoryID"] == fplist["categoryID"]%}
+                <OPTION value={{j["categoryID"]}} selected>{{j['catName']}}</OPTION>
+              
+              {%else%}
+                <OPTION value={{j["categoryID"]}}>{{j['catName']}}</OPTION>
+              {%endif%}
             {% endfor %}
           </select>
           <br>
           <br>
           Sub Category<select id = "scat" name="scat" multiple>
             {% for j in subcatlist %}
-              <OPTION value={{j[0]}}>{{j[1]}}</OPTION>
+              <OPTION value={{j["SubcategoryID"]}}>{{j['subcatName']}}</OPTION>
             {% endfor %}
           </select>
-          <br> -->
+          <br>
         </div>
 
         <input type="submit">

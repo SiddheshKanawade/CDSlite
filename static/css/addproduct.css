@@ -20,7 +20,7 @@ html{
 .navbar {
     padding: 8px;
     background-color: whitesmoke;
-    height: 2.8rem;
+    height: 3.8rem;
     max-width: 100%;
     box-shadow: 0 0 8px 0 grey;
     position: -webkit-sticky; 
@@ -123,10 +123,10 @@ display: flex;
 .profile
 {
     color: #000;
-    padding: 10px;
     font-size: 25px;
     border: none;
     font-family: 'Dongle', sans-serif;
+    
 }
 
 .profile:hover
@@ -138,7 +138,7 @@ display: flex;
 {
     position: relative;
     display: flexbox;
-   
+    overflow: visible !important;
 }
 
 .profile-content 
@@ -150,6 +150,7 @@ display: flex;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     right: 30%;
+    overflow: visible !important;
 }
   
 .profile-content a 
@@ -315,7 +316,9 @@ body {
 /* Style the form container */
 form {
     width: 80%;
-    margin: 0 auto;
+    margin-top : 50px;
+    margin-left: 10%;
+    position: static;
     padding: 20px;
     background-color: #fff;
     border-radius: 5px;

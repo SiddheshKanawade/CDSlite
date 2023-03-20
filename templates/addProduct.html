@@ -10,11 +10,47 @@
         integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
         crossorigin="anonymous" />
     <link rel="stylesheet" href="/../static/css/style.css">
+    <link rel = "stylesheet" href="/static/css/addproduct.css" >
     <script type = "text/javascript" src="../static/js/pdt_form.js"></script>
 </head>
 
 <body>
-    <form method="POST" action="">
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dongle&family=Ubuntu&display=swap" rel="stylesheet">
+  <script src="/static/js/merchandise.js"></script>
+
+  <header>
+    <nav class="navbar">
+      <ul>
+  
+        <li id="a1"><b>CDSLite</b></li>
+        <li id="a2"></li>
+        <li id="a2"></li>
+        <li id="a3"><a href="{{url_for('index')}}">Bid</a></li>
+        <li id="a3"><a href="barter.html">Barter</a></li>
+        <li id="a3"><a href="merchandise.html">Merchandise</a></li>
+        <li id="a3"><a href="cart.html"><img src="/static/image/cart.png" alt=""></a></li>
+        <li id="a3">
+              <div class="profile_dropdown">
+                  <button class="profile"><img src="/static/image/user.png" alt=""></button>
+                  <div class="profile-content">
+                      <a href="#">Edit Profile</a>
+                      <a href="{{ url_for('product') }}">Add Product</a>
+                      <a href="{{ url_for('myproducts') }}">My Product</a>
+                      <a href="#">My order</a>
+                      <a href="/logout">log Out</a>               
+                  </div>
+              
+              </div>
+            
+          </li>
+      </ul>
+    </nav>
+  </header>
+
+    <form method="POST" action="" class="form1">
         
         ProductName <input type="text" name="product-name" />
         <br>
