@@ -423,9 +423,16 @@ def account2(user_id,pid):
         bank = form_details['bank']
         acc = form_details["Account"]
         ifsc = form_details["IFSC"]
+        temp = None
         cur = mysql.connection.cursor()
-        total_existing_sellers = cur.execute("SELECT * FROM Seller")
-        seller_id = "SE" + str(total_existing_sellers+1)
+        while True:
+            temp = generate_uuid()
+            gen_id = "SE" + str(temp)
+            query = f"SELECT * from Seller WHERE Seller.SellerID='{gen_id}'"
+            response = cur.execute(query)
+            if response == 0:
+                break
+        seller_id = "SE" + str(temp)
         q = f"INSERT INTO Seller VALUES ('{seller_id}','{user_id}',0 ,'{bank}',{acc},'{ifsc}')"
 
         try:
@@ -753,6 +760,10 @@ def bid_page(id_):
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     bidarray = cur.fetchall()
+    if(len(bidarray) == 0):
+        flash("There are no bid or barter requests on this product")
+        return redirect(url_for('myproducts'))
+    print("khvl ", bidarray)
     return render_template("bidpage.html",bidarray=bidarray)
 
 @app.route('/confirm_bid/<bid_id>')
@@ -770,7 +781,7 @@ def confirm_bid(bid_id):
         mysql.connection.commit()
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
-    res = q2.fetchone()
+    res = cur.fetchone()
     p_id = res['ProductID']
     q3 = f"UPDATE BidTable SET BidStatus = 'Declined' where ProductID = '{p_id}' and BidStatus != 'Confirmed'"
     try:
