@@ -208,7 +208,7 @@ def read_user():
     return render_template("profile.html", data=response)
 
 
-@app.route('/delete_user', methods=['POST'])
+@app.route('/delete_user', methods=['GET', 'POST'])
 def delete_user():
     if 'uid' not in session:
         flash("Please login to continue", 'danger')
@@ -803,7 +803,7 @@ def add_shopping_cart(product_id):
     response = cur.execute(query)
     if response != 0:
         flash("Product already exists in cart", 'danger')
-        return redirect(url_for('index'))
+        return redirect(url_for('read_shopping_cart'))
 
     query = f"INSERT INTO ShoppingCart VALUES ('{user_id}','{product_id}','{quantity}',DEFAULT)"
 
@@ -814,7 +814,7 @@ def add_shopping_cart(product_id):
         raise Exception(f"UNable to run query. Error: {e}")
     cur.close()
     flash('Your Product has been added to Cart', 'success')
-    return redirect(url_for('index'))
+    return redirect(url_for('read_shopping_cart'))
 
 
 @app.route('/delete_cart/<product_id>')
@@ -901,6 +901,20 @@ def order_summary(product_id):
 def cancel_order():
     flash("Order cancelled")
     return redirect(url_for('index'))
+
+
+@app.route('/merchandise/')
+def merchandise():
+
+    query = f"SELECT * FROM FP_Products;"
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute(query)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    response = cur.fetchall()
+    return render_template('merchandise.html', plist=response)
 
 
 if __name__ == '__main__':
