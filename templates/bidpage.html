@@ -1,10 +1,10 @@
 <head>
-    <link rel="stylesheet" href="bidpage.css">
-    <link rel="stylesheet" href="product.js">
+    <link rel="stylesheet" href="/static/css/bidpage.css">
+    <script src="/static/js/bidpage.js"></script>
 </head>
 
 <!--Navigation Bar-->
-<link href="style.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/style.css" rel="stylesheet" type="text/css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dongle&family=Ubuntu&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@
             <div class="profile_dropdown">
                 <button class="profile"><img src="/static/image/user.png" alt=""></button>
                 <div class="profile-content">
-                    <a href="profile.html">Edit Profile</a>
+                    <a href="#">Edit Profile</a>
                     <a href="{{ url_for('product') }}">Add Product</a>
                     <a href="{{ url_for('myproducts') }}">My Product</a>
                     <a href="#">My order</a>
@@ -52,23 +52,24 @@
     <section>
         <div class="card">
             <div class="edit-img">
-                <img src="product1.png" alt="">
+                <img src="/static/image/product1.png" alt="">
             </div>
         </div>
     </section>
     <section class="Display_Bids">
         
-        <h1>Blithchron Hoodie</h1>
-        <p class="details">Dark Blue Colored Blithchron Hoodie with Blithchron Logo.</p>
+        <h1>{{bidarray[0]['ProductName']}}</h1>
+        <p class="details">{{bidarray[0]['Description_']}}</p>
         <br>
-        <span class="price"><b>BASE PRICE:</b> Rs.800</span><br>
+        <span class="price"><b>BASE PRICE:</b> Rs. {{bidarray[0]['BasePrice']}}</span><br>
         <br>
         <p class="size"><b>Select Bid:</b></p>
-        <script src="product.js"></script>
+        <script src="/static/js/product.js"></script>
         <script>
-        let Bids = [10, 15, 20, 25, 30,67,89];
-        let Barter = [23,46];
-        displayBidsAsButtons(Bids);
+        //let Bids = [10, 15, 20, 25, 30,67,89];
+        //let Barter = [23,46];
+        new_bidarr = {{bidarray|tojson}};
+        displayBidsAsButtons(new_bidarr);
         displayBarterAsButtons(Barter);
         </script>
 

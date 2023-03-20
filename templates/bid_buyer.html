@@ -1,6 +1,5 @@
 <head>
     <link rel="stylesheet" href="/static/css/bid_buyer.css">
-    <link rel="stylesheet" href="/static/js/product.js">
 </head>
 
 <!--Navigation Bar-->
@@ -25,7 +24,7 @@
         </form>
         </li>
         <li id="a3"><a href="{{ url_for('index') }}">Bid</a></li>
-        <li id="a3"><a href="barter.html">Barter</a></li>
+        <li id="a3"><a href="{{ url_for('index') }}">Barter</a></li>
         <li id="a3"><a href="merchandise.html">Merchandise</a></li>
         <li id="a3"><a href="cart.html"><img src="/static/image/cart.png" alt=""></a></li>
         <li id="a3">
@@ -59,18 +58,18 @@
         </div>
     </section>
     <section>
-        <h1>Blithchron Hoodie</h1><br>
+        <h1>{{plist['ProductName']}}</h1><br>
         
         
        <br>
-        <p class="details">Dark Blue Colored Blithchron Hoodie with Blithchron Logo.</p><br>
-        <span class="price">Base Price: Rs.800</span><br>
-
+        <p class="details">{{plist['Description_']}}</p><br>
+        <span class="price">Base Price: Rs. {{plist['BasePrice']}}</span><br>
+        <form method="post">
         <p class="size">PLACE BID: Rs.<input type="number" name="bid" id="" class="bid_daalo"></p>
         
         
-        
         <button class="btns" onclick="confirmBid()">Submit</button>
+        </form>
     </section>
     <script>
         
@@ -79,6 +78,9 @@
                 if (confirm("Are you sure?")) {
                     // Code to Bid successfully the product
                     alert("Bid Placed Successfully");
+                }
+                else{
+                    alert("Bid Not Placed!!")
                 }
             }
         </script>

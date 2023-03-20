@@ -73,7 +73,7 @@
     </div>
 -->
 
-<link href="style.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/style.css" rel="stylesheet" type="text/css" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dongle&family=Ubuntu&display=swap" rel="stylesheet">
@@ -433,15 +433,15 @@
 
          <script src="/static/js/index.js"></script>
         <script>
-          const products = [
-            {name: 'Blithchron Hoodie', price: 'Rs.800', imageUrl: "hoodie.jpg"},
-            {name: 'Blithchron Hoodie', price: 'Rs.800', imageUrl: 'hoodie.jpg'},
-            {name: 'Blithchron Hoodie', price: 'Rs.800', imageUrl: 'hoodie.jpg'},
-            {name: 'Blithchron Hoodie', price: 'Rs.800', imageUrl: 'hoodie.jpg'},
-            {name: 'Blithchron Hoodie', price: 'Rs.800', imageUrl: 'hoodie.jpg'}
-          ];
-      
-          createProductCards(products);
+        //   const products = [
+        //     {name: 'Blithchron Hoodie', price: 'Rs.800', imageUrl: "hoodie.jpg"},
+        //     {name: 'Blithchron Hoodie', price: 'Rs.800', imageUrl: 'hoodie.jpg'},
+        //     {name: 'Blithchron Hoodie', price: 'Rs.800', imageUrl: 'hoodie.jpg'},
+        //     {name: 'Blithchron Hoodie', price: 'Rs.800', imageUrl: 'hoodie.jpg'},
+        //     {name: 'Blithchron Hoodie', price: 'Rs.800', imageUrl: 'hoodie.jpg'}
+        //   ];
+          new_vp = {{vplist|tojson}};
+          createProductCards(new_vp);
         </script>
     </div>
 </body>

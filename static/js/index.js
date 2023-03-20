@@ -37,6 +37,7 @@ function openForm() {
   // }
 
   function createProductCards(products) {
+    console.log(products)
     const productContainer = document.querySelector('.product_container');
   
     for (let i = 0; i < products.length; i++) {
@@ -57,22 +58,25 @@ function openForm() {
       const productDetails = document.createElement('div');
       // productDetails.classList.add('product_card');
       productDetails.classList.add('details');
+      var var1 = products[i]['ProductID'];
+      var1 = JSON.parse(var1)
       const productLink = document.createElement('a');
-      productLink.href = 'bid_buyer.html';
+      productLink.href =  `/bid_buyer/${var1}`;
       const productName = document.createElement('h3');
       productName.classList.add('card-name');
-      productName.textContent = products[i].name;
+      productName.textContent = products[i].ProductName;
       productLink.appendChild(productName);
       productDetails.appendChild(productLink);
       const productPrice = document.createElement('span');
       productPrice.classList.add('price');
-      productPrice.textContent = products[i].price;
+      productPrice.textContent = "Rs. " + products[i].BasePrice;
       productDetails.appendChild(productPrice);
       // const proform = document.createElement('form');
       // proform.method = "POST";
       const productBid = document.createElement('a');
       // productBid.className="button_class"
-      productBid.href = "/bid_buyer";
+      
+      productBid.href = `/bid_buyer/${var1}`;
       const productButton = document.createElement('button');
       productButton.classList.add('buttons');
       

@@ -1,13 +1,3 @@
-function editproduct(){
-  window.location.href = "editproduct.html";
-}
-function confirmDelete() 
-        {
-			if (confirm("Are you sure you want to delete this product?")) {
-				// Code to delete the product
-				alert("Product deleted successfully!");
-			}
-		}
 
 function createProductCards(products, type) {
   if(type == 'vp'){
@@ -30,10 +20,13 @@ function createProductCards(products, type) {
       // productCard.appendChild(productImage);
   
       const productDetails = document.createElement('div');
+      var var1 = products[i]['ProductID'];
+      var1 = JSON.parse(var1);
+      console.log(var1)
       // productDetails.classList.add('product_card');
       productDetails.classList.add('details');
       const productLink = document.createElement('a');
-      productLink.href = '/bid_page';
+      productLink.href = `/bid_page/${var1}`;
       const productName = document.createElement('h3');
       productName.classList.add('card-name');
       productName.textContent = products[i].ProductName;
@@ -41,13 +34,13 @@ function createProductCards(products, type) {
       productDetails.appendChild(productLink);
       const productPrice = document.createElement('span');
       productPrice.classList.add('price');
-      productPrice.textContent = products[i].BasePrice;
+      productPrice.textContent = "Rs. " + products[i].BasePrice;
       productDetails.appendChild(productPrice);
+      const product_A = document.createElement('a');
+      product_A.classList.add("button_class");
       const productBid = document.createElement('a');
-      productBid.className="button_class"
-      var var1 = products[i]['ProductID'];
-      var1 = JSON.parse(var1);
-      console.log(var1)
+      productBid.className="button_correct"
+      
       productBid.href =  `/vp_products/${var1}`;
       const productButton = document.createElement('button');
       productButton.classList.add('buttons');
@@ -59,8 +52,9 @@ function createProductCards(products, type) {
       deleteButton.textContent = 'Delete';
       deleteButton.addEventListener("click",function() { del_Function_vp(products[i].ProductID); });
       //productButton.appendChild(deleteButton);
-      productDetails.appendChild(productButton);
-      productDetails.appendChild(deleteButton);
+      product_A.appendChild(productButton);
+      product_A.appendChild(deleteButton);
+      productDetails.appendChild(product_A);
       productCard.appendChild(productDetails);
   
       productContainer.appendChild(productCard);
@@ -88,7 +82,7 @@ function createProductCards(products, type) {
         // productDetails.classList.add('product_card');
         productDetails.classList.add('details');
         const productLink = document.createElement('a');
-        productLink.href = '/bid_page';
+        productLink.href = '#';
         const productName = document.createElement('h3');
         productName.classList.add('card-name');
         productName.textContent = products[i].ProductName;
@@ -96,10 +90,12 @@ function createProductCards(products, type) {
         productDetails.appendChild(productLink);
         const productPrice = document.createElement('span');
         productPrice.classList.add('price');
-        productPrice.textContent = products[i].MRP;
+        productPrice.textContent = "Rs. " + products[i].MRP;
         productDetails.appendChild(productPrice);
+        const product_A = document.createElement('a');
+        product_A.classList.add("button_class");
         const productBid = document.createElement('a');
-        productBid.className="button_class"
+        productBid.className="button_correct"
         var var1 = products[i]['ProductID'];
         var1 = JSON.parse(var1);
         console.log(var1)
@@ -114,8 +110,9 @@ function createProductCards(products, type) {
         deleteButton.textContent = 'Delete';
         deleteButton.addEventListener("click",function() { del_Function_fp(products[i].ProductID); });
         //productButton.appendChild(deleteButton);
-        productDetails.appendChild(productButton);
-        productDetails.appendChild(deleteButton);
+        product_A.appendChild(productButton);
+        product_A.appendChild(deleteButton);
+        productDetails.appendChild(product_A);
         productCard.appendChild(productDetails);
     
         productContainer.appendChild(productCard);
