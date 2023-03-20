@@ -513,6 +513,7 @@ def myproducts():
     q1 = f"SELECT SellerID from Seller where Seller.UserID = '{user_id}'"
     try:
         cur.execute(q1)
+        mysql.connection.commit()
     except Exception as e:
         raise Exception(f"NOT A SELLER!!. Error: {e}")
     f = cur.fetchone()
@@ -526,6 +527,7 @@ def myproducts():
     q2 = f"select * from(select * from Products natural join FP_Products where Products.ProductID = FP_Products.ProductID) as P where P.sellerid = '{seller_id}'"
     try:
         cur.execute(q2)
+        mysql.connection.commit()
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     fplist = cur.fetchall()
@@ -534,16 +536,10 @@ def myproducts():
 
     try:
         cur.execute(q3)
+        mysql.connection.commit()
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     vplist = cur.fetchall()
-
-    q4=f"SELECT * from VP_Products WHERE VP_Products.isBarter='Yes'"
-    try:
-        cur.execute(q4)
-    except Exception as e:
-        raise Exception(f"UNable to run query. Error: {e}")
-    brtlist = cur.fetchall()
 
     if (len(fplist) == 0 and len(vplist) == 0):
         flash("There are no products left in your catalog.", 'danger')
@@ -774,3 +770,8 @@ def order_confirmation():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+
+
