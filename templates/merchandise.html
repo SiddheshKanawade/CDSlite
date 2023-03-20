@@ -80,39 +80,67 @@
   <script src="merchandise.js"></script>
 
 <header>
-  <nav class="navbar">
-    <ul>
-
-      <li id="a1"><b>CDSLite</b></li>
-      <li id="a2">
-        <form>
-            <input type="text" class="search-box" placeholder="Search products">
-            <button id="search-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                </svg>
-            </button>
-        </form>
-        </li>
-        <li id="a3"><a href="index.html">Bid</a></li>
-        <li id="a3"><a href="barterproduct.html">Barter</a></li>
-        <li id="a3"><a href="merchandise.html">Merchandise</a></li>
-        <li id="a3"><a href="cart.html"><img src="cart.png" alt=""></a></li>
-        <li id="a3">
-            <div class="profile_dropdown">
-                <button class="profile"><img src="user.png" alt=""></button>
-                <div class="profile-content">
-                    <a href="profile.html">Edit Profile</a>
-                    <a href="addProduct.html">Add Product</a>
-                    <a href="myproducts.html">My Product</a>
-                    <a href="#">My order</a>
-                    <a href="login.html">log Out</a>               
+    <nav class="navbar">
+        <ul>
+    
+          <li id="a1"><b>CDSLite</b></li>
+          <li id="a2">
+            <form>
+                <input type="text" class="search-box" placeholder="Search products">
+                <button id="search-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </button>
+            </form>
+            </li>
+            <li id="a3"><a href="{{ url_for('index') }}">Bid</a></li>
+            <li id="a3"><a href="{{ url_for('Barter') }}">Barter</a></li>
+            <li id="a3"><a href="merchandise.html">Merchandise</a></li>
+            <li id="a3"><a href="/index/shopping_cart"><img src="/static/image/cart.png" alt=""></a></li>
+            <li id="a3">
+                <div class="profile_dropdown">
+                    <button class="profile"><img src="/static/image/user.png" alt=""></button>
+                    <div class="profile-content">
+                        <a href="/read_user">Edit Profile</a>
+                        <a href="{{ url_for('product') }}">Add Product</a>
+                        <a href="{{ url_for('myproducts') }}">My Product</a>
+                        <a href="#">My order</a>
+                        <a href="/logout">log Out</a>
+                        <a href="/delete_user" id="delete_user">Delete Account</a>
+                        <a href="/payment">Pay</a>
+                        <script>
+                            var payLink = document.getElementById("delete_user");
+                            payLink.addEventListener("click", function(event) {
+                              event.preventDefault(); // prevent the default link behavior
+                          
+                              // create a new form element
+                              var form = document.createElement("form");
+                              form.setAttribute("method", "post");
+                              form.setAttribute("action", "/delete_user");
+                          
+                              // create a hidden input element with a name and value
+                              var input = document.createElement("input");
+                              input.setAttribute("type", "hidden");
+                              input.setAttribute("name", "paramName");
+                              input.setAttribute("value", "paramValue");
+                          
+                              // append the input element to the form element
+                              form.appendChild(input);
+                          
+                              // append the form element to the document body
+                              document.body.appendChild(form);
+                          
+                              // submit the form programmatically
+                              form.submit();
+                            });
+                          </script>           
+                    </div>
+                
                 </div>
-            
-            </div>
-          
-        </li>
-    </ul>
-  </nav>
+              
+            </li>
+        </ul>
+      </nav>
 </header>
 
 
