@@ -416,6 +416,27 @@ def product():
         return redirect(url_for('myproducts'))
     return render_template("addProduct.html", subcatlist=subcatlist, catlist=catlist)
 
+@app.route('/account2/<user_id>/<pid>', methods=['GET', 'POST'])
+def account2(user_id,pid):
+    if request.method == 'POST':
+        form_details = request.form
+        bank = form_details['bank']
+        acc = form_details["Account"]
+        ifsc = form_details["IFSC"]
+        cur = mysql.connection.cursor()
+        total_existing_sellers = cur.execute("SELECT * FROM Seller")
+        seller_id = "SE" + str(total_existing_sellers+1)
+        q = f"INSERT INTO Seller VALUES ('{seller_id}','{user_id}',0 ,'{bank}',{acc},'{ifsc}')"
+
+        try:
+            cur.execute(q)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        return redirect(url_for('barterpage',id=pid))
+    return render_template("acc_details.html")
+
+
 @app.route('/Barter',methods=['GET', 'POST'])
 def Barter():
     if request.method == 'GET':
@@ -442,6 +463,63 @@ def Barter():
         flash("There are no products available for Bid")
     print(vplist)
     return render_template("index.html",vplist=vplist)
+
+@app.route('/barterpage/<id>', methods=['GET', 'POST'])
+def barterpage(id):
+    print("here in barterpage")
+    user_id =  session['uid']
+
+    if request.method == 'POST':
+        cur = mysql.connection.cursor()
+        total_existing_products = cur.execute("SELECT * FROM Products")
+
+        q3=f"SELECT SellerID FROM Seller WHERE UserID='{user_id}'"
+
+        cur.execute(q3)
+        mysql.connection.commit()
+        f = cur.fetchone()
+        if (f == None):
+            return redirect(url_for("account2",user_id=user_id,pid=id))
+        seller_id = f['SellerID']
+
+        product_id = str(total_existing_products+1)
+        form_details = request.form
+        prod_name = form_details["product-name"]
+        desc = form_details["description"]
+        creation_date = current_date()
+        q1=f"INSERT INTO Products VALUES ('{product_id}','{seller_id}')"
+
+        try:
+            cur.execute(q1)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        
+        q = f"INSERT INTO Unlisted_Products VALUES ('{product_id}','{prod_name}','{desc}','{creation_date}')"
+
+        try:
+            cur.execute(q)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        
+        while True:
+            Barter_id = generate_uuid()
+            query = f"SELECT * from Barter WHERE Barter.BarterID='{Barter_id}'"
+            response = cur.execute(query)
+            if response == 0:
+                break
+
+        q4 = f"INSERT INTO Barter (BarterID, P1ID, P2ID) VALUES ('{Barter_id}', '{id}', '{product_id}');"
+
+        try:
+            cur.execute(q4)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        
+        return render_template("success.html")
+    return render_template("barterpage.html")
 
 
 @app.route('/myproducts')
