@@ -409,7 +409,7 @@ def product():
                     mysql.connection.commit()
                 except Exception as e:
                     raise Exception(f"UNable to run query. Error: {e}")
-
+        flash("Product added successfully", 'success')
         return redirect(url_for('myproducts'))
     return render_template("addProduct.html", subcatlist=subcatlist, catlist=catlist)
 
@@ -752,7 +752,7 @@ def bid_buyer(id_):
 
 @app.route('/bid_page/<id_>', methods=["GET", "POST"])
 def bid_page(id_):
-    query = f"Select * from (Select * from BidTable natural join VP_Products where VP_products.ProductID=BidTable.ProductID) as P where P.ProductID='{id_}'"
+    query = f"Select * from (Select * from BidTable natural join VP_Products where VP_Products.ProductID=BidTable.ProductID) as P where P.ProductID='{id_}'"
     cur = mysql.connection.cursor()
     try:
         cur.execute(query)
