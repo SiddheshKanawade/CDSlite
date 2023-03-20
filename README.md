@@ -33,27 +33,9 @@ Download the dependencies.
 
 Download and install latest Python and MySQL version
 
-Install FLask
+Install Dependencies
 ```bash
-  pip install flask
-```
-
-Install Flask-MySQLdb
-
-```bash
-  pip install Flask-MySQLdb
-```
-
-Install Flask-SSE
-
-```bash
-  pip install Flask-SSE
-```
-
-Install razorpay
-
-```bash
-  pip install razorpay
+  pip install -e .
 ```
 
 Go to folder directory
