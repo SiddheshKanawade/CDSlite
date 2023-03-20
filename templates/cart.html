@@ -91,7 +91,15 @@
       <div style="margin:20px 20px;" class="row">
         <div style="padding:20px 30px;box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;margin-right: 20px;margin-left: 35px;width: 58% !important;" class="col-md-7 box-sz">
           <h3 class="mid1-sz" style="font-weight: 450!important;padding: 0px!important">Shopping Cart</h3>
-          
+          {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="alert alert-danger" role="alert">
+                    {% for message in messages %}
+                        <span style="color: red;">{{ message }}</span><br>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endwith %}
           {% for item in data %}
           <div class="box1-sz" style="margin-top: 15px;padding: 15px 0px;border-top:1.5px solid #E2E5DE">
             <div class="row">
@@ -99,32 +107,22 @@
                 <img class="img-sz" style="height:200px" src="hoodie.jpg">
               </div>
               <div style="padding:10px 0px;width: 50% !important;" class="col-md-6">
-                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important">{{ item['UserID'] }}</h5>
+                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important">{{ item['ProductName'] }}</h5>
                 <p class="mid3-sz" style="color:#058552;margin:0!important">In Stock</p>
 
-                <p class="mid3-sz" style="margin:0!important;"><span style="font-weight: 500">{{ item['ProductID'] }} </span><span style="color:black">Black</span></p>
+                <p class="mid3-sz" style="margin:0!important;"><span style="font-weight: 500">{{ item['Description'] }}</p>
                 <div style="display:flex;justify-content: flex-start;">
-                  <p class="mid3-sz" style="margin:0!important;margin-right:10px!important"><span style="font-weight: 500">Qty: </span></p>
-                  <select style="width:60px;height:40px" class="form-select select-ui" aria-label="Disabled select example">
-                    <option value="1" selected>1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">5</option>
-                    <option value="4">6</option>
-                    <option value="4">7</option>
-                    <option value="4">8</option>
-                    <option value="4">9</option>
-                    <option value="4">10</option>
-                  </select>
+                  <p class="mid3-sz" style="margin:0!important;margin-right:10px!important"><span style="font-weight: 500">Qty: {{ item['Description'] }}</span></p>
                 </div>
                 <br>
                 <div style="display:flex;justify-content: flex-start;">
                  
-                    <button class="buy_now">Remove</button>    
+                    <button type="submit" class="buy_now"><a href="{{url_for("delete_shopping_cart", product_id=item['ProductID'])}}" id="delete_from_cart">Remove</a></button>
+                    <button class="buy_now"><a href="{{url_for("pay", price=item['Price'])}}" id="delete_from_cart">Buy Now</a></button> 
                 </div>
               </div>
               <div style="padding:10px 0px;width: 17% !important;" class="col-md-2">
-                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important;float: right;"><i class="fa fa-inr" aria-hidden="true"></i> <span>650</span></h5>
+                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important;float: right;"><i class="fa fa-inr" aria-hidden="true"></i> <span>{{ item['Price'] }}</span></h5>
               </div>
             </div>
           </div>

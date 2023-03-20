@@ -3,37 +3,42 @@
 <body>
     
 
-    <header>
-        <nav class="navbar">
-          <ul>
-      
-            <li id="a1"><b>CDSLite</b></li>
-            <li id="a2">
-              
-              </li>
-              <li id="a3"><a href="/index">Bid</a></li>
-              <li id="a3"><a href="barterproduct.html">Barter</a></li>
-              <li id="a3"><a href="merchandise.html">Merchandise</a></li>
-              <li id="a3"><a href="/index/shopping_cart"><img src="/static/image/cart.png" alt=""></a></li>
-              <li id="a3">
-                  <div class="profile_dropdown">
-                      <button class="profile"><img src="/static/image/user.png" alt=""></button>
-                      <div class="profile-content">
-                          <a href="profile.html">Edit Profile</a>
-                          <a href="addProduct.html">Add Product</a>
-                          <a href="myproducts.html">My Product</a>
-                          <a href="#">My order</a>
-                          <a href="login.html">log Out</a>               
-                      </div>
-                  
+  <header>
+    <nav class="navbar">
+      <ul>
+  
+        <li id="a1"><b>CDSLite</b></li>
+        <li id="a2">
+        
+          </li>
+          <li id="a2">
+        
+          </li>
+          
+          <li id="a3"><a href="/index">Bid</a></li>
+          <li id="a3"><a href="Barter.html">Barter</a></li>
+          <li id="a3"><a href="merchandise.html">Merchandise</a></li>
+          <li id="a3"><a href="/index/shopping_cart"><img src="/static/image/cart.png" alt=""></a></li>
+          <li id="a3">
+              <div class="profile_dropdown">
+                  <button class="profile"><img src="/static/image/user.png" alt=""></button>
+                  <div class="profile-content">
+                      <a href="profile.html">Edit Profile</a>
+                      <a href="addProduct.html">Add Product</a>
+                      <a href="myproducts.html">My Product</a>
+                      <a href="#">My order</a>
+                      <a href="login.html">log Out</a>               
                   </div>
-                
-              </li>
-          </ul>
-        </nav>
-      </header>
+              
+              </div>
+            
+          </li>
+      </ul>
+    </nav>
+  </header>
   
   <form method="POST" action="" class="card">
+   
     {% with messages = get_flashed_messages() %}
                 {% if messages %}
                 <div class="alert alert-danger" role="alert">
@@ -52,7 +57,7 @@
     <p class="size">Address line: <input type="text" name="addressline" placeholder="{{ data['AddressLine'] }}" id="" class="bid_daalo" required></p>
     <p class="size">City: <input type="text" placeholder="{{ data['City'] }}" name="city" id="" class="bid_daalo" required></p>
     <p class="size">Pincode: <input type="number" name="pincode" id="" placeholder="{{ data['PinCode'] }}" class="bid_daalo" required></p>
-    <button type="submit" class="btns">Update Profile</button>
+    <button type="submit" class="btns" onclick="confirmBid()">Update Profile</button>
 
       </form>
       <script src="pdt_form.js"></script>

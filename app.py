@@ -195,14 +195,15 @@ def delete_user():
     return redirect(url_for('login'))
 
 
-@app.route('/payment', methods=['GET', 'POST'])
-def pay():
+@app.route('/payment/<price>', methods=['GET', 'POST'])
+def pay(price):
     if 'uid' not in session:
         flash("Please login to continue", 'danger')
         return redirect(url_for('login'))
     # Get payment amount from the form
     print("Entered")
-    amount = 100 * 100  # convert to paise
+    print(price)
+    amount = int(price) * 100  # convert to paise
     currency = "INR"
 
     # Create a Razorpay order
@@ -551,13 +552,32 @@ def add_shopping_cart(product_id):
 
 @app.route('/delete_cart/<product_id>')
 def delete_shopping_cart(product_id):
-    pass
+    if 'uid' not in session:
+        flash("Please login to continue", 'danger')
+        return redirect(url_for('login'))
+
+    user_id = session['uid']
+    print("product_id", product_id)
+    query = f"DELETE FROM ShoppingCart WHERE UserID = '{user_id}' and ProductID = '{product_id}'"
+    flash("Product deleted from cart", 'success')
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute(query)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+
+    cur.close()
+    return redirect(url_for('read_shopping_cart'))
 
 
 @app.route('/index/shopping_cart', methods=['GET', 'POST'])
 def read_shopping_cart():
+    if 'uid' not in session:
+        flash("Please login to continue", 'danger')
+        return redirect(url_for('login'))
     user_id = session['uid']
-    query = f"SELECT * FROM ShoppingCart WHERE UserID = '{user_id}'"
+    query = f"SELECT * FROM ShoppingCart LEFT JOIN ( SELECT ProductID, ProductName, Price, Description_, CreationDate, UpdationDate, CategoryID FROM (SELECT BidTable.ProductID, ProductName, BidPrice AS Price, Description_, CreationDate, UpdationDate, CategoryID FROM BidTable LEFT JOIN VP_Products ON BidTable.productID = VP_Products.productID WHERE BidStatus = 'Confirmed') as temp UNION SELECT ProductID, ProductName, MRP AS Price, Description_, CreationDate, UpdationDate, CategoryID FROM FP_Products  ) AS temp2 ON ShoppingCart.ProductID = temp2.ProductID WHERE (UserID = {user_id});"
     cur = mysql.connection.cursor()
 
     try:
