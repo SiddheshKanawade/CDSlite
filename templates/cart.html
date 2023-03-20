@@ -99,23 +99,12 @@
                 <img class="img-sz" style="height:200px" src="hoodie.jpg">
               </div>
               <div style="padding:10px 0px;width: 50% !important;" class="col-md-6">
-                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important">{{ item['UserID'] }}</h5>
+                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important">{{ item['ProductName'] }}</h5>
                 <p class="mid3-sz" style="color:#058552;margin:0!important">In Stock</p>
 
-                <p class="mid3-sz" style="margin:0!important;"><span style="font-weight: 500">{{ item['ProductID'] }} </span><span style="color:black">Black</span></p>
+                <p class="mid3-sz" style="margin:0!important;"><span style="font-weight: 500">{{ item['Description'] }}</p>
                 <div style="display:flex;justify-content: flex-start;">
-                  <p class="mid3-sz" style="margin:0!important;margin-right:10px!important"><span style="font-weight: 500">Qty: </span></p>
-                  <select style="width:60px;height:40px" class="form-select select-ui" aria-label="Disabled select example">
-                    <option value="1" selected>1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">5</option>
-                    <option value="4">6</option>
-                    <option value="4">7</option>
-                    <option value="4">8</option>
-                    <option value="4">9</option>
-                    <option value="4">10</option>
-                  </select>
+                  <p class="mid3-sz" style="margin:0!important;margin-right:10px!important"><span style="font-weight: 500">Qty: {{ item['Description'] }}</span></p>
                 </div>
                 <br>
                 <div style="display:flex;justify-content: flex-start;">
@@ -124,7 +113,7 @@
                 </div>
               </div>
               <div style="padding:10px 0px;width: 17% !important;" class="col-md-2">
-                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important;float: right;"><i class="fa fa-inr" aria-hidden="true"></i> <span>650</span></h5>
+                <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important;float: right;"><i class="fa fa-inr" aria-hidden="true"></i> <span>{{ item['Price'] }}</span></h5>
               </div>
             </div>
           </div>

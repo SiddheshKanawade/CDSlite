@@ -530,8 +530,11 @@ def delete_shopping_cart(product_id):
 
 @app.route('/index/shopping_cart', methods=['GET', 'POST'])
 def read_shopping_cart():
+    if 'uid' not in session:
+        flash("Please login to continue", 'danger')
+        return redirect(url_for('login'))
     user_id = session['uid']
-    query = f"SELECT * FROM ShoppingCart WHERE UserID = '{user_id}'"
+    query = f"SELECT * FROM ShoppingCart LEFT JOIN ( SELECT ProductID, ProductName, Price, Description_, CreationDate, UpdationDate, CategoryID FROM (SELECT BidTable.ProductID, ProductName, BidPrice AS Price, Description_, CreationDate, UpdationDate, CategoryID FROM BidTable LEFT JOIN VP_Products ON BidTable.productID = VP_Products.productID WHERE BidStatus = 'Confirmed') as temp UNION SELECT ProductID, ProductName, MRP AS Price, Description_, CreationDate, UpdationDate, CategoryID FROM FP_Products  ) AS temp2 ON ShoppingCart.ProductID = temp2.ProductID WHERE (UserID = {user_id});"
     cur = mysql.connection.cursor()
 
     try:
