@@ -59,13 +59,33 @@ function displayBarterAsButtons(BarterArray) {
     // Loop through the bids array and create a button for each bid
     for (let i = 0; i < BarterArray.length; i++) {
       // Create a new button element
+      
       const Barterbutton = document.createElement("button");
+      Barterbutton.id = "bid_btn_id";
       Barterbutton.classList.add('btns1');
-      Barterbutton.addEventListener("click",goToBarter_buyer);
-  
       // Set the button text to the bid amount
-      Barterbutton.innerText = BarterArray[i].productname;
+      const elm = document.createElement("a");
+      const var1 = BarterArray[i]['BarterID'];
+      try {
+        var1 = JSON.parse(var1);
+      }
+      catch (error) {
+        console.log('Error parsing JSON:', error, var1);
+      }
+      console.log("var1 ", var1);
+      elm.innerText = BarterArray[i].ProductName;
+      elm.href = `/buyer_barter/${var1}`;
+      Barterbutton.append(elm);
+      //Barterbutton.addEventListener("click",function() {confirm_barter(BarterArray[i].BarterID);});
   
+      
+      if(BarterArray[i].BidStatus == 'Confirmed')
+      {
+        const bid_btn = document.getElementById("bid_btn_id");
+        bid_btn.style.color = "white";
+        bid_btn.style.backgroundColor = "green";
+        bid_btn.style.fontWeight = "bold";
+      }
       // Add the button to the HTML document
       displayBarter.appendChild(Barterbutton);
     }
