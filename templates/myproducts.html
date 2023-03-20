@@ -59,6 +59,15 @@
     </nav>
   </header>
 
+  {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="alert alert-danger" role="alert">
+                    {% for message in messages %}
+                        <span style="color: red;">{{ message }}</span><br>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endwith %}
   <script>
     function del_Function_fp(param1) {
       // const param1 = JSON.parse(document.getElementById('data2').textContent)

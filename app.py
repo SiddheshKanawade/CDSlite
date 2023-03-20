@@ -39,7 +39,17 @@ def index():
     user_id = session['uid']
     if (user_id == None):
         user_id = '1'
-    return render_template("index.html", uid=user_id)
+    query = f"select * from vp_products where isBarter='No'"
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute(query)
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    vplist = cur.fetchall()
+    if(vplist == None):
+        flash("There are no products available for Bid")
+    print(vplist)
+    return render_template("index.html", vplist=vplist)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -413,9 +423,16 @@ def account2(user_id,pid):
         bank = form_details['bank']
         acc = form_details["Account"]
         ifsc = form_details["IFSC"]
+        temp = None
         cur = mysql.connection.cursor()
-        total_existing_sellers = cur.execute("SELECT * FROM Seller")
-        seller_id = "SE" + str(total_existing_sellers+1)
+        while True:
+            temp = generate_uuid()
+            gen_id = "SE" + str(temp)
+            query = f"SELECT * from Seller WHERE Seller.SellerID='{gen_id}'"
+            response = cur.execute(query)
+            if response == 0:
+                break
+        seller_id = "SE" + str(temp)
         q = f"INSERT INTO Seller VALUES ('{seller_id}','{user_id}',0 ,'{bank}',{acc},'{ifsc}')"
 
         try:
@@ -442,7 +459,17 @@ def Barter():
         brtlist=cur.fetchall()
         cur.close()
         return render_template("barterproduct.html", brtlist = brtlist)
-    return render_template("index.html")
+    query = f"select * from vp_products where isBarter='Yes'"
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute(query)
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    vplist = cur.fetchall()
+    if(vplist == None):
+        flash("There are no products available for Bid")
+    print(vplist)
+    return render_template("index.html",vplist=vplist)
 
 @app.route('/barterpage/<id>', methods=['GET', 'POST'])
 def barterpage(id):
@@ -519,7 +546,7 @@ def myproducts():
     f = cur.fetchone()
     if (f == None):
         flash("You have not uploaded any products yet.", 'danger')
-        return render_template("index.html")
+        return redirect(url_for('index'))
 
     seller_id = f['SellerID']
     # print(seller_id)
@@ -543,7 +570,7 @@ def myproducts():
 
     if (len(fplist) == 0 and len(vplist) == 0):
         flash("There are no products left in your catalog.", 'danger')
-        return render_template("index.html")
+        return redirect(url_for('index'))
     return render_template("myproducts.html", fplist=fplist, vplist=vplist)
 
 @app.route('/dele/<param1>', methods=['GET', 'POST'])
@@ -628,7 +655,7 @@ def vp_products(id):
 @app.route('/fp_products/<id>', methods = ["GET", "POST"])
 def fp_products(id):
     cur = mysql.connection.cursor()
-    print("here in edit")
+    # print("here in edit")
     try:
         cur.execute("SELECT * from SubCategory")
     except Exception as e:
@@ -687,21 +714,82 @@ def fp_products(id):
         return redirect(url_for('myproducts'))
     return render_template("edit_products_fp.html", subcatlist=subcatlist, catlist = catlist, fplist=fplist)
 
-@app.route('/bid_buyer', methods = ["GET", "POST"])
-def bid_buyer():
-    print("ekfgwho")
-    return render_template("bid_buyer.html")
+@app.route('/bid_buyer/<id_>', methods = ["GET", "POST"])
+def bid_buyer(id_):
+    if request.method == 'POST':
+        bid_id = None
+        user_id = session['uid']
+        cur = mysql.connection.cursor()
+        while True:
+            bid_id = generate_uuid()
+            query = f"SELECT * from BidTable WHERE BidTable.BidID='{bid_id}'"
+            response = cur.execute(query)
+            if response == 0:
+                break
+        form_details = request.form
+        bid_price = form_details["bid"]
+        q= f"INSERT INTO BidTable VALUES ('{bid_id}','{id_}','{user_id}',DEFAULT,{bid_price},'Pending')"
+        try:
+            cur.execute(q)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        return redirect(url_for('index'))
+    
+    query = f"Select * from vp_products where ProductID='{id_}'"
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute(query)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    prod_list = cur.fetchone()
+    return render_template("bid_buyer.html", plist=prod_list)
 
-@app.route('/bid_page', methods = ["GET", "POST"])
-def bid_page():
-    print("ekfgwho")
-    return render_template("bidpage.html")
+@app.route('/bid_page/<id_>', methods = ["GET", "POST"])
+def bid_page(id_):
+    query = f"Select * from (Select * from BidTable natural join vp_products where VP_products.ProductID=BidTable.ProductID) as P where P.ProductID='{id_}'"
+    cur =  mysql.connection.cursor()
+    try:
+        cur.execute(query)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    bidarray = cur.fetchall()
+    if(len(bidarray) == 0):
+        flash("There are no bid or barter requests on this product")
+        return redirect(url_for('myproducts'))
+    print("khvl ", bidarray)
+    return render_template("bidpage.html",bidarray=bidarray)
 
+@app.route('/confirm_bid/<bid_id>')
+def confirm_bid(bid_id):
+    q = f"UPDATE BidTable SET BidStatus = 'Confirmed' where BidID='{bid_id}'"
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute(q)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    q2 = f"Select ProductID from BidTable where BidID='{bid_id}'"
+    try:
+        cur.execute(q2)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    res = cur.fetchone()
+    p_id = res['ProductID']
+    q3 = f"UPDATE BidTable SET BidStatus = 'Declined' where ProductID = '{p_id}' and BidStatus != 'Confirmed'"
+    try:
+        cur.execute(q3)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    return redirect(url_for('myproducts'))
 
 @app.route('/add_cart/<product_id>')
 def add_shopping_cart(product_id):
     user_id = session['uid']
-    creation_date = current_date()
     quantity = 1
     cur = mysql.connection.cursor()
     # Check if product already exists in cart
@@ -711,7 +799,7 @@ def add_shopping_cart(product_id):
         flash("Product already exists in cart", 'danger')
         return redirect(url_for('index'))
 
-    query = f"INSERT INTO ShoppingCart VALUES ('{user_id}','{product_id}','{quantity}','{creation_date}')"
+    query = f"INSERT INTO ShoppingCart VALUES ('{user_id}','{product_id}','{quantity}',DEFAULT)"
 
     try:
         cur.execute(query)

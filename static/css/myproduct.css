@@ -276,6 +276,10 @@ a:visited
     float: left;
     margin-left: 3%;
     display: flex;
+    color: white;
+}
+.button_correct {
+    color: white;
 }
 .product_container {
     display: flex;
