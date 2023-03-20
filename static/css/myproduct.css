@@ -284,7 +284,7 @@ a:visited
 .product_container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: flex-start;
     position: static;
   }
   
@@ -352,5 +352,9 @@ a:visited
   
   .product_card .details a button:hover {
     background-color: #165c9b;
+  }
+
+  .card {
+    position: static;
   }
   
