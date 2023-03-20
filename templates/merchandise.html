@@ -1,406 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>My Products</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="merchandise.css">
-    <title>BuySellPortal</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+        integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+        crossorigin="anonymous" />
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="/static/css/myproduct.css">
+    <script type = "text/javascript" src="../static/js/pdt_form.js"></script>
 </head>
-<body>
-  
-       <!-- <div class="header">
-            <div class="name">
-                <h1>Name</h1>
-            </div>
-            <div class="navbar">
-            --> 
- <!--   <div class="buysell">
-        <nav>
-            <h2>CDSLite</h2>
-            <ul>
-                <li>
-                    <div class="input-group rounded">
-                        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-                        <span class="input-group-text border-0" id="search-addon">
-                            <i class="fas fa-search"></i>
-                        </span>
-                    </div>
-                </li>
-                <li><a href="home.html">Home</a></li>
-                <li><a href="about.html">Barter</a></li>
-                <li><a href="contact.html">Bid Us</a></li>
-                <li><a href="projects.html">Merchandise</a></li>
-                <li><a href="skills.html">Contact</a></li>
-                <li>
-                    <div class="dropdown">
-                        <button class="category">Categories</button>
-                        <div class="dropdown-content">
-                            <a href="#">Clothing and Accessories</a>
-                            <a href="#">Automotive Accessories</a>
-                            <a href="#">Food Products</a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                            <a href="#"></a>
-                        </div>
-                    
-                    </div>
-                </li>
-            
-                <li><a href="login.html"><img src="user.png" alt="" style="height:30px"></a></li>
-            </ul>
-        </nav>
-    </div>
--->
 
-<link href="style.css" rel="stylesheet" type="text/css" />
+<body>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dongle&family=Ubuntu&display=swap" rel="stylesheet">
-  <script src="merchandise.js"></script>
+  <script src="/static/js/myproducts.js"></script>
 
-<header>
-  <nav class="navbar">
-    <ul>
-
-      <li id="a1"><b>CDSLite</b></li>
-      <li id="a2">
-        <form>
-            <input type="text" class="search-box" placeholder="Search products">
-            <button id="search-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                </svg>
-            </button>
-        </form>
-        </li>
-        <li id="a3"><a href="index.html">Bid</a></li>
-        <li id="a3"><a href="barterproduct.html">Barter</a></li>
-        <li id="a3"><a href="merchandise.html">Merchandise</a></li>
-        <li id="a3"><a href="cart.html"><img src="cart.png" alt=""></a></li>
-        <li id="a3">
-            <div class="profile_dropdown">
-                <button class="profile"><img src="user.png" alt=""></button>
-                <div class="profile-content">
-                    <a href="profile.html">Edit Profile</a>
-                    <a href="addProduct.html">Add Product</a>
-                    <a href="myproducts.html">My Product</a>
-                    <a href="#">My order</a>
-                    <a href="login.html">log Out</a>               
+  <header>
+    <nav class="navbar">
+      <ul>
+  
+        <li id="a1"><b>CDSLite</b></li>
+        <li id="a2">
+          <form>
+              <input type="text" class="search-box" placeholder="Search products">
+              <button id="search-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                  </svg>
+              </button>
+          </form>
+          </li>
+         
+          <li id="a3"><a href="{{url_for('index')}}">Bid</a></li>
+          <li id="a3"><a href="{{url_for('Barter')}}">Barter</a></li>
+          <li id="a3"><a href="{{url_for('merchandise')}}">Merchandise</a></li>
+          <li id="a3"><a href= "{{url_for('read_shopping_cart')}}"><img src="/static/image/cart.png" alt=""></a></li>
+          <li id="a3">
+                <div class="profile_dropdown">
+                    <button class="profile"><img src="/static/image/user.png" alt=""></button>
+                    <div class="profile-content">
+                        <a href="#">Edit Profile</a>
+                        <a href="{{ url_for('product') }}">Add Product</a>
+                        <a href="{{ url_for('myproducts') }}">My Product</a>
+                        <a href="#">My order</a>
+                        <a href="/logout">log Out</a>               
+                    </div>
+                
                 </div>
-            
-            </div>
-          
-        </li>
-    </ul>
-  </nav>
-</header>
-
-
-
+              
+          </li>
+      </ul>
+    </nav>
+  </header>
 
     <!--Categories-->
     <div class="sidebar-default">
-        <div class="category-content">
-            <h2 class="cat-title">Categories</h2>
-            <ul class="w3-ul w3-card-4" style="width:30%">
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type1" name="type1">
-                            <label for="type1">
-                                Clothing and Accessories
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type2" name="type2">
-                            <label for="type2">
-                                Automotive Accessories
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type3" name="type3">
-                            <label for="type3">
-                                Food Products
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type4" name="type4">
-                            <label for="type4">
-                                Books
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type5" name="type5">
-                            <label for="type5">
-                                Industrial & Scientific Supplies
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type6" name="type6">
-                            <label for="type6">
-                                Health Care
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type7" name="type7">
-                            <label for="type7">
-                                Home Improvement
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type8" name="type8">
-                            <label for="type8">
-                                Building Materials and Supplies
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type9" name="type9">
-                            <label for="type9">
-                                Beauty and Grooming
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type10" name="type10">
-                            <label for="type10">
-                                Computers
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type11" name="type11">
-                            <label for="type11">
-                                Cameras & Accessories
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type12" name="type12">
-                            <label for="type12">
-                                Gaming
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type13" name="type13">
-                            <label for="type13">
-                                Home Entertainment
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type14" name="type14">
-                            <label for="type14">
-                                Home & Kitchen
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type15" name="type15">
-                            <label for="type15">
-                                Pens & Stationery
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type16" name="type16">
-                            <label for="type16">
-                                Bags, Wallets & Belts
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type17" name="type17">
-                            <label for="type17">
-                                Home Lighting
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type18" name="type18">
-                            <label for="type18">
-                                Kitchen, Cookware & Serveware
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type19" name="type19">
-                            <label for="type19">
-                                Jewellery
-                            </label>
-                        </span>
-                    </div>
-                </li>
 
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type20" name="type20">
-                            <label for="type20">
-                                Home Cleaning & Bathroom Accessories
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type21" name="type21">
-                            <label for="type21">
-                                Audio & Video
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type22" name="type22">
-                            <label for="type22">
-                                Eyewear
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type23" name="type23">
-                            <label for="type23">
-                                Vas
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type24" name="type24">
-                            <label for="type24">
-                                Pet Supplies
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type25" name="type25">
-                            <label for="type25">
-                                Home Furnishing
-                            </label>
-                        </span>
-                    </div>
-                </li>
-                <li>
-                    <div class="check-box">
-                        <span>
-                            <input type="checkbox" class="checkbox" name="" id="type26" name="type26">
-                            <label for="type26">
-                                Sorts
-                            </label>
-                        </span>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
+   </div>
+
     <div class="card">
 
         <div class="product_container"></div> 
 
-         <script src="merchandise.js"></script>
+         <script src="/static/js/merchandise.js"></script>
         <script>
-          const products = [
-            {name: 'Blithchron Hoodie', price: 'Rs.800', imageUrl: "hoodie.jpg"},
-            {name: 'Blithchron Hoodie', price: 'Rs.800', imageUrl: 'hoodie.jpg'},
-            {name: 'Blithchron Hoodie', price: 'Rs.800', imageUrl: 'hoodie.jpg'},
-            {name: 'Blithchron Hoodie', price: 'Rs.800', imageUrl: 'hoodie.jpg'},
-            {name: 'Blithchron Hoodie', price: 'Rs.800', imageUrl: 'hoodie.jpg'}
-          ];
-      
+          products = {{plist | tojson}}
           createProductCards(products);
         </script>
     </div>

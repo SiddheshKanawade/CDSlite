@@ -8,6 +8,29 @@ from src.helper import generate_uuid
 app, mysql, razorpay_client = create_app()
 
 # HELPER FUNCTIONS
+# @app.route('/payment/<price>', methods=['GET', 'POST'])
+
+
+def pay(price):
+    # Get payment amount from the form
+    print("Entered")
+    print(price)
+    amount = int(price)  # convert to paise
+    currency = "INR"
+
+    # Create a Razorpay order
+    order = razorpay_client.order.create({
+        'amount': amount,  # Razorpay requires amount in paise
+        'currency': currency,
+        'payment_capture': 1  # Automatically capture the payment when it is made
+    })
+
+    # Extract the order ID from the response
+    order_id = order['id']
+    print(order)
+
+    # Return the order ID to the client
+    return order
 
 
 def update_user(user_details, user_id):
@@ -39,14 +62,14 @@ def index():
     user_id = session['uid']
     if (user_id == None):
         user_id = '1'
-    query = f"select * from vp_products where isBarter='No'"
+    query = f"select * from VP_Products where isBarter='No'"
     cur = mysql.connection.cursor()
     try:
         cur.execute(query)
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     vplist = cur.fetchall()
-    if(vplist == None):
+    if (vplist == None):
         flash("There are no products available for Bid")
     print(vplist)
     return render_template("index.html", vplist=vplist)
@@ -185,7 +208,7 @@ def read_user():
     return render_template("profile.html", data=response)
 
 
-@app.route('/delete_user', methods=['POST'])
+@app.route('/delete_user', methods=['GET', 'POST'])
 def delete_user():
     if 'uid' not in session:
         flash("Please login to continue", 'danger')
@@ -203,32 +226,6 @@ def delete_user():
     session.clear()
     flash('Your account has been deleted', 'success')
     return redirect(url_for('login'))
-
-
-@app.route('/payment/<price>', methods=['GET', 'POST'])
-def pay(price):
-    if 'uid' not in session:
-        flash("Please login to continue", 'danger')
-        return redirect(url_for('login'))
-    # Get payment amount from the form
-    print("Entered")
-    print(price)
-    amount = int(price) * 100  # convert to paise
-    currency = "INR"
-
-    # Create a Razorpay order
-    order = razorpay_client.order.create({
-        'amount': amount * 100,  # Razorpay requires amount in paise
-        'currency': currency,
-        'payment_capture': 1  # Automatically capture the payment when it is made
-    })
-
-    # Extract the order ID from the response
-    order_id = order['id']
-    print(order)
-
-    # Return the order ID to the client
-    return render_template("confirm_payment.html", payment=order)
 
 
 @app.route('/payment-callback')
@@ -354,7 +351,7 @@ def product():
             response = cur.execute(query)
             if response == 0:
                 break
-        
+
         q = f"INSERT INTO Products VALUES ('{product_id}','{seller_id}')"
         cur = mysql.connection.cursor()
         try:
@@ -412,12 +409,13 @@ def product():
                     mysql.connection.commit()
                 except Exception as e:
                     raise Exception(f"UNable to run query. Error: {e}")
-
+        flash("Product added successfully", 'success')
         return redirect(url_for('myproducts'))
     return render_template("addProduct.html", subcatlist=subcatlist, catlist=catlist)
 
+
 @app.route('/account2/<user_id>/<pid>', methods=['GET', 'POST'])
-def account2(user_id,pid):
+def account2(user_id, pid):
     if request.method == 'POST':
         form_details = request.form
         bank = form_details['bank']
@@ -440,11 +438,11 @@ def account2(user_id,pid):
             mysql.connection.commit()
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
-        return redirect(url_for('barterpage',id=pid))
+        return redirect(url_for('barterpage', id=pid))
     return render_template("acc_details.html")
 
 
-@app.route('/Barter',methods=['GET', 'POST'])
+@app.route('/Barter', methods=['GET', 'POST'])
 def Barter():
     if request.method == 'GET':
         cur = mysql.connection.cursor()
@@ -455,38 +453,39 @@ def Barter():
             mysql.connection.commit()
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
-        
-        brtlist=cur.fetchall()
+
+        brtlist = cur.fetchall()
         cur.close()
-        return render_template("barterproduct.html", brtlist = brtlist)
-    query = f"select * from vp_products where isBarter='Yes'"
+        return render_template("barterproduct.html", brtlist=brtlist)
+    query = f"select * from VP_Products where isBarter='Yes'"
     cur = mysql.connection.cursor()
     try:
         cur.execute(query)
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     vplist = cur.fetchall()
-    if(vplist == None):
+    if (vplist == None):
         flash("There are no products available for Bid")
     print(vplist)
-    return render_template("index.html",vplist=vplist)
+    return render_template("index.html", vplist=vplist)
+
 
 @app.route('/barterpage/<id>', methods=['GET', 'POST'])
 def barterpage(id):
     print("here in barterpage")
-    user_id =  session['uid']
+    user_id = session['uid']
 
     if request.method == 'POST':
         cur = mysql.connection.cursor()
         total_existing_products = cur.execute("SELECT * FROM Products")
 
-        q3=f"SELECT SellerID FROM Seller WHERE UserID='{user_id}'"
+        q3 = f"SELECT SellerID FROM Seller WHERE UserID='{user_id}'"
 
         cur.execute(q3)
         mysql.connection.commit()
         f = cur.fetchone()
         if (f == None):
-            return redirect(url_for("account2",user_id=user_id,pid=id))
+            return redirect(url_for("account2", user_id=user_id, pid=id))
         seller_id = f['SellerID']
 
         product_id = str(total_existing_products+1)
@@ -494,14 +493,14 @@ def barterpage(id):
         prod_name = form_details["product-name"]
         desc = form_details["description"]
         creation_date = current_date()
-        q1=f"INSERT INTO Products VALUES ('{product_id}','{seller_id}')"
+        q1 = f"INSERT INTO Products VALUES ('{product_id}','{seller_id}')"
 
         try:
             cur.execute(q1)
             mysql.connection.commit()
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
-        
+
         q = f"INSERT INTO Unlisted_Products VALUES ('{product_id}','{prod_name}','{desc}','{creation_date}')"
 
         try:
@@ -509,7 +508,7 @@ def barterpage(id):
             mysql.connection.commit()
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
-        
+
         while True:
             Barter_id = generate_uuid()
             query = f"SELECT * from Barter WHERE Barter.BarterID='{Barter_id}'"
@@ -524,7 +523,7 @@ def barterpage(id):
             mysql.connection.commit()
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
-        
+
         return render_template("success.html")
     return render_template("barterpage.html")
 
@@ -573,10 +572,11 @@ def myproducts():
         return redirect(url_for('index'))
     return render_template("myproducts.html", fplist=fplist, vplist=vplist)
 
+
 @app.route('/dele/<param1>', methods=['GET', 'POST'])
 def dele(param1='1'):
     cur = mysql.connection.cursor()
-    print( "Deleting", param1)
+    print("Deleting", param1)
     q2 = f"Delete from Products where ProductID = '{param1}'"
     try:
         cur.execute(q2)
@@ -586,7 +586,8 @@ def dele(param1='1'):
         raise Exception(f"UNable to run query. Error: {e}")
     return redirect(url_for('myproducts'))
 
-@app.route('/vp_products/<id>', methods = ["GET", "POST"])
+
+@app.route('/vp_products/<id>', methods=["GET", "POST"])
 def vp_products(id):
     if 'uid' not in session:
         flash("Please login to continue", 'danger')
@@ -622,8 +623,8 @@ def vp_products(id):
         base_price = form_details["BasePrice"]
         is_barter = form_details["isBarter"]
         subcat_id = form_details.getlist("scat")
-        
-        q2 = f"UPDATE vp_products SET ProductName = '{pdt_name}', Description_ = '{desc}', BasePrice = '{base_price}', CategoryID = '{category_id}',isBarter = '{is_barter}', UpdationDate = '{updation_date}' WHERE ProductID = '{id}'"
+
+        q2 = f"UPDATE VP_Products SET ProductName = '{pdt_name}', Description_ = '{desc}', BasePrice = '{base_price}', CategoryID = '{category_id}',isBarter = '{is_barter}', UpdationDate = '{updation_date}' WHERE ProductID = '{id}'"
         cur = mysql.connection.cursor()
         try:
             cur.execute(q2)
@@ -631,7 +632,7 @@ def vp_products(id):
             print("Updated!")
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
-        
+
         q2 = f"DELETE FROM vphassubcat WHERE ProductID = '{id}'"
         cur = mysql.connection.cursor()
         try:
@@ -640,7 +641,7 @@ def vp_products(id):
             print("Updated!")
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
-        
+
         for i in subcat_id:
             q3 = f"INSERT INTO VPhasSubCat VALUES ('{id}','{i}')"
             try:
@@ -648,11 +649,12 @@ def vp_products(id):
                 mysql.connection.commit()
             except Exception as e:
                 raise Exception(f"UNable to run query. Error: {e}")
-        
-        return redirect(url_for('myproducts'))
-    return render_template("edit_products_vp.html", subcatlist=subcatlist, catlist = catlist, vplist=vplist)
 
-@app.route('/fp_products/<id>', methods = ["GET", "POST"])
+        return redirect(url_for('myproducts'))
+    return render_template("edit_products_vp.html", subcatlist=subcatlist, catlist=catlist, vplist=vplist)
+
+
+@app.route('/fp_products/<id>', methods=["GET", "POST"])
 def fp_products(id):
     cur = mysql.connection.cursor()
     # print("here in edit")
@@ -693,7 +695,7 @@ def fp_products(id):
             print("Updated!")
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
-        
+
         q2 = f"DELETE FROM vphassubcat WHERE ProductID = '{id}'"
         cur = mysql.connection.cursor()
         try:
@@ -702,7 +704,7 @@ def fp_products(id):
             print("Updated!")
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
-        
+
         for i in subcat_id:
             q3 = f"INSERT INTO VPhasSubCat VALUES ('{id}','{i}')"
             try:
@@ -710,11 +712,12 @@ def fp_products(id):
                 mysql.connection.commit()
             except Exception as e:
                 raise Exception(f"UNable to run query. Error: {e}")
-        
-        return redirect(url_for('myproducts'))
-    return render_template("edit_products_fp.html", subcatlist=subcatlist, catlist = catlist, fplist=fplist)
 
-@app.route('/bid_buyer/<id_>', methods = ["GET", "POST"])
+        return redirect(url_for('myproducts'))
+    return render_template("edit_products_fp.html", subcatlist=subcatlist, catlist=catlist, fplist=fplist)
+
+
+@app.route('/bid_buyer/<id_>', methods=["GET", "POST"])
 def bid_buyer(id_):
     if request.method == 'POST':
         bid_id = None
@@ -728,15 +731,15 @@ def bid_buyer(id_):
                 break
         form_details = request.form
         bid_price = form_details["bid"]
-        q= f"INSERT INTO BidTable VALUES ('{bid_id}','{id_}','{user_id}',DEFAULT,{bid_price},'Pending')"
+        q = f"INSERT INTO BidTable VALUES ('{bid_id}','{id_}','{user_id}',DEFAULT,{bid_price},'Pending')"
         try:
             cur.execute(q)
             mysql.connection.commit()
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
         return redirect(url_for('index'))
-    
-    query = f"Select * from vp_products where ProductID='{id_}'"
+
+    query = f"Select * from VP_Products where ProductID='{id_}'"
     cur = mysql.connection.cursor()
     try:
         cur.execute(query)
@@ -746,10 +749,11 @@ def bid_buyer(id_):
     prod_list = cur.fetchone()
     return render_template("bid_buyer.html", plist=prod_list)
 
-@app.route('/bid_page/<id_>', methods = ["GET", "POST"])
+
+@app.route('/bid_page/<id_>', methods=["GET", "POST"])
 def bid_page(id_):
-    query = f"Select * from (Select * from BidTable natural join vp_products where VP_products.ProductID=BidTable.ProductID) as P where P.ProductID='{id_}'"
-    cur =  mysql.connection.cursor()
+    query = f"Select * from (Select * from BidTable natural join VP_Products where VP_Products.ProductID=BidTable.ProductID) as P where P.ProductID='{id_}'"
+    cur = mysql.connection.cursor()
     try:
         cur.execute(query)
         mysql.connection.commit()
@@ -818,7 +822,7 @@ def confirm_bid(bid_id):
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     return redirect(url_for('myproducts'))
-
+    
 @app.route('/confirm_barter/<barter_id>/<pid>')
 def confirm_barter(barter_id, pid):
     q = f"UPDATE barter SET BarterStatus = 'Accepted' WHERE BarterID = '{barter_id}' AND ProductID = '{pid}'"
@@ -842,7 +846,7 @@ def add_shopping_cart(product_id):
     response = cur.execute(query)
     if response != 0:
         flash("Product already exists in cart", 'danger')
-        return redirect(url_for('index'))
+        return redirect(url_for('read_shopping_cart'))
 
     query = f"INSERT INTO ShoppingCart VALUES ('{user_id}','{product_id}','{quantity}',DEFAULT)"
 
@@ -853,7 +857,7 @@ def add_shopping_cart(product_id):
         raise Exception(f"UNable to run query. Error: {e}")
     cur.close()
     flash('Your Product has been added to Cart', 'success')
-    return redirect(url_for('index'))
+    return redirect(url_for('read_shopping_cart'))
 
 
 @app.route('/delete_cart/<product_id>')
@@ -896,15 +900,65 @@ def read_shopping_cart():
     return render_template("cart.html", data=response)
 
 
-@app.route('/order')
-def order_confirmation():
-    pass
+@app.route('/order/<product_id>', methods=['GET'])
+def order_summary(product_id):
+    if 'uid' not in session:
+        flash("Please login to continue", 'danger')
+        return redirect(url_for('login'))
+    data = {}
+
+    cur = mysql.connection.cursor()
+    user_id = session['uid']
+    query = f"SELECT * FROM User WHERE UserID = {user_id}"
+    try:
+        cur.execute(query)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    response = cur.fetchone()
+    data['User'] = response
+    cur.close()
+
+    cur = mysql.connection.cursor()
+    query = f"SELECT * FROM ShoppingCart LEFT JOIN ( SELECT ProductID, ProductName, Price, Description_, CreationDate, UpdationDate, CategoryID FROM (SELECT BidTable.ProductID, ProductName, BidPrice AS Price, Description_, CreationDate, UpdationDate, CategoryID FROM BidTable LEFT JOIN VP_Products ON BidTable.ProductID = VP_Products.ProductID WHERE BidStatus = 'Confirmed') as temp UNION SELECT ProductID, ProductName, MRP AS Price, Description_, CreationDate, UpdationDate, CategoryID FROM FP_Products  ) AS temp2 ON ShoppingCart.ProductID = temp2.ProductID WHERE userID = {user_id} and temp2.ProductID={product_id} ;"
+    try:
+        cur.execute(query)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    response = cur.fetchone()
+    data['Product'] = response
+    cur.close()
+    print(data)
+    # CREATE RAZORPAY ORDER
+    quantity = response['Quantity']
+    price = response['Price']
+    data['Total'] = int(quantity) * int(price)
+    order_details = pay(data['Total'])
+    data['Order_Details'] = order_details
+    print(order_details)
+    return render_template("order.html", data=data)
+
+
+@app.route('/order/cancel', methods=['GET', 'POST'])
+def cancel_order():
+    flash("Order cancelled")
+    return redirect(url_for('index'))
+
+
+@app.route('/merchandise/')
+def merchandise():
+
+    query = f"SELECT * FROM FP_Products;"
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute(query)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    response = cur.fetchall()
+    return render_template('merchandise.html', plist=response)
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-
-

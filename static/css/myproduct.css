@@ -23,15 +23,14 @@ html{
     height: 2.8rem;
     max-width: 100%;
     box-shadow: 0 0 8px 0 grey;
-    position: -webkit-sticky; 
-    position: sticky;
+    align-content: center;
     top:0;
     animation: ex;
     animation-duration: 0.5s;
 }
 .navbar ul{
     left:1%;
-    display: flex;
+    display: contents;
     width:100%;
     list-style: none;
     flex-wrap: nowrap;
@@ -63,6 +62,8 @@ html{
     top: 0;
     display: flex;
     flex-wrap: nowrap;
+    height: 2vw;
+    align-items: center;
 }
 .search{
 width: 500px;
@@ -72,8 +73,8 @@ display: flex;
 .search-box{
     top:10%;
     width: 100%;
-    height: 17px;
-    padding: 10px;
+    height: 100%;
+    padding-left: 3%;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     border: none;
@@ -86,7 +87,7 @@ display: flex;
 #search-btn{
     top:10%;
     width: 20%;
-    height: 17 px;
+    height: 100%;
     padding: 5px;
     border: none;
     outline: none;
@@ -284,7 +285,7 @@ a:visited
 .product_container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: flex;
     position: static;
   }
   
@@ -352,5 +353,9 @@ a:visited
   
   .product_card .details a button:hover {
     background-color: #165c9b;
+  }
+
+  .card {
+    position: static;
   }
   
