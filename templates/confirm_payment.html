@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form method="POST" action="https://api.razorpay.com/v1/checkout/embedded">
+        <input type="hidden" name="key_id" value="rzp_test_idu4av7m0TTFkt"/>
+        <input type="hidden" name="amount" value="{{payment['amount']}}"/>
+        <input type="hidden" name="order_id" value="{{payment['id']}}"/>
+        <input type="hidden" name="name" value="CDSLite"/>
+        <input type="hidden" name="description" value="A Wild Sheep Chase"/>
+        <input type="hidden" name="prefill[name]" value="CDS Lite"/>
+        <input type="hidden" name="prefill[contact]" value="7894561230"/>
+        <input type="hidden" name="prefill[email]" value="cdslite@gmail.com"/>
+        <input type="hidden" name="notes[shipping address]" value="IIT Gandhinagar"/>
+        <button>Submit</button>
+      </form>
+</body>
+
+</html>

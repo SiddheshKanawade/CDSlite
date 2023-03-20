@@ -94,18 +94,46 @@
         </form>
         </li>
         <li id="a3"><a href="{{ url_for('index') }}">Bid</a></li>
-        <li id="a3"><a href="barter.html">Barter</a></li>
+        <li id="a3"><a href="{{ url_for('Barter') }}">Barter</a></li>
         <li id="a3"><a href="merchandise.html">Merchandise</a></li>
-        <li id="a3"><a href="cart.html"><img src="/static/image/cart.png" alt=""></a></li>
+        <li id="a3"><a href="/index/shopping_cart"><img src="/static/image/cart.png" alt=""></a></li>
         <li id="a3">
             <div class="profile_dropdown">
                 <button class="profile"><img src="/static/image/user.png" alt=""></button>
                 <div class="profile-content">
-                    <a href="#">Edit Profile</a>
+                    <a href="/read_user">Edit Profile</a>
                     <a href="{{ url_for('product') }}">Add Product</a>
                     <a href="{{ url_for('myproducts') }}">My Product</a>
                     <a href="#">My order</a>
-                    <a href="/logout">log Out</a>               
+                    <a href="/logout">log Out</a>
+                    <a href="/delete_user" id="delete_user">Delete Account</a>
+                    <a href="/payment">Pay</a>
+                    <script>
+                        var payLink = document.getElementById("delete_user");
+                        payLink.addEventListener("click", function(event) {
+                          event.preventDefault(); // prevent the default link behavior
+                      
+                          // create a new form element
+                          var form = document.createElement("form");
+                          form.setAttribute("method", "post");
+                          form.setAttribute("action", "/delete_user");
+                      
+                          // create a hidden input element with a name and value
+                          var input = document.createElement("input");
+                          input.setAttribute("type", "hidden");
+                          input.setAttribute("name", "paramName");
+                          input.setAttribute("value", "paramValue");
+                      
+                          // append the input element to the form element
+                          form.appendChild(input);
+                      
+                          // append the form element to the document body
+                          document.body.appendChild(form);
+                      
+                          // submit the form programmatically
+                          form.submit();
+                        });
+                      </script>           
                 </div>
             
             </div>
