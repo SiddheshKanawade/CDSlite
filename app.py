@@ -391,6 +391,23 @@ def product():
         return redirect(url_for('myproducts'))
     return render_template("addProduct.html", subcatlist=subcatlist, catlist=catlist)
 
+@app.route('/Barter',methods=['GET', 'POST'])
+def Barter():
+    if request.method == 'GET':
+        cur = mysql.connection.cursor()
+        q1 = f"SELECT * from VP_Products WHERE VP_Products.isBarter='Yes'"
+        # print("Returning template")
+        try:
+            cur.execute(q1)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        
+        brtlist=cur.fetchall()
+        cur.close()
+        return render_template("barterproduct.html", brtlist = brtlist)
+    return render_template("index.html")
+
 
 @app.route('/myproducts')
 def myproducts():
@@ -421,16 +438,25 @@ def myproducts():
     fplist = cur.fetchall()
 
     q3 = f"select * from(select * from Products natural join VP_Products where Products.ProductID = VP_Products.ProductID) as P where P.sellerid = '{seller_id}'"
+
     try:
         cur.execute(q3)
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     vplist = cur.fetchall()
 
+    q4=f"SELECT * from VP_Products WHERE VP_Products.isBarter='Yes'"
+    try:
+        cur.execute(q4)
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    brtlist = cur.fetchall()
+
     if (len(fplist) == 0 and len(vplist) == 0):
         flash("There are no products left in your catalog.", 'danger')
         return render_template("index.html")
-    return render_template("myproducts.html", fplist=fplist, vplist=vplist)
+    
+    return render_template("myproducts.html", fplist=fplist, vplist=vplist,brtlist=brtlist)
 
 
 @app.route('/edit/<param1>/<param2>', methods=['GET', 'POST'])
@@ -542,11 +568,6 @@ def read_shopping_cart():
     response = cur.fetchall()
     cur.close()
     return render_template("cart.html", data=response)
-
-
-@app.route('/barter')
-def barter():
-    pass
 
 
 @app.route('/order')
