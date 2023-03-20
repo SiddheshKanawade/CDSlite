@@ -118,7 +118,7 @@
                 <div style="display:flex;justify-content: flex-start;">
                  
                     <button type="submit" class="buy_now"><a href="{{url_for("delete_shopping_cart", product_id=item['ProductID'])}}" id="delete_from_cart">Remove</a></button>
-                    <button class="buy_now"><a href="{{url_for("pay", price=item['Price'])}}" id="delete_from_cart">Buy Now</a></button> 
+                    <button class="buy_now"><a href="{{url_for("order_summary", product_id=item['ProductID'])}}" id="delete_from_cart">Buy Now</a></button> 
                 </div>
               </div>
               <div style="padding:10px 0px;width: 17% !important;" class="col-md-2">
