@@ -57,6 +57,8 @@
         </div>
     </section>
     <section class="Display_Bids">
+        <script src="/static/js/product.js"></script>
+        {% if bidarray|length!=0 %}
         
         <h1>{{bidarray[0]['ProductName']}}</h1>
         <p class="details">{{bidarray[0]['Description_']}}</p>
@@ -64,15 +66,24 @@
         <span class="price"><b>BASE PRICE:</b> Rs. {{bidarray[0]['BasePrice']}}</span><br>
         <br>
         <p class="size"><b>Select Bid:</b></p>
-        <script src="/static/js/product.js"></script>
+        <script>
+        new_bidarr = {{bidarray|tojson}};
+        displayBidsAsButtons(new_bidarr);
+        </script>
+        {% endif %}
+
+        {% if barterlist|length!=0 %}
+        <h1>{{barterlist[0]['VP_ProductName']}}</h1>
+        <p class="size"><b>Select Barter:</b></p>
         <script>
         //let Bids = [10, 15, 20, 25, 30,67,89];
         //let Barter = [23,46];
-        new_bidarr = {{bidarray|tojson}};
-        displayBidsAsButtons(new_bidarr);
-        displayBarterAsButtons(Barter);
+        
+       
+        new_barterarr = {{barterlist|tojson}};
+        displayBarterAsButtons(new_barterarr);
         </script>
-
+        {% endif %}
        <!-- <a href="barter_buyer.html"><button class="btns1">Barter</button></a>  -->
        
     </section>

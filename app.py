@@ -760,12 +760,43 @@ def bid_page(id_):
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     bidarray = cur.fetchall()
-    if (len(bidarray) == 0):
-        flash("There are no bid or barter requests on this product")
-        return redirect(url_for('myproducts'))
-    print("khvl ", bidarray)
-    return render_template("bidpage.html", bidarray=bidarray)
 
+    qr=f"SELECT VP_PID, VP_ProductName, BarterID, Buyer_PID, BarterStatus, BarterDate, ProductName, CreationDate FROM (SELECT VP_PID, VP_ProductName, BarterID, P2ID AS Buyer_PID, BarterStatus, BarterDate FROM (SELECT ProductID AS VP_PID, ProductName AS VP_ProductName FROM vp_products WHERE isBarter = 'Yes') AS temp LEFT OUTER JOIN barter ON temp.VP_PID = barter.P1ID) AS temp2 LEFT OUTER JOIN unlisted_products ON temp2.Buyer_PID = unlisted_products.productID WHERE temp2.VP_PID = '{id_}'"
+
+    try:
+        cur.execute(qr)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    
+    barterlist = cur.fetchall()
+
+    if len(barterlist)==0 and len(bidarray) == 0:
+        flash("no product for barter or bid")
+
+        return redirect(url_for('myproducts'))
+
+    print("khvl ", barterlist)
+    return render_template("bidpage.html",bidarray=bidarray,barterlist=barterlist)
+
+
+@app.route('/buyer_barter/<barter_id_>')
+def buyer_barter(barter_id_):
+    cur=mysql.connection.cursor()
+    print("gbid ", barter_id_)
+    qr=f"SELECT ProductID, temp3.SellerID, BarterID, Seller_Name, Email_ID, MobileNo, ProductName, Description_, CreationDate  FROM ( SELECT ProductID, temp.SellerID, Seller_Name, Email_ID, MobileNo, ProductName, Description_, CreationDate  FROM (SELECT SellerID, FirstName AS Seller_Name, Email_ID, MobileNo FROM seller LEFT JOIN user ON seller.UserID = user.UserID) AS temp RIGHT OUTER JOIN ( SELECT products.ProductID, products.SellerID, ProductName, Description_, CreationDate  FROM unlisted_products LEFT OUTER JOIN products ON unlisted_products.ProductID = products.ProductID ) AS temp2 ON temp.SellerID = temp2.SellerID) AS temp3 LEFT OUTER JOIN Barter ON temp3.ProductID = Barter.P2ID WHERE BarterID = '{barter_id_}'"
+
+
+    print("fjiw")
+    try:
+        cur.execute(qr)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    
+    res = cur.fetchone()
+    print('akgia',res)
+    return render_template("barter_buyer.html",res=res)
 
 @app.route('/confirm_bid/<bid_id>')
 def confirm_bid(bid_id):
@@ -791,7 +822,19 @@ def confirm_bid(bid_id):
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     return redirect(url_for('myproducts'))
-
+    
+@app.route('/confirm_barter/<barter_id>/<pid>')
+def confirm_barter(barter_id, pid):
+    q = f"UPDATE barter SET BarterStatus = 'Accepted' WHERE BarterID = '{barter_id}' AND ProductID = '{pid}'"
+    q2 = f"UPDATE barter SET BarterStatus = 'Declined' WHERE BarterID = '{barter_id}' AND BarterStatus = 'Pending'"
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute(q)
+        cur.execute(q2)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    return barter_id
 
 @app.route('/add_cart/<product_id>')
 def add_shopping_cart(product_id):
