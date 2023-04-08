@@ -69,14 +69,14 @@ function addToCart() {
     const imgdiv2 = document.createElement('div');
     imgdiv2.classList.add('edit-img');
 
-    // const pimg = document.createElement('img');
-    // pimg.src = productDetails.ImageUrl;
-    // pimg.alt = "";
+    const pimg = document.createElement('img');
+    pimg.src = `/get_image/${productDetails.ProductID}`;
+    pimg.alt = "";
 
     DetailContainer.appendChild(imgsection);
     
     
-    //imgdiv2.appendChild(pimg);
+    imgdiv2.appendChild(pimg);
     imgdiv.appendChild(imgdiv2);
     imgsection.appendChild(imgdiv);
 

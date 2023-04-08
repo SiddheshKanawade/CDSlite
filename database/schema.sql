@@ -177,4 +177,11 @@ foreign key(OrderID) references Order_(OrderID) ON DELETE CASCADE,
 primary key(OrderID)
 );
 
+create table Image (
+ProductID varchar(15),
+Img LONGBLOB NOT NULL,
+foreign key(ProductID) references Products(ProductID) ON DELETE CASCADE,
+primary key(ProductID)
+);
+
 COMMIT;

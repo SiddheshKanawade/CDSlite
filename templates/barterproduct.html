@@ -83,7 +83,7 @@
     <section>
         <div class="card">
             <div class="edit-img">
-                <img src="/static/image/bat.png" alt="">
+                <img src="{{ url_for('get_image', product_id=i['ProductID']) }}" alt="">
             </div>
         </div>
     </section>

@@ -120,12 +120,16 @@
             {% endfor %}
           </select>
           <br>
-          <br>
-          Sub Category<select id = "scat" name="scat" multiple>
-            {% for j in subcatlist %}
-              <OPTION value={{j["SubcategoryID"]}}>{{j['subcatName']}}</OPTION>
-            {% endfor %}
+          SubCategory<select id="scat" name="cat" multiple>
+            <option disabled selected value> -- select an option -- </option>
           </select>
+
+          <script>
+            const new_subcatlist = {{subcatlist|tojson}};
+            const new_constrainlist = {{constrainlist|tojson}};
+            var cat = document.getElementById("cat");
+            cat.addEventListener("click", function(){match_subcat(new_subcatlist,new_constrainlist);});
+        </script>
           <br>
         </div>
 

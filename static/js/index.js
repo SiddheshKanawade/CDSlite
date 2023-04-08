@@ -52,7 +52,7 @@ function createProductCards(products) {
     productImage.classList.add('image');
     const productImg = document.createElement('img');
     productImg.classList.add('card-img');
-    productImg.src = ImgUrls[i].imageUrl;
+    productImg.src = `/get_image/${products[i].ProductID}`;
     productImg.alt = '';
     productImage.appendChild(productImg);
     productCard.appendChild(productImage);
