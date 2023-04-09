@@ -44,7 +44,7 @@ html{
 .navbar li{
     font-family: 'Dongle', sans-serif;
     display: flex;
-    font-size: 1.2rem;
+    font-size: 1.8rem;
     flex-direction: column;
     justify-content: center;
     height: 100%;
@@ -72,6 +72,7 @@ html{
 }
 .carim1
 {
+    width: 80%;
     height: 80%;
     margin-left: 4%;
     margin: auto;

@@ -18,10 +18,12 @@ html{
     }
 }
 .navbar {
-    padding: 8px;
+    padding: 0.5% ;
+    padding-left: 5%;
+    padding-right: 2%;
     display: flex;
     background-color: whitesmoke;
-    height: 3.5rem;
+    height: 3.3rem;
     max-width: 100%;
     box-shadow: 0 0 8px 0 grey;
     justify-content: space-around;
@@ -39,14 +41,13 @@ html{
 
     font-family: 'Dongle', sans-serif;
     font-size: 1.8rem;
-
+  
   
 }
 .navbar li{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: #165c9b;
     height: 100%;
 }
 .navbar a{
@@ -56,23 +57,34 @@ html{
 #a1{
     color: black;
 }
+
 #a2{
     margin-left: 30%;
 }
+
 .navbar a:hover{
     color: #646262;
 }
+
 .carim
 {
-   
+    /* width: 70%; */
     margin-top: 50%;
-   
 }
-.navbar form{
-    top: 0;
+.carim1
+{
+    width: 80%;
+    margin-top: 50%;
+}
+
+.navbar form
+{
+    margin-top: 1%;
     display: flex;
     flex-wrap: nowrap;
     height: 2vw;
+    width: 80%;
+    font-size: 30px;
     align-items: center;
 }
 /*.search{
@@ -81,10 +93,11 @@ display: flex;
 }*/
 
 .search-box{
-    /*top:10%;*/
+    /* top:10%; */
     width: 100%;
     height: 100%;
     padding-left: 3%;
+    /* margin-left: 10%; */
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     border: none;
@@ -98,7 +111,8 @@ display: flex;
     top:10%;
     width: 20%;
     height: 100%;
-    padding: 5px;
+    padding: 8px;
+    /* margin-left: 10%; */
     border: none;
     outline: none;
     cursor: pointer;
@@ -128,6 +142,7 @@ display: flex;
 	transition: all 5s ease-in-out;
     width: 30%;
 }
+
 /*Profile dropdown*/
 
 .profile
@@ -137,7 +152,6 @@ display: flex;
     font-size: 25px;
     border: none;
     font-family: 'Dongle', sans-serif;
-    
 }
 
 .profile:hover
@@ -149,7 +163,7 @@ display: flex;
 {
     position: relative;
     display: flexbox;
-    overflow: visible !important;
+   
 }
 
 .profile-content 
@@ -161,7 +175,6 @@ display: flex;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     right: 30%;
-    overflow: visible !important;
 }
   
 .profile-content a 
@@ -185,17 +198,8 @@ display: flex;
     background-color: #000;
 }
 
-/*categories
 
-.cat-title
-{
-    padding: 10px;
-    width: 18%;
-    height: 200px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-   
-    margin: 20px 20px;
-}
+
 
 
 
@@ -207,14 +211,12 @@ display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
     flex-wrap: wrap;
-    margin: 20px;
-    border-radius:25px ;
-    padding: 60px 20px;
-    overflow: visible;
     
 }
 
-
+.card::-webkit-scrollbar{
+    display: none;
+}
 
 a:link
 {
@@ -238,12 +240,9 @@ a:visited
     transition: 0.3s;
     width: 22%;
     margin-bottom: 1.5rem;
-    background-color: whitesmoke;
-    border-radius: 10px;
-    display:inline-flexbox
 }
 .product_card:hover {
-    box-shadow: 0 8px 16px 0 rgba(98, 92, 92, 0.2);
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   }
 
 
@@ -264,17 +263,7 @@ a:visited
     object-fit: cover;
 }
 
-.buttons{
-    padding: 12px;
-    color: white;
-    background-color: #000;
-    cursor: pointer;
-    width: 47%;
-    font-size: 15px;
-    float: left;
-    margin-left: 25%;
-    border-radius: 10px;
-}
+
 
 .product_card:hover .buttons{
     opacity: 1;
@@ -307,11 +296,21 @@ a:visited
     margin-bottom: 0.7rem;
 }
 */
-
-.product-container {
+.buttons{
+    width: 47%;
+    float: left;
+    margin-left: 3%;
+    display: flex;
+    color: white;
+}
+.button_correct {
+    color: white;
+}
+.product_container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: flex;
+    position: static;
   }
   
   .product_card {
@@ -365,28 +364,26 @@ a:visited
     color: #000000;
   }
   
-  .product_card .details a button {
-    background-color: #000000;
-    border: none;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  
   
 
+  .card {
+    position: static;
+  }
+  
   .buttons{
     padding: 12px;
     color: white;
     background-color: #000;
     cursor: pointer;
-    width: 10pc;
+    width: 6.8pc;
+    align-items: center;
     font-size: 15px;
-    float: left;
     border-radius: 10px;
     text-decoration: none;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 10px; /* optional spacing between buttons */
+    padding: 5px 10px;
 }

@@ -50,7 +50,6 @@ html{
     flex-direction: column;
     justify-content: center;
     height: 100%;
- 
 }
 .navbar a{
     text-decoration: none;
@@ -60,15 +59,23 @@ html{
     color: black;
 }
 #a2{
-    margin-left: 30%;
+    margin-left: 20%;
 }
 .navbar a:hover{
     color: #646262;
 }
-.carim
+.carim1
 {
-    
-    margin-top: 50%;
+    width: 80%;
+    height: 40%;
+    margin: auto;
+   
+}
+.carim1
+{
+    width: 80%;
+    height: 40%;
+    margin: auto;
    
 }
 .navbar form{
