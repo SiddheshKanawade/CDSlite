@@ -81,7 +81,7 @@
     <section>
         <div class="card">
             <div class="edit-img">
-                <img src="/static/image/product1.png" alt="">
+                <img src="{{ url_for('get_image', product_id=plist['ProductID']) }}" alt="">
             </div>
         </div>
     </section>

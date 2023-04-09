@@ -18,47 +18,63 @@ html{
     }
 }
 .navbar {
-    padding: 8px;
+    padding: 0.5% ;
+    padding-left: 5%;
+    padding-right: 2%;
     display: flex;
     background-color: whitesmoke;
-    height: 2.8rem;
+    height: 3.5rem;
     max-width: 100%;
     box-shadow: 0 0 8px 0 grey;
-    align-content: center;
     justify-content: space-around;
     top:0;
     animation: ex;
     animation-duration: 0.5s;
 }
 .navbar ul{
-    left:1%;
-    display: contents;
+
+    display: flex;
     width:100%;
     list-style: none;
-    flex-wrap: nowrap;
+    justify-content: space-between;
+
+
     font-family: 'Dongle', sans-serif;
     font-size: 1.8rem;
-    max-height: 100%;
-    justify-content: space-between;
-    text-align: center;
+
   
 }
 .navbar li{
-    margin-top: 0.16em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
 }
 .navbar a{
     text-decoration: none;
     color: black;
 }
 #a1{
-    margin-left: 1%;
     color: black;
 }
 #a2{
-    margin-left:30%;
+    margin-left: 30%;
 }
 .navbar a:hover{
     color: #646262;
+}
+.carim
+{
+    
+    margin-top: 50%;
+   
+}
+.carim1
+{
+    width: auto;
+    height: 25px;
+    /* margin-bottom: 50%; */
+    margin-top: 70%;
 }
 .navbar form{
     top: 0;
@@ -67,13 +83,13 @@ html{
     height: 2vw;
     align-items: center;
 }
-.search{
+/*.search{
 width: 500px;
 display: flex;
-}
+}*/
 
 .search-box{
-    top:10%;
+    /*top:10%;*/
     width: 100%;
     height: 100%;
     padding-left: 3%;
@@ -342,7 +358,7 @@ a:visited
   }
   
   .product_card .details {
-    padding: 20px;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -350,6 +366,7 @@ a:visited
   
   .product_card .details a {
     text-decoration: none;
+    color: #fff;
   }
   
   .product_card .details .card-name {
@@ -361,22 +378,22 @@ a:visited
   .product_card .details .price {
     display: block;
     margin-bottom: 10px;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: #000000;
   }
   
-  .product_card .details a button {
-    background-color: #000000;
-    border: none;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1.2rem;
+  
+ 
+  
+.buttons{
+    padding: 12px;
+    color: white;
+    background-color: #000;
     cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  .product_card .details a button:hover {
-    background-color: #165c9b;
-  }
-  
+    width: 5pc;
+    font-size: 15px;
+    float: left;
+    border-radius: 10px;
+    text-decoration: none;
+   
+}

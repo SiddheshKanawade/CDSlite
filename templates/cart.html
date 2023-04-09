@@ -23,69 +23,6 @@
   </head>
 
 <body>
-
-  <!--  <section>
-        <nav class="navbar navbar-expand-lg navbar-light" style="background: #2980b9;">
-          <div class="container-fluid">
-              <a class="navbar-brand" href="./index.html">
-                  <img src="Images\Logo\ApniDukan.png" alt="logo" width="45" height="35" class="d-inline-block align-text-top mr-2 navbar-logo">
-              </a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-capitalize">
-                      <ul class="navbar-nav mr-auto mb-2 mb-lg-0 text-capitalize">
-                          <li class="nav-item">
-                              <a class="nav-link active" aria-current="page" href="./home.html">Home</a>
-                          </li>
-                          <li class="nav-item text-capitalize">
-                              <a class="nav-link" href="./offers.html">Offers</a>
-                          </li>
-                          <li class="nav-item text-capitalize">
-                              <a class="nav-link" href="./contactus.html">Contact us</a>
-                          </li>
-                          <li class="nav-item text-capitalize">
-                              <a class="nav-link" href="login.html">Login</a>
-                          </li>        
-                          <li class="nav-item text-capitalize">
-                              <a class="nav-link" href="./about.html">About us</a>
-                          </li>
-                          <li class="nav-item text-capitalize">
-                              <a class="nav-link" href="faq.html">FAQ</a>
-                          </li>
-                          <li class="nav-item dropdown">
-                              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                  Category
-                              </a>
-                              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                  <li><a class="dropdown-item" href="./mobile.html">Mobile</a></li>
-                                  <li><a class="dropdown-item" href="./books.html">Books</a></li>
-                                  <li><a class="dropdown-item" href="./">TV/Appliances</a></li>
-                                  <li><a class="dropdown-item" href="./furniture.html">Furniture</a></li>
-                                  <li><a class="dropdown-item" href="#">Baby/Kids</a></li>
-                                  <li><a class="dropdown-item" href="./stationery.html">Stationery</a></li>
-                                  <li>
-                                      <hr class="dropdown-divider">
-                                  </li>
-  
-                                  <li><a class="dropdown-item" href="./login.html">Login/Signup</a></li>
-                              </ul>
-                          </li>
-                          <li class="nav-item text-capitalize">
-                              <a class="nav-link" href="cart.html">My Cart</a>
-                          </li>
-                      </ul>
-                      <form class="d-flex">
-                          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                          <button class="btn btn-outline-dark" type="submit">Search</button>
-                      </form>
-              </div>
-          </div>
-      </nav>
-      </section> -->
-
-
    
       <section>
       <div style="margin:20px 20px;" class="row">
@@ -104,7 +41,7 @@
           <div class="box1-sz" style="margin-top: 15px;padding: 15px 0px;border-top:1.5px solid #E2E5DE">
             <div class="row">
               <div style="width: 33% !important;" class="col-md-4">
-                <img class="img-sz" style="height:200px" src="/static/image/hoodie.jpg">
+                <img class="img-sz" style="height:200px" src="{{url_for('get_image', product_id = item['ProductID'])}}">
               </div>
               <div style="padding:10px 0px;width: 50% !important;" class="col-md-6">
                 <h5 class="mid2-sz" style="font-weight: 500!important;margin:0!important">{{ item['ProductName'] }}</h5>

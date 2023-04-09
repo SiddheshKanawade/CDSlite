@@ -78,13 +78,14 @@
     </nav>
   </header>
 
-    <form method="POST" action="" class="form1">
+    <form method="POST" action="" class="form1" enctype="multipart/form-data">
         
         ProductName <input type="text" name="product-name" />
         <br>
         Description <input type="textarea" name="description" />
         <br>
         is Merchandise <select id="Merch" name="Merch" onclick="displaynext()">
+            <option disabled selected value> -- select an option -- </option>
             <option value="Yes">Yes</option>
             <option value="No">No</option>
           </select>
@@ -108,25 +109,50 @@
           <div id="categ">
             <br>
             
-            
-            Category<select id="cat" name="cat" >
+            Category<select id="cat" name="cat">
+              <option disabled selected value> -- select an option -- </option>
               {% for j in catlist %}
                 <OPTION value={{j["categoryID"]}}>{{j['catName']}}</OPTION>
               {% endfor %}
             </select>
             <br>
-            <br>
-            Sub Category<select id = "scat" name="scat" multiple>
-              {% for j in subcatlist %}
-                <OPTION value={{j["SubcategoryID"]}}>{{j['subcatName']}}</OPTION>
-              {% endfor %}
-            </select>
-            <br>
-          </div>
 
+
+            SubCategory<select id="scat" name="cat" multiple>
+              <option disabled selected value> -- select an option -- </option>
+            </select>
+
+            <script>
+              const new_subcatlist = {{subcatlist|tojson}};
+              const new_constrainlist = {{constrainlist|tojson}};
+              var cat = document.getElementById("cat");
+              cat.addEventListener("change", function(){match_subcat(new_subcatlist,new_constrainlist);});
+          </script>
+            <br>
+            <input type="file" name="image">
+          </div>
         <input type="submit">
       </form>
-      <a href="/logout" id="changeToRegister">Log out</a></p>
+
+      <!-- <script>
+        const form = document.querySelector('form');
+        const submitButton = form.querySelector('input[type="submit"]');
+
+        submitButton.addEventListener('click', function(event) {
+          event.preventDefault();
+          
+          const formData = new FormData(form);
+
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', '/upload');
+          xhr.onload = function() {
+            // Handle the server response here
+            console.log("here");
+          };
+          xhr.send(formData);
+        });
+      </script> -->
+      <!-- <a href="/logout" id="changeToRegister">Log out</a></p> -->
 
 </body>
 

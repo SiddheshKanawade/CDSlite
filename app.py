@@ -1,16 +1,30 @@
 import razorpay
 
-from flask import Flask, render_template, request, url_for, redirect, session, flash, jsonify
+from flask import Flask, render_template, request, url_for, redirect, session, flash, jsonify, make_response
 from src.helper import current_date, generate_uuid
 from src.db import create_app
 from src.helper import generate_uuid
+from werkzeug.utils import secure_filename
+import os
+import base64
 
 app, mysql, razorpay_client = create_app()
 
+# @app.route('/upload', methods=['POST'])
+# def upload():
+#   images = request.files.getlist('images[]')
+
+#   for image in images:
+#     filename = secure_filename(image.filename)
+#     path = os.path.join('uploads', filename)
+#     image.save(path)
+
+#     print("in file upload")
+#     # Insert the image path into the SQL database here
+
+#   return 'Upload successful'
 # HELPER FUNCTIONS
-# @app.route('/payment/<price>', methods=['GET', 'POST'])
-
-
+@app.route('/payment/<price>', methods=['GET', 'POST'])
 def pay(price):
     # Get payment amount from the form
     print("Entered")
@@ -62,7 +76,7 @@ def index():
     user_id = session['uid']
     if (user_id == None):
         user_id = '1'
-    query = f"select * from VP_Products where isBarter='No'"
+    query = f"select * from VP_Products where Availability='Yes'"
     cur = mysql.connection.cursor()
     try:
         cur.execute(query)
@@ -194,18 +208,19 @@ def read_user():
         user_details = request.form
         update_user(user_details, user_id)
         flash("Your profile has been updated", "success")
+        return redirect(url_for('index'))
+    else:
+        query = f"SELECT * from User WHERE User.UserID={user_id}"
+        cur = mysql.connection.cursor()
 
-    query = f"SELECT * from User WHERE User.UserID={user_id}"
-    cur = mysql.connection.cursor()
+        try:
+            cur.execute(query)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query: {query}. Error: {e}")
 
-    try:
-        cur.execute(query)
-        mysql.connection.commit()
-    except Exception as e:
-        raise Exception(f"UNable to run query: {query}. Error: {e}")
-
-    response = cur.fetchone()
-    return render_template("profile.html", data=response)
+        response = cur.fetchone()
+        return render_template("profile.html", data=response)
 
 
 @app.route('/delete_user', methods=['GET', 'POST'])
@@ -325,15 +340,22 @@ def product():
         seller_id = r1['SellerID']
 
     try:
-        cur.execute("SELECT * from SubCategory")
-    except Exception as e:
-        raise Exception(f"UNable to run query. Error: {e}")
-    subcatlist = cur.fetchall()
-    try:
         cur.execute("SELECT * from Category")
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     catlist = cur.fetchall()
+
+    try:
+        cur.execute("SELECT * from SubCategory")
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    subcatlist = cur.fetchall()
+
+    try:
+        cur.execute("SELECT * from Constrained")
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    constrainlist = cur.fetchall()
 
     if request.method == 'POST':
         form_details = request.form
@@ -342,6 +364,15 @@ def product():
         category_id = form_details["cat"]
         subcat_id = form_details.getlist("scat")
         creation_date = current_date()
+        image = request.files['image'].read()
+        encoded_image = base64.b64encode(image)
+        
+        # filename = secure_filename(image.filename)
+        # print(filename)
+        # path = os.path.join('Uploaded_Images', filename)
+        # print(path)
+        # image.save(path)
+        # path ="C:/DBMS_Assignment/CDSlite-1/Uploaded_Images/" + filename
 
         # Correct method for assigning IDs
         product_id = None
@@ -359,7 +390,16 @@ def product():
             mysql.connection.commit()
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
-
+        
+        q = "INSERT INTO Image VALUES (%s, %s)"
+        params = (product_id,encoded_image)
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute(q,params)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        
         # q1 = f"SELECT CategoryID from Category WHERE Category.catName='{category}'"
         # cur = mysql.connection.cursor()
         # try:
@@ -411,7 +451,7 @@ def product():
                     raise Exception(f"UNable to run query. Error: {e}")
         flash("Product added successfully", 'success')
         return redirect(url_for('myproducts'))
-    return render_template("addProduct.html", subcatlist=subcatlist, catlist=catlist)
+    return render_template("addProduct.html", subcatlist=subcatlist, catlist=catlist,constrainlist=constrainlist)
 
 
 @app.route('/account2/<user_id>/<pid>', methods=['GET', 'POST'])
@@ -441,12 +481,25 @@ def account2(user_id, pid):
         return redirect(url_for('barterpage', id=pid))
     return render_template("acc_details.html")
 
+@app.route('/get_image/<product_id>')
+def get_image(product_id):
+    # Retrieve image data from database
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT Img FROM Image WHERE ProductID = %s", [product_id])
+    image_data = cur.fetchone()['Img']
+    cur.close()
+
+    # Convert image data to response object
+    response = make_response(base64.b64decode(image_data))
+    response.headers.set('Content-Type', 'image/png')
+    response.headers.set('Content-Disposition', 'attachment', filename='image.png')
+    return response
 
 @app.route('/Barter', methods=['GET', 'POST'])
 def Barter():
     if request.method == 'GET':
         cur = mysql.connection.cursor()
-        q1 = f"SELECT * from VP_Products WHERE VP_Products.isBarter='Yes'"
+        q1 = f"SELECT * from VP_Products WHERE VP_Products.isBarter='Yes' and Availability='Yes'"
         # print("Returning template")
         try:
             cur.execute(q1)
@@ -472,7 +525,7 @@ def Barter():
 
 @app.route('/barterpage/<id>', methods=['GET', 'POST'])
 def barterpage(id):
-    print("here in barterpage")
+    #print("here in barterpage")
     user_id = session['uid']
 
     if request.method == 'POST':
@@ -613,7 +666,13 @@ def vp_products(id):
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     vplist = cur.fetchone()
-    print(vplist)
+    #print(vplist)
+    try:
+        cur.execute("SELECT * from Constrained")
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    constrainlist = cur.fetchall()
+
     if request.method == 'POST':
         form_details = request.form
         pdt_name = form_details["product-name"]
@@ -651,7 +710,7 @@ def vp_products(id):
                 raise Exception(f"UNable to run query. Error: {e}")
 
         return redirect(url_for('myproducts'))
-    return render_template("edit_products_vp.html", subcatlist=subcatlist, catlist=catlist, vplist=vplist)
+    return render_template("edit_products_vp.html", subcatlist=subcatlist, catlist=catlist, vplist=vplist,constrainlist=constrainlist)
 
 
 @app.route('/fp_products/<id>', methods=["GET", "POST"])
@@ -676,6 +735,12 @@ def fp_products(id):
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     fplist = cur.fetchone()
+
+    try:
+        cur.execute("SELECT * from Constrained")
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    constrainlist = cur.fetchall()
 
     if request.method == 'POST':
         form_details = request.form
@@ -714,7 +779,7 @@ def fp_products(id):
                 raise Exception(f"UNable to run query. Error: {e}")
 
         return redirect(url_for('myproducts'))
-    return render_template("edit_products_fp.html", subcatlist=subcatlist, catlist=catlist, fplist=fplist)
+    return render_template("edit_products_fp.html", subcatlist=subcatlist, catlist=catlist, fplist=fplist,constrainlist=constrainlist)
 
 
 @app.route('/bid_buyer/<id_>', methods=["GET", "POST"])
@@ -752,6 +817,7 @@ def bid_buyer(id_):
 
 @app.route('/bid_page/<id_>', methods=["GET", "POST"])
 def bid_page(id_):
+    k = "Yes"
     query = f"Select * from (Select * from BidTable natural join VP_Products where VP_Products.ProductID=BidTable.ProductID) as P where P.ProductID='{id_}'"
     cur = mysql.connection.cursor()
     try:
@@ -760,7 +826,7 @@ def bid_page(id_):
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     bidarray = cur.fetchall()
-
+    
     qr=f"SELECT VP_PID, VP_ProductName, BarterID, Buyer_PID, BarterStatus, BarterDate, ProductName, CreationDate FROM (SELECT VP_PID, VP_ProductName, BarterID, P2ID AS Buyer_PID, BarterStatus, BarterDate FROM (SELECT ProductID AS VP_PID, ProductName AS VP_ProductName FROM vp_products WHERE isBarter = 'Yes') AS temp LEFT OUTER JOIN barter ON temp.VP_PID = barter.P1ID) AS temp2 LEFT OUTER JOIN unlisted_products ON temp2.Buyer_PID = unlisted_products.productID WHERE temp2.VP_PID = '{id_}'"
 
     try:
@@ -786,8 +852,6 @@ def buyer_barter(barter_id_):
     print("gbid ", barter_id_)
     qr=f"SELECT ProductID, temp3.SellerID, BarterID, Seller_Name, Email_ID, MobileNo, ProductName, Description_, CreationDate  FROM ( SELECT ProductID, temp.SellerID, Seller_Name, Email_ID, MobileNo, ProductName, Description_, CreationDate  FROM (SELECT SellerID, FirstName AS Seller_Name, Email_ID, MobileNo FROM seller LEFT JOIN user ON seller.UserID = user.UserID) AS temp RIGHT OUTER JOIN ( SELECT products.ProductID, products.SellerID, ProductName, Description_, CreationDate  FROM unlisted_products LEFT OUTER JOIN products ON unlisted_products.ProductID = products.ProductID ) AS temp2 ON temp.SellerID = temp2.SellerID) AS temp3 LEFT OUTER JOIN Barter ON temp3.ProductID = Barter.P2ID WHERE BarterID = '{barter_id_}'"
 
-
-    print("fjiw")
     try:
         cur.execute(qr)
         mysql.connection.commit()
