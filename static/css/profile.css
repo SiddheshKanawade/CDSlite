@@ -2,6 +2,7 @@
 {
     margin: 0;
     padding: 0;
+    
 }
 
 /*Navigation Bar*/
@@ -18,47 +19,64 @@ html{
     }
 }
 .navbar {
-    padding-top: 1rem;
+    padding: 0.5% ;
+    padding-left: 5%;
+    padding-right: 2%;
     display: flex;
-    background-color: whitesmoke;
-    height: 2.8rem;
+    background-color: #ccccff;
+    height: 2.6rem;
     max-width: 100%;
     box-shadow: 0 0 8px 0 grey;
-    align-content: center;
     justify-content: space-around;
     top:0;
     animation: ex;
     animation-duration: 0.5s;
 }
 .navbar ul{
-    left:1%;
-    display: contents;
+
+    display: flex;
     width:100%;
     list-style: none;
-    flex-wrap: nowrap;
-    font-family: 'Dongle', sans-serif;
-    font-size: 1.3rem;
-    max-height: 100%;
     justify-content: space-between;
-    text-align: center;
-  
+    font-family: 'Dongle', sans-serif;
+    font-size: 1.8rem;  
 }
 .navbar li{
-    margin-top: 0.16em;
+    font-family: 'Dongle', sans-serif;
+    display: flex;
+    font-size: 1.8rem;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    font: bolder
 }
 .navbar a{
     text-decoration: none;
     color: black;
 }
 #a1{
-    margin-left: 1%;
     color: black;
 }
 #a2{
-    margin-left:30%;
+    margin-left: 30%;
 }
 .navbar a:hover{
     color: #646262;
+}
+.carim
+{
+    height: 90%;
+    margin-left: 25%;
+    margin: auto;
+   
+}
+.carim1
+{
+    width: 80%;
+    height: 80%;
+    margin-left: 4%;
+    margin: auto;
+   
 }
 .navbar form{
     top: 0;
@@ -67,13 +85,13 @@ html{
     height: 2vw;
     align-items: center;
 }
-.search{
+/*.search{
 width: 500px;
 display: flex;
-}
+}*/
 
 .search-box{
-    top:10%;
+    /*top:10%;*/
     width: 100%;
     height: 100%;
     padding-left: 3%;
@@ -121,6 +139,7 @@ display: flex;
     width: 30%;
 }
 
+
 /*Profile dropdown*/
 
 .profile
@@ -140,7 +159,7 @@ display: flex;
 {
     position: relative;
     display: flexbox;
-   
+
 }
 
 .profile-content 
@@ -148,12 +167,12 @@ display: flex;
     display: none;
     position: absolute;
     background-color: #fff;
-    min-width: 160px;
+    min-width: 150px;
+    width: 20%;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
-    right: 30%;
-    border-radius: 3%;
-    font:caption;
+    top: 25px;
+    right: 25%;
 }
   
 .profile-content a 
@@ -182,7 +201,7 @@ display: flex;
 
 
 body {
-    background: #fbf3ff;
+    background: #ffffff;
 }
 
 
@@ -194,7 +213,7 @@ body {
     width: 80%;
     margin: 0 auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: #f3f3ff;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
@@ -247,6 +266,7 @@ input[type="submit"] {
     margin-left: 3%;
     border-radius: 10px;
     margin: 25px;
+   
     transform: translate(190%);
 }
 
@@ -280,6 +300,6 @@ input[type="submit"] {
 .card
 {
     margin-top: 20px;
-   
+   margin-bottom: 10px;
     
 }
