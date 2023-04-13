@@ -23,7 +23,7 @@ html{
     padding-right: 2%;
     position: relative;
     display: flex;
-    background-color: whitesmoke;
+    background-color: #ccccff;
     height: 3.5rem;
     max-width: 100%;
     box-shadow: 0 0 8px 0 grey;
@@ -104,7 +104,9 @@ display: flex;
 }
 
 #search-btn{
-    top:10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 20%;
     height: 100%;
     padding: 8px;
@@ -334,11 +336,14 @@ a:visited
     flex-wrap: wrap;
     justify-content: space-around;
   }
-  
+  body{
+    background-color: #ffffff;
+  }
   .product_card {
-    background-color: #f5f5f5;
+    background-color: #f3f3ff;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
     width: 300px;
+    height: 450px;
     margin-top: 2vw;
     margin-bottom: 2vw;
     margin-right: 1vw;
@@ -349,16 +354,16 @@ a:visited
   }
 
   .product_card .image {
-    width: 100%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
   }
   
   .product_card .image img {
-    max-width: 100%;
-    max-height: 100%;
+    margin-top: 20px;
+    width: 260px;
+    height: 260px;
+    border-radius: 10px;
   }
   
   .product_card .details {
@@ -378,7 +383,6 @@ a:visited
     margin-bottom: 10px;
     color: #222;
   }
-
   .card-name{
     width: 240px;
     white-space: nowrap;
@@ -398,7 +402,7 @@ a:visited
 .buttons{
     padding: 5%;
     color: white;
-    background-color: #000;
+    background-color: #000000;
     cursor: pointer;
     width: 5pc;
     font-size: 15px;
@@ -406,6 +410,10 @@ a:visited
     border-radius: 10px;
     text-decoration: none;
    
+}
+
+.bidcolor{
+    color: #000;
 }
 
 .buttons_space{

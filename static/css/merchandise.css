@@ -21,9 +21,10 @@ html{
     padding: 0.5% ;
     padding-left: 5%;
     padding-right: 2%;
+    position: relative;
     display: flex;
-    background-color: whitesmoke;
-    height: 3.3rem;
+    background-color: #ccccff;
+    height: 3.5rem;
     max-width: 100%;
     box-shadow: 0 0 8px 0 grey;
     justify-content: space-around;
@@ -83,7 +84,6 @@ html{
     display: flex;
     flex-wrap: nowrap;
     height: 2vw;
-    width: 80%;
     font-size: 30px;
     align-items: center;
 }
@@ -111,7 +111,6 @@ display: flex;
     top:10%;
     width: 20%;
     height: 100%;
-    padding: 8px;
     /* margin-left: 10%; */
     border: none;
     outline: none;
@@ -310,11 +309,12 @@ a:visited
     display: flex;
     flex-wrap: wrap;
     justify-content: flex;
+    background-color: white;
     position: static;
   }
   
   .product_card {
-    background-color: #f5f5f5;
+    background-color: #f3f3ff;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
     width: 300px;
     margin-top: 2vw;
@@ -373,7 +373,7 @@ a:visited
   .buttons{
     padding: 12px;
     color: white;
-    background-color: #000;
+    background-color: #000000;
     cursor: pointer;
     width: 6.8pc;
     align-items: center;

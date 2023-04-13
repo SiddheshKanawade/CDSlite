@@ -960,8 +960,13 @@ def read_shopping_cart():
     except Exception as e:
         raise Exception(f"UNable to run query. Error: {e}")
     response = cur.fetchall()
+    total = 0
+    items = 0
+    for r in response:
+        items += int(r["Quantity"])
+        total += int(r["Price"]) * int(r["Quantity"])
     cur.close()
-    return render_template("cart.html", data=response)
+    return render_template("cart.html", data=response, total=total,items=items)
 
 
 @app.route('/order/<product_id>', methods=['GET'])

@@ -22,7 +22,7 @@ html{
     padding-left: 5%;
     padding-right: 2%;
     display: flex;
-    background-color: whitesmoke;
+    background-color: #ccccff;
     height: 3.5rem;
     max-width: 100%;
     box-shadow: 0 0 8px 0 grey;
@@ -200,7 +200,7 @@ display: flex;
 
 
 body {
-    background: #fbf3ff;
+    background: white;
 }
 /*
 .container {
@@ -342,7 +342,7 @@ form {
     margin-left: 10%;
     position: static;
     padding: 20px;
-    background-color: #fff;
+    background-color: #f3f3ff;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 2, 0.2);
   }

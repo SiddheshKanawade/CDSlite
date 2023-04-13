@@ -373,3 +373,10 @@ display: flex;
 .profile_.dropdown .profile {
     background-color: #000;
 }
+.box-sz{
+  background-color: #f3f3ff;
+}
+
+.col-md-7{
+  background-color: #f3f3ff;
+}
