@@ -77,14 +77,14 @@
                 {% endif %}
             {% endwith %}
         
-    <p class="size">First Name: <input type="text" name="first-name" id="" placeholder="{{ data['FirstName'] }}" class="bid_daalo" required></p>
-    <p class="size">Last Name: <input type="text" name="last-name" id="" placeholder="{{ data['LastName'] }}" class="bid_daalo" required></p>
-    <p class="size">Email: <input type="text" name="email" id="" placeholder="{{ data['Email_ID'] }}" class="bid_daalo" required></p>
-    <p class="size">Mobile Number: <input type="number" pattern="{0-9}[10]" placeholder="{{ data['MobileNo'] }}" name="number" id="" class="bid_daalo" required></p>
+    <p class="size">First Name: <input type="text" name="first-name" id="" value="{{ data['FirstName'] }}" class="bid_daalo" required></p>
+    <p class="size">Last Name: <input type="text" name="last-name" id="" value="{{ data['LastName'] }}" class="bid_daalo" required></p>
+    <p class="size">Email: <input type="text" name="email" id="" value="{{ data['Email_ID'] }}" class="bid_daalo" required></p>
+    <p class="size">Mobile Number: <input type="number" pattern="{0-9}[10]" value="{{ data['MobileNo'] }}" name="number" id="" class="bid_daalo" required></p>
 
-    <p class="size">Address line: <input type="text" name="addressline" placeholder="{{ data['AddressLine'] }}" id="" class="bid_daalo" required></p>
-    <p class="size">City: <input type="text" placeholder="{{ data['City'] }}" name="city" id="" class="bid_daalo" required></p>
-    <p class="size">Pincode: <input type="number" name="pincode" id="" placeholder="{{ data['PinCode'] }}" class="bid_daalo" required></p>
+    <p class="size">Address line: <input type="text" name="addressline" value="{{ data['AddressLine'] }}" id="" class="bid_daalo" required></p>
+    <p class="size">City: <input type="text" value="{{ data['City'] }}" name="city" id="" class="bid_daalo" required></p>
+    <p class="size">Pincode: <input type="number" name="pincode" id="" value="{{ data['PinCode'] }}" class="bid_daalo" required></p>
     <button type="submit" class="btns" onclick="confirmBid()">Update Profile</button>
 
       </form>
