@@ -682,6 +682,8 @@ def vp_products(id):
         base_price = form_details["BasePrice"]
         is_barter = form_details["isBarter"]
         subcat_id = form_details.getlist("scat")
+        image = request.files['image'].read()
+        encoded_image = base64.b64encode(image)
 
         q2 = f"UPDATE VP_Products SET ProductName = '{pdt_name}', Description_ = '{desc}', BasePrice = '{base_price}', CategoryID = '{category_id}',isBarter = '{is_barter}', UpdationDate = '{updation_date}' WHERE ProductID = '{id}'"
         cur = mysql.connection.cursor()
@@ -697,7 +699,7 @@ def vp_products(id):
         try:
             cur.execute(q2)
             mysql.connection.commit()
-            print("Updated!")
+            #print("Updated!")
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
 
@@ -708,7 +710,29 @@ def vp_products(id):
                 mysql.connection.commit()
             except Exception as e:
                 raise Exception(f"UNable to run query. Error: {e}")
-
+        
+        q4 = f"Select * from Image where ProductID ='{id}'"
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute(q4)
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        IM = cur.fetchone()
+        if(image ==  b''):
+            return redirect(url_for('myproducts'))
+        if(IM == None):
+            q = "INSERT INTO Image VALUES (%s, %s)"
+            params = (id,encoded_image)
+        else:
+            q = "UPDATE IMAGE SET Img = (%s) where ProductID= (%s)"
+            params = (encoded_image,id)
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute(q,params)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+                
         return redirect(url_for('myproducts'))
     return render_template("edit_products_vp.html", subcatlist=subcatlist, catlist=catlist, vplist=vplist,constrainlist=constrainlist)
 
@@ -751,7 +775,10 @@ def fp_products(id):
         MRP = form_details["MRP"]
         Quantity = form_details["Quantity"]
         subcat_id = form_details.getlist("scat")
-        print(id)
+        image = request.files['image'].read()
+        encoded_image = base64.b64encode(image)
+        #print(id)
+
         q2 = f"UPDATE fp_products SET ProductName = '{pdt_name}', Description_ = '{desc}', MRP = {MRP}, Quantity = {Quantity}, CategoryID = '{category_id}', UpdationDate = '{updation_date}' WHERE ProductID = '{id}'"
         cur = mysql.connection.cursor()
         try:
@@ -777,7 +804,29 @@ def fp_products(id):
                 mysql.connection.commit()
             except Exception as e:
                 raise Exception(f"UNable to run query. Error: {e}")
-
+            
+        q4 = f"Select * from Image where ProductID ='{id}'"
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute(q4)
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        if(image ==  b''):
+            return redirect(url_for('myproducts'))
+        
+        if(cur.fetchone() == None):
+            q = "INSERT INTO Image VALUES (%s, %s)"
+            params = (id,encoded_image)
+        else:
+            q = "UPDATE IMAGE SET Img = (%s) where ProductID= (%s)"
+            params = (encoded_image,id)
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute(q,params)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        
         return redirect(url_for('myproducts'))
     return render_template("edit_products_fp.html", subcatlist=subcatlist, catlist=catlist, fplist=fplist,constrainlist=constrainlist)
 
@@ -813,7 +862,19 @@ def bid_buyer(id_):
         raise Exception(f"UNable to run query. Error: {e}")
     prod_list = cur.fetchone()
     return render_template("bid_buyer.html", plist=prod_list)
+              
+@app.route('/in_merch/<id_>', methods=["GET", "POST"])
+def in_merch(id_):
 
+    query = f"Select * from FP_Products where ProductID='{id_}'"
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute(query)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    prod_list = cur.fetchone()
+    return render_template("in_merchandise.html", plist=prod_list)
 
 @app.route('/bid_page/<id_>', methods=["GET", "POST"])
 def bid_page(id_):
@@ -902,6 +963,7 @@ def confirm_barter(barter_id, pid):
 
 @app.route('/add_cart/<product_id>')
 def add_shopping_cart(product_id):
+    print("here in cart")
     user_id = session['uid']
     quantity = 1
     cur = mysql.connection.cursor()

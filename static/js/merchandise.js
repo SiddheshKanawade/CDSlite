@@ -8,21 +8,23 @@ function createProductCards(products) {
 
       productCard.classList.add('product_card');
 
-      // const productImage = document.createElement('div');
-      // // productImage.classList.add('product_card');
-      // productImage.classList.add('image');
-      // const productImg = document.createElement('img');
-      // productImg.classList.add('card-img');
-      // productImg.src = products[i].imageUrl;
-      // productImg.alt = '';
-      // productImage.appendChild(productImg);
-      // productCard.appendChild(productImage);
+      const productImage = document.createElement('div');
+      //productImage.classList.add('product_card');
+      productImage.classList.add('image');
+      const productImg = document.createElement('img');
+      productImg.classList.add('card-img');
+      productImg.src = `/get_image/${products[i].ProductID}`;
+      productImg.alt = '';
+      productImage.appendChild(productImg);
+      productCard.appendChild(productImage);
   
+      var var1 = products[i]['ProductID'];
+      var1 = JSON.parse(var1)
       const productDetails = document.createElement('div');
-      // productDetails.classList.add('product_card');
+      //productDetails.classList.add('product_card');
       productDetails.classList.add('details');
       const productLink = document.createElement('a');
-      productLink.href = '#';
+      productLink.href = `/in_merch/${var1}`;
       const productName = document.createElement('h3');
       productName.classList.add('card-name');
       productName.textContent = products[i]['ProductName'];
@@ -33,9 +35,8 @@ function createProductCards(products) {
       productPrice.textContent = products[i]['MRP'];
       productDetails.appendChild(productPrice);
       const productBid = document.createElement('a');
-      productBid.className="button_class"
-      var var1 = products[i]['ProductID'];
-      var1 = JSON.parse(var1)
+      //productBid.className="button_class"
+      
       productBid.href = `/add_cart/${var1}`;
       productBid.innerText = "Add to Cart";
       const productButton = document.createElement('button');
