@@ -6,6 +6,7 @@ from src.db import create_app
 from src.helper import generate_uuid
 from werkzeug.utils import secure_filename
 import os
+import time
 import base64
 
 app, mysql, razorpay_client = create_app()
@@ -834,6 +835,12 @@ def fp_products(id):
 @app.route('/bid_buyer/<id_>', methods=["GET", "POST"])
 def bid_buyer(id_):
     if request.method == 'POST':
+        q = f"LOCK Table BidTable Write"
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute(q)
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
         bid_id = None
         user_id = session['uid']
         cur = mysql.connection.cursor()
@@ -851,6 +858,14 @@ def bid_buyer(id_):
             mysql.connection.commit()
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
+        
+        q = f"Unlock Tables"
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute(q)
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+        
         return redirect(url_for('index'))
 
     query = f"Select * from VP_Products where ProductID='{id_}'"
