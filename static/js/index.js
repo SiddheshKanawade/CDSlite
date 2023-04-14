@@ -26,7 +26,7 @@ function createProductCards(products) {
       var1 = JSON.parse(var1)
   
       const productLink = document.createElement('a');
-      productLink.href = `/bid_buyer/${var1}`;
+      // productLink.href = `/bid_buyer/${var1}`;
   
       const productName = document.createElement('h3');
       productName.classList.add('card-name');
@@ -56,7 +56,7 @@ function createProductCards(products) {
       Button2.classList.add('buttons');
   
       const productBarter = document.createElement('a');
-      productBarter.href = `/bid_buyer/${var1}`;
+      productBarter.href = `/Barter1/${var1}`;
       productBarter.textContent = 'Barter';  
 
       Button2.appendChild(productBarter);
