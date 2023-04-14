@@ -28,8 +28,8 @@ app, mysql, razorpay_client = create_app()
 @app.route('/payment/<price>', methods=['GET', 'POST'])
 def pay(price):
     # Get payment amount from the form
-    print("Entered")
-    print(price)
+    # print("Entered")
+    # print(price)
     amount = int(price)  # convert to paise
     currency = "INR"
 
@@ -42,7 +42,7 @@ def pay(price):
 
     # Extract the order ID from the response
     order_id = order['id']
-    print(order)
+    # print(order)
 
     # Return the order ID to the client
     return order
@@ -160,12 +160,13 @@ def login():
             flash("Password can't be empty", 'danger')
             render_template("login.html")
 
-        query = f"SELECT * from User WHERE User.Email_ID='{email_id}' and User.Password_='{password}'"
+        query = "SELECT * from User WHERE User.Email_ID=%s and User.Password_=%s"
+        values = (email_id, password)
 
         cur = mysql.connection.cursor()
 
         try:
-            cur.execute(query)
+            cur.execute(query, values)
             mysql.connection.commit()
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
@@ -177,6 +178,9 @@ def login():
             cur.close()
             return render_template("login.html")
 
+        if (response['UserID'] == 'Admin_1'):
+            return redirect(url_for('admin'))
+        
         # Update session
         session['logged_in'] = True
         session['uid'] = response['UserID']
@@ -186,6 +190,38 @@ def login():
         return redirect(url_for('index'))
     return render_template("login.html")
 
+@app.route('/admin', methods = ['GET','POST'])
+def admin():
+
+    q = f"create view admin (Users, Sellers, Products, FPP, VPP, ULP) as select count(distinct(User.UserID)), count(distinct(Seller.SellerID)), count(distinct(Products.ProductID)), count(distinct(FP_Products.ProductID)), count(distinct(VP_Products.ProductID)), count(distinct(Unlisted_Products.ProductID)) from User, Seller, Products, FP_Products, VP_Products, Unlisted_Products"
+    cur = mysql.connection.cursor()
+
+    try:
+        cur.execute(q)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    
+    q = f"select* from admin"
+    cur = mysql.connection.cursor()
+
+    try:
+        cur.execute(q)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    response = cur.fetchone()
+
+    q = f"drop view admin"
+    cur = mysql.connection.cursor()
+
+    try:
+        cur.execute(q)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    
+    return render_template("admin.html", data = response)
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
@@ -456,7 +492,7 @@ def product():
 
 
 @app.route('/account2/<user_id>/<pid>', methods=['GET', 'POST'])
-def account2(user_id, pid):
+def account2(user_id,pid):
     if request.method == 'POST':
         form_details = request.form
         bank = form_details['bank']
@@ -500,7 +536,7 @@ def get_image(product_id):
 def Barter():
     if request.method == 'GET':
         cur = mysql.connection.cursor()
-        q1 = f"SELECT * from VP_Products WHERE VP_Products.isBarter='Yes' and Availability='Yes'"
+        q1 = f"SELECT * from VP_Products WHERE isBarter = 'Yes' and Availability='Yes' "
         # print("Returning template")
         try:
             cur.execute(q1)
@@ -511,6 +547,35 @@ def Barter():
         brtlist = cur.fetchall()
         cur.close()
         return render_template("barterproduct.html", brtlist=brtlist)
+    query = f"select * from VP_Products where isBarter='Yes'"
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute(query)
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    vplist = cur.fetchall()
+    if (vplist == None):
+        flash("There are no products available for Bid")
+    print(vplist)
+    return render_template("index.html", vplist=vplist)
+
+@app.route('/Barter1/<product_id>', methods=['GET', 'POST'])
+def Barter1(product_id):
+
+    if request.method == 'GET':
+        cur = mysql.connection.cursor()
+        q1 = f"SELECT * from VP_Products WHERE ProductID = '{product_id}' and Availability='Yes' "
+        # print("Returning template")
+        try:
+            cur.execute(q1)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+
+        brtlist = cur.fetchall()
+        cur.close()
+        return render_template("barterproduct.html", brtlist=brtlist)
+    
     query = f"select * from VP_Products where isBarter='Yes'"
     cur = mysql.connection.cursor()
     try:
@@ -1094,7 +1159,10 @@ def cancel_order():
 
 @app.route('/merchandise/')
 def merchandise():
-
+    if 'uid' not in session:
+        flash("Please login to continue", 'danger')
+        return redirect(url_for('login'))
+    
     query = f"SELECT * FROM FP_Products;"
     cur = mysql.connection.cursor()
     try:

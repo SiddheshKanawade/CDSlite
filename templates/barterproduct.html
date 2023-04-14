@@ -10,8 +10,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Dongle&family=Ubuntu&display=swap" rel="stylesheet">
   <script src="index.css"></script>
 </head>
-<header>
-    <nav class="navbar">
+<body>
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dongle&family=Ubuntu&display=swap" rel="stylesheet">
+    <script src="/static/js/index.js"></script>
+    
+    <header>
+      <nav class="navbar">
         <ul>
     
           <li id="a1"><b>CDSLite</b></li>
@@ -26,45 +33,18 @@
             </li>
             <li id="a3"><a href="{{ url_for('index') }}">Bid</a></li>
             <li id="a3"><a href="{{ url_for('Barter') }}">Barter</a></li>
-            <li id="a3"><a href="merchandise.html">Merchandise</a></li>
-            <li id="a3"><a href="/index/shopping_cart"><img src="/static/image/cart.png" alt=""></a></li>
+            <li id="a3"><a href="{{ url_for('merchandise') }}">Merchandise</a></li>
+            <li id="a3"><a href="/index/shopping_cart"><img src="/static/image/cart.png" alt="" class="carim"></a></li>
             <li id="a3">
                 <div class="profile_dropdown">
-                    <button class="profile"><img src="/static/image/user.png" alt=""></button>
+                    <button class="profile"><img src="/static/image/user.png" class="carim1" alt=""></button>
                     <div class="profile-content">
                         <a href="/read_user">Edit Profile</a>
                         <a href="{{ url_for('product') }}">Add Product</a>
                         <a href="{{ url_for('myproducts') }}">My Product</a>
                         <a href="#">My order</a>
                         <a href="/logout">log Out</a>
-                        <a href="/delete_user" id="delete_user">Delete Account</a>
-                        <a href="/payment">Pay</a>
-                        <script>
-                            var payLink = document.getElementById("delete_user");
-                            payLink.addEventListener("click", function(event) {
-                              event.preventDefault(); // prevent the default link behavior
-                          
-                              // create a new form element
-                              var form = document.createElement("form");
-                              form.setAttribute("method", "post");
-                              form.setAttribute("action", "/delete_user");
-                          
-                              // create a hidden input element with a name and value
-                              var input = document.createElement("input");
-                              input.setAttribute("type", "hidden");
-                              input.setAttribute("name", "paramName");
-                              input.setAttribute("value", "paramValue");
-                          
-                              // append the input element to the form element
-                              form.appendChild(input);
-                          
-                              // append the form element to the document body
-                              document.body.appendChild(form);
-                          
-                              // submit the form programmatically
-                              form.submit();
-                            });
-                          </script>           
+                        <a href="{{ url_for('delete_user') }}" id="delete_user">Delete Account</a>   
                     </div>
                 
                 </div>
@@ -72,22 +52,22 @@
             </li>
         </ul>
       </nav>
-</header>
-
+      
+    </header>
 
 
 
   <!--Product Details-->
 {% for i in brtlist %}
 <div class="product-image">
-    <section>
+    <section class="img_section">
         <div class="card">
             <div class="edit-img">
                 <img src="{{ url_for('get_image', product_id=i['ProductID']) }}" alt="">
             </div>
         </div>
     </section>
-    <section>
+    <section class="details_section">
         <h1>{{i['ProductName']}}</h1><br>
         <span class="price">Rs.{{i['BasePrice']}}</span><br>
         <span class="fa fa-star checked"></span>
@@ -99,11 +79,8 @@
         <p class="details">{{i['Description_']}}</p>
         <br>
         
-        <a href={{url_for('barterpage', id=i['ProductID'])}}>Barter</a>
+        <a href={{url_for('barterpage', id=i['ProductID'])}}><button>Barter</button></a>
     </section>
 </div>
 {% endfor %}
-
-<body>
-    BARTER
 </body>

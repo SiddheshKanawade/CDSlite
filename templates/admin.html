@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/admin.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <title>BuySellPortal</title>
+</head>
+<body>
+<link href="/static/css/style.css" rel="stylesheet" type="text/css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dongle&family=Ubuntu&display=swap" rel="stylesheet">
+
+<header>
+  <nav class="navbar">
+    <ul>
+
+      <li id="a1"><b>CDSLite Admin Dashboard</b></li>
+      <!-- <li id="a2">
+        <form>
+            <input type="text" class="search-box" placeholder="Search products">
+            <button id="search-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+            </button>
+        </form>
+        </li> -->
+        <!-- <li id="a3"><a href="{{ url_for('index') }}">Bid</a></li>
+        <li id="a3"><a href="{{ url_for('Barter') }}">Barter</a></li>
+        <li id="a3"><a href="{{ url_for('merchandise') }}">Merchandise</a></li>
+        <li id="a3"><a href="/index/shopping_cart"><img src="/static/image/cart.png" alt="" class="carim"></a></li> -->
+        <li id="a3">
+            <div class="profile_dropdown">
+                <button class="profile"><img src="/static/image/user.png" class="carim1" alt=""></button>
+                <div class="profile-content">
+                    <!-- <a href="/read_user">Edit Profile</a>
+                    <a href="{{ url_for('product') }}">Add Product</a>
+                    <a href="{{ url_for('myproducts') }}">My Product</a>
+                    <a href="#">My order</a> -->
+                    <a href="/logout">log Out</a>
+                    <!-- <a href="{{ url_for('delete_user') }}" id="delete_user">Delete Account</a>    -->
+                </div>
+            
+            </div>
+          
+        </li>
+    </ul>
+  </nav>
+  
+</header>
+
+    {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="alert alert-danger" role="alert">
+                    {% for message in messages %}
+                        <span style="color: red;">{{ message }}</span><br>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endwith %}
+<body>
+    <div id="contain_ch">
+    <div id="table1">
+        <table>
+            <tr>
+              <th>Information</th>
+              <th>Data</th>
+            </tr>
+            <tr>
+              <td>Total Number of Users</td>
+              <td>{{data['Users']}}</td>
+            </tr>
+            <tr>
+                <td>Total Number of Sellers</td>
+                <td>{{data['Sellers']}}</td>
+            </tr>
+            <tr>
+                <td>Total Number of Unique Products Uploaded on the portal</td>
+                <td>{{data['Products']}}</td>
+            </tr>
+            <tr>
+                <td>Total Number of Fixed Price Products (Merchandise) Uploaded on the portal</td>
+                <td>{{data['FPP']}}</td>
+            </tr>
+            <tr>
+                <td>Total Number of Variable Price Products Uploaded on the portal</td>
+                <td>{{data['VPP']}}</td>
+            </tr>
+            <tr>
+                <td>Total Number of Unlisted Products Uploaded for Barter on the portal</td>
+                <td>{{data['ULP']}}</td>
+            </tr>
+          </table>
+    </div>
+    <div class="chart1">
+        <h3>Split of Products on the portal</h3>
+        <canvas id="ch1"></canvas>
+    </div>
+    </div>
+
+    <script>
+        new_d = {{data | tojson}};
+        var charte = document.getElementById('ch1').getContext('2d');
+
+        var mychart = new Chart(charte, {
+            type: 'doughnut',
+            radius: "70%",
+            data:{
+                labels: ['Merchandise', 'Bid and Barter', 'Only Barter'],
+                datasets: [{
+                    data: [new_d['FPP'], new_d['VPP'], new_d['ULP']],
+                    fill: false,
+                    backgroundColor:['rgb(255, 99, 132)', 'rgb(54, 162, 235)','rgb(255, 205, 86)']
+                }]
+            },
+            options:{
+                plugins:{
+                    legend: {
+                        display: true,
+                        labels:{
+                            usePointStlyle: true
+                        }
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                layout:{
+                    padding: {
+                        top:0
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
