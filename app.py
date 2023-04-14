@@ -940,7 +940,7 @@ def confirm_bid(bid_id):
         raise Exception(f"UNable to run query. Error: {e}")
     res = cur.fetchone()
     p_id = res['ProductID']
-    q3 = f"UPDATE BidTable SET BidStatus = 'Declined' where ProductID = '{p_id}' and BidStatus != 'Confirmed'"
+    q3 = f"UPDATE BidTable SET BidStatus = 'Declined' where ProductID = '{p_id}' and BidID != '{bid_id}'"
     try:
         cur.execute(q3)
         mysql.connection.commit()
