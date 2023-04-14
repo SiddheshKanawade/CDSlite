@@ -455,7 +455,7 @@ def product():
 
 
 @app.route('/account2/<user_id>/<pid>', methods=['GET', 'POST'])
-def account2(user_id, pid):
+def account2(user_id,pid):
     if request.method == 'POST':
         form_details = request.form
         bank = form_details['bank']
@@ -499,7 +499,7 @@ def get_image(product_id):
 def Barter():
     if request.method == 'GET':
         cur = mysql.connection.cursor()
-        q1 = f"SELECT * from VP_Products WHERE VP_Products.isBarter='Yes' and Availability='Yes'"
+        q1 = f"SELECT * from VP_Products WHERE isBarter = 'Yes' and Availability='Yes' "
         # print("Returning template")
         try:
             cur.execute(q1)
@@ -510,6 +510,35 @@ def Barter():
         brtlist = cur.fetchall()
         cur.close()
         return render_template("barterproduct.html", brtlist=brtlist)
+    query = f"select * from VP_Products where isBarter='Yes'"
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute(query)
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    vplist = cur.fetchall()
+    if (vplist == None):
+        flash("There are no products available for Bid")
+    print(vplist)
+    return render_template("index.html", vplist=vplist)
+
+@app.route('/Barter1/<product_id>', methods=['GET', 'POST'])
+def Barter1(product_id):
+
+    if request.method == 'GET':
+        cur = mysql.connection.cursor()
+        q1 = f"SELECT * from VP_Products WHERE ProductID = '{product_id}' and Availability='Yes' "
+        # print("Returning template")
+        try:
+            cur.execute(q1)
+            mysql.connection.commit()
+        except Exception as e:
+            raise Exception(f"UNable to run query. Error: {e}")
+
+        brtlist = cur.fetchall()
+        cur.close()
+        return render_template("barterproduct.html", brtlist=brtlist)
+    
     query = f"select * from VP_Products where isBarter='Yes'"
     cur = mysql.connection.cursor()
     try:
