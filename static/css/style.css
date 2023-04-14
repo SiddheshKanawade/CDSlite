@@ -4,10 +4,6 @@
     box-sizing: border-box;
 }
 
-body {
-    background: #fbf3ff;
-}
-
 .container {
     position: absolute;
     max-width: 800px;
