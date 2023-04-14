@@ -85,7 +85,7 @@
   </nav>
 </header>
 
-    <form method="POST" action="">
+    <form method="POST" action="" enctype="multipart/form-data">
         
         ProductName <input type="text" name="product-name" value = {{vplist["ProductName"]}}>
         <br>
@@ -111,13 +111,13 @@
 
           Category<select id="cat" name="cat">
             {% for j in catlist %}
-              {%if j["categoryID"] == vplist["categoryID"]%}
+              {%if j["categoryID"] == vplist["CategoryID"]%} 
                 <OPTION value={{j["categoryID"]}} selected>{{j['catName']}}</OPTION>
-              
+
               {%else%}
                 <OPTION value={{j["categoryID"]}}>{{j['catName']}}</OPTION>
-              {%endif%}
-            {% endfor %}
+              {%endif%} 
+            {% endfor %} 
           </select>
           <br>
           SubCategory<select id="scat" name="cat" multiple>
@@ -131,6 +131,7 @@
             cat.addEventListener("click", function(){match_subcat(new_subcatlist,new_constrainlist);});
         </script>
           <br>
+        <input type="file" name="image">
         </div>
 
         <input type="submit">

@@ -1,8 +1,8 @@
 function createProductCards(products) {
-  console.log(products)
+  //console.log(products)
   const productContainer = document.querySelector('.product_container');
-  const ImgUrls = [{ imageUrl: "hoodie.png" }, { imageUrl: "fridge.jpeg" }, { imageUrl: "product1.png" }, { imageUrl: "product2.png" }, { imageUrl: "bat.jpeg" },
-  { imageUrl: "jacket.jpg" }, { imageUrl: "Sweater.jpeg" }, { imageUrl: "racket.jpeg" }]
+  //const ImgUrls = [{ imageUrl: "hoodie.png" }, { imageUrl: "fridge.jpeg" }, { imageUrl: "product1.png" }, { imageUrl: "product2.png" }, { imageUrl: "bat.jpeg" },
+  //{ imageUrl: "jacket.jpg" }, { imageUrl: "Sweater.jpeg" }, { imageUrl: "racket.jpeg" }]
 
   for (let i = 0; i < products.length; i++) {
     if(products[i].isBarter=="Yes"){

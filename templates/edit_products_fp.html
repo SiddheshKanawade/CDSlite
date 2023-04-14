@@ -85,7 +85,7 @@
     </nav>
   </header>
    
-    <form method="POST" action="">
+    <form method="POST" action="" enctype="multipart/form-data">
         
         ProductName <input type="text" name="product-name" value = {{fplist["ProductName"]}}>
         <br>
@@ -126,7 +126,7 @@
             var cat = document.getElementById("cat");
             cat.addEventListener("click", function(){match_subcat(new_subcatlist,new_constrainlist);});
         </script>
-        
+        <input type="file" name="image">
         </div>
 
         <input type="submit">
