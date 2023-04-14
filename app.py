@@ -159,12 +159,13 @@ def login():
             flash("Password can't be empty", 'danger')
             render_template("login.html")
 
-        query = f"SELECT * from User WHERE User.Email_ID='{email_id}' and User.Password_='{password}'"
+        query = "SELECT * from User WHERE User.Email_ID=%s and User.Password_=%s"
+        values = (email_id, password)
 
         cur = mysql.connection.cursor()
 
         try:
-            cur.execute(query)
+            cur.execute(query, values)
             mysql.connection.commit()
         except Exception as e:
             raise Exception(f"UNable to run query. Error: {e}")
@@ -1143,7 +1144,10 @@ def cancel_order():
 
 @app.route('/merchandise/')
 def merchandise():
-
+    if 'uid' not in session:
+        flash("Please login to continue", 'danger')
+        return redirect(url_for('login'))
+    
     query = f"SELECT * FROM FP_Products;"
     cur = mysql.connection.cursor()
     try:
