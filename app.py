@@ -27,8 +27,8 @@ app, mysql, razorpay_client = create_app()
 @app.route('/payment/<price>', methods=['GET', 'POST'])
 def pay(price):
     # Get payment amount from the form
-    print("Entered")
-    print(price)
+    # print("Entered")
+    # print(price)
     amount = int(price)  # convert to paise
     currency = "INR"
 
@@ -41,7 +41,7 @@ def pay(price):
 
     # Extract the order ID from the response
     order_id = order['id']
-    print(order)
+    # print(order)
 
     # Return the order ID to the client
     return order
@@ -176,6 +176,9 @@ def login():
             cur.close()
             return render_template("login.html")
 
+        if (response['UserID'] == 'Admin_1'):
+            return redirect(url_for('admin'))
+        
         # Update session
         session['logged_in'] = True
         session['uid'] = response['UserID']
@@ -185,6 +188,38 @@ def login():
         return redirect(url_for('index'))
     return render_template("login.html")
 
+@app.route('/admin', methods = ['GET','POST'])
+def admin():
+
+    q = f"create view admin (Users, Sellers, Products, FPP, VPP, ULP) as select count(distinct(User.UserID)), count(distinct(Seller.SellerID)), count(distinct(Products.ProductID)), count(distinct(FP_Products.ProductID)), count(distinct(VP_Products.ProductID)), count(distinct(Unlisted_Products.ProductID)) from User, Seller, Products, FP_Products, VP_Products, Unlisted_Products"
+    cur = mysql.connection.cursor()
+
+    try:
+        cur.execute(q)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    
+    q = f"select* from admin"
+    cur = mysql.connection.cursor()
+
+    try:
+        cur.execute(q)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    response = cur.fetchone()
+
+    q = f"drop view admin"
+    cur = mysql.connection.cursor()
+
+    try:
+        cur.execute(q)
+        mysql.connection.commit()
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    
+    return render_template("admin.html", data = response)
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
