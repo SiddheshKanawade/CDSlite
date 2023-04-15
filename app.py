@@ -1,4 +1,5 @@
 import razorpay
+import imghdr
 
 from flask import Flask, render_template, request, url_for, redirect, session, flash, jsonify, make_response
 from src.helper import current_date, generate_uuid
@@ -402,6 +403,12 @@ def product():
         subcat_id = form_details.getlist("scat")
         creation_date = current_date()
         image = request.files['image'].read()
+        
+        file_type = imghdr.what(None, image)
+        if not file_type=='png' or not file_type=='jpeg':
+            flash("Only jpg or png format allowed")
+            return redirect(url_for('product'))
+        
         encoded_image = base64.b64encode(image)
         
         # filename = secure_filename(image.filename)
