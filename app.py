@@ -8,6 +8,8 @@ from werkzeug.utils import secure_filename
 import os
 import time
 import base64
+import mysql.connector
+from mysql.connector.conversion import MySQLConverter
 
 app, mysql, razorpay_client = create_app()
 
@@ -53,7 +55,7 @@ def update_user(user_details, user_id):
     last_name = user_details["last-name"]
     email = user_details['email']
     mob_number = user_details['number']
-    addressline = user_details['addressline']
+    addressline = MySQLConverter().escape(user_details['addressline'])
     city = user_details['city']
     pincode = user_details['pincode']
 
@@ -453,6 +455,7 @@ def product():
             quantity = form_details["Quantity"]
 
             q2 = f"INSERT INTO FP_Products VALUES ('{product_id}','{pdt_name}','{desc}','Yes',{mrp},{quantity},'{creation_date}','{creation_date}','{category_id}')"
+            print(q2)
             cur = mysql.connection.cursor()
             try:
                 cur.execute(q2)

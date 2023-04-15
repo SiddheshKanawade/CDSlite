@@ -108,13 +108,6 @@ foreign key(ProductID) references Products(ProductID) ON DELETE CASCADE,
 primary key(UserID, ProductID)
 );
 
-create table Variant(
-VariantID varchar(15),
-ProductID varchar(15) not null,
-foreign key(ProductID) references Products(ProductID) ON DELETE CASCADE,
-primary key (VariantID, ProductID)
-);
-
 create table Barter(
 BarterID varchar(15) NOT NULL,
 P1ID varchar(15) NOT NULL, 
@@ -125,13 +118,6 @@ foreign key(P1ID) references Products(ProductID) ON DELETE CASCADE,
 foreign key(P2ID) references Products(ProductID) ON DELETE CASCADE,
 primary key(BarterID)
 );
-
-create table isMerchant (
-SellerID varchar(15) primary key,
-OrgName varchar(20) unique NOT NULL,
-foreign key(SellerID) references Seller(SellerID) ON DELETE CASCADE
-);
-
 
 create table Payments(
 OrderID varchar(15),
@@ -166,15 +152,6 @@ SubCategoryID varchar(15),
 foreign key(ProductID) references Products(ProductID) ON DELETE CASCADE,
 foreign key(SubCategoryID) references SubCategory(SubCategoryID) ON DELETE CASCADE,
 primary key(ProductID, SubCategoryID)
-);
-
-create table BarterHistory(
-BarterID varchar(15),
-OrderID varchar(15),
-OrderDate datetime default CURRENT_TIMESTAMP,
-foreign key(BarterID) references Barter(BarterID) ON DELETE CASCADE,
-foreign key(OrderID) references Order_(OrderID) ON DELETE CASCADE,
-primary key(OrderID)
 );
 
 create table Image (
