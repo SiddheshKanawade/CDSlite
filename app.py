@@ -9,6 +9,8 @@ from werkzeug.utils import secure_filename
 import os
 import time
 import base64
+import mysql.connector
+from mysql.connector.conversion import MySQLConverter
 
 app, mysql, razorpay_client = create_app()
 
@@ -54,7 +56,7 @@ def update_user(user_details, user_id):
     last_name = user_details["last-name"]
     email = user_details['email']
     mob_number = user_details['number']
-    addressline = user_details['addressline']
+    addressline = MySQLConverter().escape(user_details['addressline'])
     city = user_details['city']
     pincode = user_details['pincode']
 
@@ -472,6 +474,7 @@ def product():
         if isMerchandise == "Yes":
             mrp = form_details["MRP"]
             quantity = form_details["Quantity"]
+
 
             q2 = f"INSERT INTO FP_Products VALUES ('{product_id}','{pdt_name}','{desc}',{mrp},{quantity},'{creation_date}','{creation_date}','{category_id}')"
             cur = mysql.connection.cursor()
@@ -1070,10 +1073,27 @@ def add_shopping_cart(product_id):
     cur = mysql.connection.cursor()
     # Check if product already exists in cart
     query = f"SELECT * FROM ShoppingCart WHERE UserID = '{user_id}' and ProductID = '{product_id}'"
-    response = cur.execute(query)
-    if response != 0:
-        flash("Product already exists in cart", 'danger')
-        return redirect(url_for('read_shopping_cart'))
+    cur.execute(query)
+    response = cur.fetchone()
+    if response != None:
+        print("respionse: ", response)
+        q = f"select * from fp_products where ProductID='{product_id}'"
+        cur.execute(q)
+        res = cur.fetchone()
+        Q = res['Quantity']
+        Q_dash = response['Quantity']
+        if(Q < Q_dash+1):
+            flash("Product quantity exceeded as per stock", 'danger')
+            return redirect(url_for('read_shopping_cart'))
+        else:
+            quty = Q_dash + 1
+            q = f"Update ShoppingCart Set Quantity = '{quty}' where UserID = '{user_id}' and ProductID = '{product_id}'"
+            try:
+                cur.execute(q)
+                mysql.connection.commit()
+            except Exception as e:
+                raise Exception(f"UNable to run query. Error: {e}")
+            return redirect(url_for('read_shopping_cart'))
 
     query = f"INSERT INTO ShoppingCart VALUES ('{user_id}','{product_id}','{quantity}',DEFAULT)"
 
