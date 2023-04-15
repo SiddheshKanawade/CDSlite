@@ -1,5 +1,5 @@
 
-# CDSlite: A Buy-Sell Protal
+# CDSlite: A Buy-Sell Portal
 
 A Buy-Sell portal for a specified community where anyone can buy/sell used products. These are variable price products. Merchants also have a space on this platform to sell thier products which are fixed price products.
 ## 🔗 Links

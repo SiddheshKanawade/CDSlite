@@ -5,24 +5,25 @@ function createProductCards(products, type) {
     const productContainer = document.querySelector('.product_container');
   
     for (let i = 0; i < products.length; i++) {
+
+      var var1 = products[i]['ProductID'];
+      var1 = JSON.parse(var1);
+
       const productCard = document.createElement('div');
 
       productCard.classList.add('product_card');
 
-      // const productImage = document.createElement('div');
-      // // productImage.classList.add('product_card');
-      // productImage.classList.add('image');
-      // const productImg = document.createElement('img');
-      // productImg.classList.add('card-img');
-      // productImg.src = products[i].imageUrl;
-      // productImg.alt = '';
-      // productImage.appendChild(productImg);
-      // productCard.appendChild(productImage);
+      const productImage = document.createElement('div');
+      // productImage.classList.add('product_card');
+      productImage.classList.add('image');
+      const productImg = document.createElement('img');
+      productImg.classList.add('card-img');
+      productImg.src = `/get_image/${var1}`;
+      productImage.appendChild(productImg);
+      productCard.appendChild(productImage);
   
       const productDetails = document.createElement('div');
-      var var1 = products[i]['ProductID'];
-      var1 = JSON.parse(var1);
-      console.log(var1)
+      
       // productDetails.classList.add('product_card');
       productDetails.classList.add('details');
       const productLink = document.createElement('a');
@@ -64,19 +65,20 @@ function createProductCards(products, type) {
       const productContainer = document.querySelector('.product_container');
   
       for (let i = 0; i < products.length; i++) {
+        var var1 = products[i]['ProductID'];
+        var1 = JSON.parse(var1);
         const productCard = document.createElement('div');
 
         productCard.classList.add('product_card');
 
-        // const productImage = document.createElement('div');
-        // // productImage.classList.add('product_card');
-        // productImage.classList.add('image');
-        // const productImg = document.createElement('img');
-        // productImg.classList.add('card-img');
-        // productImg.src = products[i].imageUrl;
-        // productImg.alt = '';
-        // productImage.appendChild(productImg);
-        // productCard.appendChild(productImage);
+        const productImage = document.createElement('div');
+        // productImage.classList.add('product_card');
+        productImage.classList.add('image');
+        const productImg = document.createElement('img');
+        productImg.classList.add('card-img');
+        productImg.src = `/get_image/${var1}`;
+        productImage.appendChild(productImg);
+        productCard.appendChild(productImage);
     
         const productDetails = document.createElement('div');
         // productDetails.classList.add('product_card');
@@ -96,9 +98,7 @@ function createProductCards(products, type) {
         product_A.classList.add("button_class");
         const productBid = document.createElement('a');
         productBid.className="button_correct"
-        var var1 = products[i]['ProductID'];
-        var1 = JSON.parse(var1);
-        console.log(var1)
+        
         productBid.href =  `/fp_products/${var1}`;
         const productButton = document.createElement('button');
         productButton.classList.add('buttons');
