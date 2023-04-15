@@ -77,8 +77,22 @@ def index():
     user_id = session['uid']
     if (user_id == None):
         user_id = '1'
-    query = f"select * from VP_Products where Availability='Yes'"
     cur = mysql.connection.cursor()
+    try:
+        cur.execute("SELECT * from Category")
+    except Exception as e:
+        raise Exception(f"UNable to run query. Error: {e}")
+    catlist = cur.fetchall()
+
+    query = f"select * from VP_Products where Availability='Yes'"
+    if request.method == 'POST':
+        form_details = request.form
+        try:
+            cat_id = form_details['cat']
+        except:
+            cat_id = '0'
+        if(cat_id != '0'):
+            query = f"select * from VP_Products where Availability='Yes' and CategoryID = '{cat_id}'"
     try:
         cur.execute(query)
     except Exception as e:
@@ -87,7 +101,7 @@ def index():
     if (vplist == None):
         flash("There are no products available for Bid")
     print(vplist)
-    return render_template("index.html", vplist=vplist)
+    return render_template("index.html", vplist=vplist, catlist = catlist)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -452,7 +466,7 @@ def product():
             mrp = form_details["MRP"]
             quantity = form_details["Quantity"]
 
-            q2 = f"INSERT INTO FP_Products VALUES ('{product_id}','{pdt_name}','{desc}','Yes',{mrp},{quantity},'{creation_date}','{creation_date}','{category_id}')"
+            q2 = f"INSERT INTO FP_Products VALUES ('{product_id}','{pdt_name}','{desc}',{mrp},{quantity},'{creation_date}','{creation_date}','{category_id}')"
             cur = mysql.connection.cursor()
             try:
                 cur.execute(q2)
@@ -1163,7 +1177,7 @@ def merchandise():
         flash("Please login to continue", 'danger')
         return redirect(url_for('login'))
     
-    query = f"SELECT * FROM FP_Products;"
+    query = f"SELECT * FROM FP_Products where Quantity>0;"
     cur = mysql.connection.cursor()
     try:
         cur.execute(query)
