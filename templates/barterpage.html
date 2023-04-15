@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>BarterPage</title>
@@ -9,7 +9,7 @@
         integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
         crossorigin="anonymous" />
     <link rel="stylesheet" href="/static/css/barterpage.css">
-    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -75,21 +75,46 @@
     </nav>
   </header>
   
-  <form method="POST" action="" class="card">
+  <form method="POST" action="" id="AddingBarterProduct" class="card">
         
         Product Name 
-        <input type="text" name="product-name" required/>
+        <input type="text" id="name" name="product-name" required/>
         <br>
         Description
-         <input type="textarea" name="description" required/>
+         <textarea id="description" name="description" required>Product's Description</textarea>
         <br>
         
-          <br>
-          <form method="POST" action="" enctype="multipart/form-data">
-            Upload Product Images <input type="file" name="images[]" class="upload_btns" multiple>
-            <input type="submit" value="Upload">
-          </form>
+        <br>
+        Upload Product Images 
+        <input type="file" name="images[]" class="upload_btns" multiple>
+        <input type="submit" value="Upload">
       </form>
+      <button type="button" class="btns" id="preview" onclick="previewform()"><a href="success.html" class="abtns">Preview</a></button>
+      <!-- <div id = "formContainer"></div> -->
+      <script>
+        function sanitizeInput(input) {
+            // Use a library or custom logic to sanitize input
+            // Example: Replace special characters with HTML entities
+            input = input.replace(/&/g, '&amp;')
+                         .replace(/</g, '&lt;')
+                         .replace(/>/g, '&gt;')
+                         .replace(/"/g, '&quot;')
+                         .replace(/'/g, '&#39;');
+
+            return input;
+        }
+        function previewform(){
+          var name = document.getElementById('name').value;
+          var description = document.getElementById('description').value;
+          name = sanitizeInput(name)
+          description = sanitizeInput(description)
+          document.write("Kindly verify the details:")
+          document.write("<p>Name: " + name + "</p>");
+          document.write("<p>Description: " + description + "</p>");
+          event.preventDefault();
+        }
+        
+      </script>
       <script src="/static/js/pdt_form.js"></script>
 
 </body>

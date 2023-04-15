@@ -1,5 +1,5 @@
 import razorpay
-
+from mysql.connector.conversion import MySQLConverter
 from flask import Flask, render_template, request, url_for, redirect, session, flash, jsonify, make_response
 from src.helper import current_date, generate_uuid
 from src.db import create_app
@@ -609,8 +609,10 @@ def barterpage(id):
 
         product_id = str(total_existing_products+1)
         form_details = request.form
-        prod_name = form_details["product-name"]
-        desc = form_details["description"]
+        prod_name =   MySQLConverter().escape(form_details["product-name"])
+        dang_desc = form_details["description"]
+        # print(dang_desc)
+        desc = MySQLConverter().escape(form_details["description"])
         creation_date = current_date()
         q1 = f"INSERT INTO Products VALUES ('{product_id}','{seller_id}')"
 

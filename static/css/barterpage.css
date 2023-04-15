@@ -386,3 +386,19 @@ form {
 .card{
     margin-top: 10px;
 }
+.Uploadbtn{
+    align-items: center;
+}
+.btns{
+    background-color: #000;
+    color: #ffffff;
+    width: fit-content;
+    padding: 1%;
+    border-radius: 8px;
+    margin-left: 47%;
+    margin-top: 1%;
+}
+.abtns{
+    text-decoration: none;
+    color: white;
+}

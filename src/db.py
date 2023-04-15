@@ -4,7 +4,6 @@ import razorpay
 from flask import Flask
 from flask_mysqldb import MySQL
 from flask_sse import sse
-
 from config import MYSQL_DATABASE, MYSQL_HOST, PASSWORD, MYSQL_USER, RAZORPAY_API_KEY, RAZORPAY_API_SECRET
 
 
@@ -25,5 +24,4 @@ def create_app():
         auth=(RAZORPAY_API_KEY, RAZORPAY_API_SECRET))
 
     mysql = MySQL(app)
-
     return app, mysql, razorpay_client
