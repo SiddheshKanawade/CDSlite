@@ -76,7 +76,7 @@
                 </div>
                 {% endif %}
             {% endwith %}
-        
+    {% autoescape false %}   
     <p class="size">First Name: <input type="text" name="first-name" id="" value="{{ data['FirstName'] }}" class="bid_daalo" required></p>
     <p class="size">Last Name: <input type="text" name="last-name" id="" value="{{ data['LastName'] }}" class="bid_daalo" required></p>
     <p class="size">Email: <input type="text" name="email" id="" value="{{ data['Email_ID'] }}" class="bid_daalo" required></p>
@@ -88,6 +88,7 @@
     <button type="submit" class="btns" onclick="confirmBid()">Update Profile</button>
 
       </form>
+    {% endautoescape %}
       <script src="pdt_form.js"></script>
 
     </body>
