@@ -466,7 +466,7 @@ def product():
             mrp = form_details["MRP"]
             quantity = form_details["Quantity"]
 
-            q2 = f"INSERT INTO FP_Products VALUES ('{product_id}','{pdt_name}','{desc}','Yes',{mrp},{quantity},'{creation_date}','{creation_date}','{category_id}')"
+            q2 = f"INSERT INTO FP_Products VALUES ('{product_id}','{pdt_name}','{desc}',{mrp},{quantity},'{creation_date}','{creation_date}','{category_id}')"
             cur = mysql.connection.cursor()
             try:
                 cur.execute(q2)
@@ -1177,7 +1177,7 @@ def merchandise():
         flash("Please login to continue", 'danger')
         return redirect(url_for('login'))
     
-    query = f"SELECT * FROM FP_Products;"
+    query = f"SELECT * FROM FP_Products where Quantity>0;"
     cur = mysql.connection.cursor()
     try:
         cur.execute(query)
